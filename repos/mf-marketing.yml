@@ -1,13 +1,41 @@
 name: mf-marketing
-product: superpago
+product: marketing
 type: frontend-mf
 language: typescript
 framework: angular-21
+port: 4206
+remote_name: mfMarketing
+cdn_url: https://mf.superpago.com.mx/mf/marketing/
 
 depends_on:
   shell: [mf-core]
   api: [covacha-core]
+  remotes_consumed: [mfInventory, mfDashboard]
+
+exposes:
+  - "./routes": "src/app/remote-entry/entry.routes.ts"
+  - "./Component": "src/app/remote-entry/entry.component.ts"
+
+architecture: hexagonal
+  # domain/ - modelos puros (29 archivos, 429 exports)
+  # infrastructure/ - adapters (24 archivos)
+  # application/ - use cases y servicios
+  # presentation/ - pages (22+) y componentes (11+)
+  # core/ - http, federation, servicios base
+  # shared-state/ - comunicacion con Shell (read-only)
 
 rules:
   testing: "Karma + Jasmine, HttpTestingController, Playwright E2E, 80% coverage"
-  branch: "develop → main (auto-merge)"
+  branch: "develop -> main (auto-promote via GitHub Actions)"
+  deploy: "GitHub Actions -> S3 -> CloudFront (E3A0H41AD1MAWR)"
+  di_rule: "NUNCA providedIn root si inyecta InjectionToken de puerto"
+
+epics_plan: products/MARKETING-EPICS.md
+
+key_files:
+  entry_routes: src/app/remote-entry/entry.routes.ts
+  entry_component: src/app/remote-entry/entry.component.ts
+  agency_service: src/app/core/services/agency.service.ts
+  client_model: src/app/domain/models/client.model.ts
+  shared_state: src/app/shared-state/shared-state.service.ts
+  federation_config: federation.config.js

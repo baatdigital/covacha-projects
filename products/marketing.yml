@@ -1,7 +1,7 @@
 name: Marketing
 status: active
 priority: 2
-description: Agencia digital, gestion de clientes, social media, content planning y media storage
+description: Agencia digital, gestion de clientes, social media, content planning, landing pages, media storage y brand kit
 
 repos:
   backends:
@@ -15,18 +15,69 @@ domains:
   - app.baatdigital.com.mx
   - mf.superpago.com.mx/mf/marketing
 
-features:
-  - Gestion de clientes de agencia
-  - Social media management (Facebook, Instagram)
-  - Calendario de publicaciones
-  - Media storage hibrido (Google Drive + S3)
-  - Templates WhatsApp y Email
-  - Estrategias de marketing
-  - Plan de contenido
-  - Flujo de aprobaciones
+features_completed:
+  - Gestion de clientes de agencia (CRUD, wizard, dashboard, contactos, tareas, settings)
+  - Social media management (Facebook, Instagram) con calendario y analytics
+  - Media storage hibrido (Google Drive + S3) con OAuth y sync
+  - Templates WhatsApp y Email con catalogo
+  - Estrategias de marketing (builder, dashboard, KPIs, alertas, timeline)
+  - Plan de contenido con flujo de aprobaciones
+  - Landing pages publicas (renderizado por slug, SEO, formulario de contacto)
+  - Editor de promociones (wizard 5 pasos: identidad, diseno, landing, SEO, QR)
+  - Landing editor drag-and-drop FASE 1-2 (estructura base + Angular CDK DnD)
+  - Integracion WhatsApp (boton flotante, config, demo landing)
+  - Refactor pantalla clientes (5 sub-componentes extraidos, 459+ tests)
+
+features_pending:
+  - Landing editor avanzado FASE 3-5 (inline editing, rich text, preview, publish, backend)
+  - Campaign builder Facebook Ads (scaffolded, sin API real)
+  - Brand kit completo (componentes existen, integracion backend parcial)
+  - Dashboards ejecutivo y comparativo (placeholder)
+  - Team visibility rules (E-CLI-07)
+  - Task manager avanzado (dependencias, Gantt, time tracking)
+  - Analytics de estrategias BI (cross-client, forecast)
+  - AI config multi-provider por cliente (OpenAI, Anthropic, Gemini)
+  - Paginas placeholder: Meetings, Subscriptions, Channels
+
+epics:
+  completed:
+    - id: EP-MK-001
+      name: "Refactor Client Cards - Info Enriquecida"
+      github_issue: 1
+    - id: EP-MK-002
+      name: "Edicion Inline de Clientes"
+      github_issue: 2
+    - id: EP-MK-003
+      name: "Paginacion Server-Side"
+      github_issue: 3
+    - id: EP-MK-004
+      name: "UX y Rendimiento Vista Clientes"
+      github_issue: 4
+    - id: EP-MK-005
+      name: "Landing Pages Publicas y Promociones"
+      github_issue: 8
+  pending:
+    - id: EP-MK-006
+      name: "Landing Editor Avanzado (FASE 3-5)"
+    - id: EP-MK-007
+      name: "Campaign Builder - Facebook Ads"
+    - id: EP-MK-008
+      name: "Brand Kit Completo"
+    - id: EP-MK-009
+      name: "Dashboards Ejecutivo y Comparativo"
+    - id: EP-MK-010
+      name: "Team Visibility y Roles por Cliente"
+    - id: EP-MK-011
+      name: "Task Manager Avanzado"
+    - id: EP-MK-012
+      name: "Analytics BI de Estrategias"
+    - id: EP-MK-013
+      name: "AI Config Multi-Provider por Cliente"
 
 infrastructure:
   cloud: AWS
   cdn: S3 + CloudFront
   storage: Google Drive + S3
   deploy: GitHub Actions
+  testing: "Karma + Jasmine (unit), Playwright (E2E)"
+  coverage: "459+ tests passing"
