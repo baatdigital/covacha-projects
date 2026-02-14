@@ -1,0 +1,27 @@
+name: covacha-libs
+product: superpago
+type: shared-library
+language: python
+impact: CRITICAL
+
+consumers:
+  - covacha-core
+  - covacha-payment
+  - covacha-botia
+  - covacha-transaction
+  - covacha-notification
+  - covacha-webhook
+  - covacha-inventory
+  - covacha-judicial
+  - covacha-crm
+
+modules:
+  - models
+  - repositories
+  - polices
+  - utils
+
+note: "CRITICAL: cambios aquí afectan 9 backends"
+rules:
+  testing: "pytest, 80% coverage"
+  branch: "develop → main (auto-merge)"

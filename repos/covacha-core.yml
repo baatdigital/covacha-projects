@@ -1,0 +1,30 @@
+name: covacha-core
+product: superpago
+type: backend-service
+language: python
+framework: flask
+port: 5000
+api_prefix: /api/v1
+
+depends_on:
+  code: [covacha-libs]
+  services: [cognito, dynamodb, s3, sqs]
+
+consumed_by:
+  http: [mf-core, mf-auth, mf-dashboard, mf-settings, mf-marketing]
+
+key_files:
+  entry: src/mipay_core/app.py
+  routes: src/mipay_core/config/routes/
+  models: src/mipay_core/serializers/
+  tests: tests/
+
+stats:
+  blueprints: 28
+  controllers: 26
+  services: 71
+
+rules:
+  cursor_rules: 12
+  testing: "pytest, 80% coverage, 3 tests per function"
+  branch: "develop → main (auto-merge)"

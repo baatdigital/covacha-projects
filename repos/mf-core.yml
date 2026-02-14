@@ -1,0 +1,28 @@
+name: mf-core
+product: superpago
+type: frontend-shell
+language: typescript
+framework: angular-21
+federation: native-federation
+architecture: hexagonal
+
+hosts:
+  - mf-auth
+  - mf-dashboard
+  - mf-ia
+  - mf-inventory
+  - mf-marketing
+  - mf-payment
+  - mf-payment-card
+  - mf-settings
+  - mf-whatsapp
+  - mf-docs
+
+depends_on:
+  api: [covacha-core, covacha-payment, covacha-botia, covacha-transaction]
+
+impact: CRITICAL
+note: "Shell principal, cambios afectan 10 MFs"
+rules:
+  testing: "Karma + Jasmine, HttpTestingController, Playwright E2E, 80% coverage"
+  branch: "develop → main (auto-merge)"

@@ -1,0 +1,14 @@
+name: mf-docs
+product: superpago
+type: frontend-mf
+language: typescript
+framework: angular-21
+
+depends_on:
+  shell: [mf-core]
+  api: []
+
+note: "Portal de documentación, no consume APIs directamente"
+rules:
+  testing: "Karma + Jasmine, HttpTestingController, Playwright E2E, 80% coverage"
+  branch: "develop → main (auto-merge)"

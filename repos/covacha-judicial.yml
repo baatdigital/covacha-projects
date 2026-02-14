@@ -1,0 +1,13 @@
+name: covacha-judicial
+product: alerta-tribunal
+type: backend-service
+language: python
+framework: flask
+
+depends_on:
+  code: [covacha-libs]
+  services: [dynamodb]
+
+rules:
+  testing: "pytest, 80% coverage"
+  branch: "develop → main"

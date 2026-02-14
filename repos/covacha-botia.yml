@@ -1,0 +1,16 @@
+name: covacha-botia
+product: superpago
+type: backend-service
+language: python
+framework: flask
+
+depends_on:
+  code: [covacha-libs]
+  services: [cognito, dynamodb, sqs]
+
+consumed_by:
+  http: [mf-ia, mf-whatsapp]
+
+rules:
+  testing: "pytest, 80% coverage"
+  branch: "develop → main (auto-merge)"

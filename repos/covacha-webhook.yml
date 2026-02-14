@@ -1,0 +1,17 @@
+name: covacha-webhook
+product: superpago
+type: backend-service
+language: python
+framework: flask
+
+depends_on:
+  code: [covacha-libs]
+  services: [dynamodb, sqs]
+
+consumed_by:
+  http: []
+
+note: "Recibe webhooks externos"
+rules:
+  testing: "pytest, 80% coverage"
+  branch: "develop → main (auto-merge)"

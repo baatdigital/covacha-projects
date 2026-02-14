@@ -1,0 +1,16 @@
+name: covacha-notification
+product: superpago
+type: backend-service
+language: python
+framework: flask
+
+depends_on:
+  code: [covacha-libs]
+  services: [dynamodb, sqs, ses]
+
+consumed_by:
+  http: [mf-settings]
+
+rules:
+  testing: "pytest, 80% coverage"
+  branch: "develop → main (auto-merge)"

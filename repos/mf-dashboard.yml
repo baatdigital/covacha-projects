@@ -1,0 +1,13 @@
+name: mf-dashboard
+product: superpago
+type: frontend-mf
+language: typescript
+framework: angular-21
+
+depends_on:
+  shell: [mf-core]
+  api: [covacha-core, covacha-transaction]
+
+rules:
+  testing: "Karma + Jasmine, HttpTestingController, Playwright E2E, 80% coverage"
+  branch: "develop → main (auto-merge)"

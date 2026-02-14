@@ -1,0 +1,16 @@
+name: covacha-payment
+product: superpago
+type: backend-service
+language: python
+framework: flask
+
+depends_on:
+  code: [covacha-libs]
+  services: [cognito, dynamodb, sqs]
+
+consumed_by:
+  http: [mf-payment, mf-payment-card, mf-core]
+
+rules:
+  testing: "pytest, 80% coverage"
+  branch: "develop → main (auto-merge)"

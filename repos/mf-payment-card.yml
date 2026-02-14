@@ -1,0 +1,14 @@
+name: mf-payment-card
+product: superpago
+type: frontend-mf
+language: typescript
+framework: angular-21
+testing_exception: "Usa Jest en lugar de Karma + Jasmine"
+
+depends_on:
+  shell: [mf-core]
+  api: [covacha-payment]
+
+rules:
+  testing: "Jest, HttpTestingController, Playwright E2E, 80% coverage"
+  branch: "develop → main (auto-merge)"
