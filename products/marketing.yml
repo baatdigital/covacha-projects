@@ -1,0 +1,32 @@
+name: Marketing
+status: active
+priority: 2
+description: Agencia digital, gestion de clientes, social media, content planning y media storage
+
+repos:
+  backends:
+    - covacha-core
+  frontends:
+    - mf-marketing
+  shared:
+    - covacha-libs
+
+domains:
+  - app.baatdigital.com.mx
+  - mf.superpago.com.mx/mf/marketing
+
+features:
+  - Gestion de clientes de agencia
+  - Social media management (Facebook, Instagram)
+  - Calendario de publicaciones
+  - Media storage hibrido (Google Drive + S3)
+  - Templates WhatsApp y Email
+  - Estrategias de marketing
+  - Plan de contenido
+  - Flujo de aprobaciones
+
+infrastructure:
+  cloud: AWS
+  cdn: S3 + CloudFront
+  storage: Google Drive + S3
+  deploy: GitHub Actions

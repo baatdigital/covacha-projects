@@ -1,0 +1,31 @@
+name: WebSite
+status: active
+priority: 3
+description: Landing pages publicas y portales web de BaatDigital, SuperPago y AlertaTribunal
+
+repos:
+  backends:
+    - covacha-core
+  frontends:
+    - mf-core
+
+location_in_repo:
+  mf-core: src/app/portals/website/
+
+features:
+  - Landing page publica BaatDigital
+  - Landing page publica SuperPago
+  - Landing page publica AlertaTribunal
+  - SEO y meta tags dinamicos
+  - Rutas publicas sin layout de admin
+
+domains:
+  - baatdigital.com.mx
+  - superpago.com.mx
+  - alertatribunal.com
+
+infrastructure:
+  cloud: AWS
+  cdn: S3 + CloudFront
+  deploy: GitHub Actions
+  note: "Las landing pages viven dentro de mf-core como rutas publicas fuera del layout de admin"
