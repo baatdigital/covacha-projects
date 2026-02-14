@@ -1,0 +1,16 @@
+name: AlertaTribunal
+status: active
+priority: 2
+description: Alertas judiciales automatizadas
+
+repos:
+  backends:
+    - covacha-judicial
+  shared:
+    - covacha-libs
+  other:
+    - mod_scrapper_mty
+
+infrastructure:
+  cloud: AWS
+  database: DynamoDB

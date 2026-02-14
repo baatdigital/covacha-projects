@@ -1,0 +1,60 @@
+# Template de Historia de Usuario v2.1
+# Fuente de verdad para crear issues
+# Última actualización: 2026-02-14
+
+template:
+  id: "ISS-XXX"
+  title: "[Módulo] Descripción corta"
+  
+  sections:
+    historia:
+      format: "Como [rol], quiero [acción], para [beneficio]"
+      required: true
+    
+    criterios_aceptacion:
+      format: "lista de checkboxes"
+      required: true
+      minimum: 3
+    
+    alcance_tecnico:
+      subsections:
+        - archivos_a_crear_o_modificar
+        - dependencias
+        - apis_involucradas
+      required: true
+    
+    testing:
+      backend:
+        required: [unit, integration]
+        framework: pytest
+        coverage: 80
+      frontend:
+        required: [unit, integration, e2e]
+        unit_framework: "Karma + Jasmine (o Jest para mf-payment*)"
+        e2e_framework: Playwright
+        coverage: 80
+      required: true
+    
+    estimacion:
+      story_points: required
+      horas: required
+      tokens: required
+    
+    ejecutor:
+      options:
+        - "Claude Code (3+ archivos, cross-repo)"
+        - "Cursor Agent (1-2 archivos)"
+        - "Copilot Coding Agent (issue simple)"
+      required: true
+    
+    mac_asignada:
+      options: [Mac-1, Mac-2]
+      required: true
+
+estimation_table:
+  1_point: { hours: "0.5-1h", tokens: "5K-10K", complexity: "Trivial" }
+  2_points: { hours: "1-2h", tokens: "10K-20K", complexity: "Simple" }
+  3_points: { hours: "2-4h", tokens: "20K-40K", complexity: "Moderada" }
+  5_points: { hours: "4-8h", tokens: "40K-60K", complexity: "Compleja" }
+  8_points: { hours: "8-16h", tokens: "60K-100K", complexity: "Muy compleja" }
+  13_points: { hours: "16-24h", tokens: "100K+", complexity: "Épica (dividir)" }

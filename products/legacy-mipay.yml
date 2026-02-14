@@ -1,0 +1,18 @@
+name: Legacy MiPay
+status: deprecating
+priority: 5
+description: Sistema legacy en proceso de migración a SuperPago
+
+repos:
+  backends:
+    - mipay_service
+    - mipay_payment
+  frontends:
+    - mipay_web
+
+migration_target:
+  mipay_service: covacha-core
+  mipay_payment: covacha-payment
+  mipay_web: mf-core
+
+note: "En proceso de migración. No crear features nuevos aquí."

@@ -1,0 +1,44 @@
+# Convenciones de Naming - Fuente de Verdad
+# Última actualización: 2026-02-14
+
+repos:
+  backend: "covacha-<servicio>"
+  frontend: "mf-<módulo>"
+  shared: "covacha-libs, covacha-shared-libs"
+
+branches:
+  feature: "feature/<descripción-kebab-case>"
+  bugfix: "bugfix/<descripción-kebab-case>"
+  hotfix: "hotfix/<descripción-kebab-case>"
+
+python:
+  files: snake_case
+  classes: PascalCase
+  functions: snake_case
+  variables: snake_case
+  constants: UPPER_SNAKE_CASE
+  tests: "test_debe_<acción>_cuando_<condición>"
+
+typescript:
+  files: kebab-case
+  classes: PascalCase
+  interfaces: PascalCase (no prefix I)
+  components: kebab-case.component.ts
+  services: kebab-case.service.ts
+  models: kebab-case.model.ts
+  tests: kebab-case.spec.ts
+
+angular:
+  components: standalone, OnPush
+  signals: camelCase
+  selectors: "app-<componente>"
+
+issues:
+  user_story: "ISS-XXX"
+  cross_repo: "CROSS-XXX"
+  bug: "[BUG] descripción"
+  epic: "[EPIC] descripción"
+
+commits:
+  format: "type: description"
+  types: [feat, fix, refactor, test, docs, ci, chore]

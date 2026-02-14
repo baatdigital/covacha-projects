@@ -1,0 +1,52 @@
+# Reglas de Testing - Fuente de Verdad
+# Última actualización: 2026-02-14 v2.1
+
+general:
+  coverage_minimum: 80
+  coverage_aspirational: 98
+  tests_per_function: 3
+  test_types:
+    - happy_path
+    - error_case
+    - edge_case
+
+backend:
+  framework: pytest
+  test_types_required:
+    - unit
+    - integration
+  naming: "test_debe_<acción>_cuando_<condición>"
+  coverage_tool: pytest-cov
+  assertions: assert (no unittest assertions)
+  mocking: pytest-mock / unittest.mock
+  fixtures: conftest.py
+  rules:
+    - "Cada función pública debe tener mínimo 3 tests"
+    - "Usar fixtures en conftest.py para datos compartidos"
+    - "Mock de DynamoDB con moto o PynamoDB mock"
+    - "Mock de SQS/S3 con moto"
+    - "Validar Pydantic models con datos inválidos"
+
+frontend:
+  framework_default: "Karma + Jasmine"
+  framework_exceptions:
+    mf-payment: Jest
+    mf-payment-card: Jest
+  test_types_required:
+    - unit
+    - integration
+    - e2e
+  e2e_framework: Playwright
+  e2e_forbidden: ["Cypress"]
+  http_testing: HttpTestingController
+  http_forbidden: ["HttpClientTestingModule"]
+  router_testing: "provideRouter + RouterTestingHarness"
+  router_forbidden: ["RouterTestingModule"]
+  rules:
+    - "HttpTestingController con .verify() en afterEach"
+    - "Standalone components con provideRouter en TestBed"
+    - "Signals: verificar con fixture.detectChanges()"
+    - "OnPush: usar fixture.detectChanges() después de cada cambio"
+    - "E2E solo con Playwright, NO Cypress"
+    - "NO usar HttpClientTestingModule (deprecated en Angular 21)"
+    - "NO usar RouterTestingModule (deprecated en Angular 21)"

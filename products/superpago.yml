@@ -1,0 +1,49 @@
+name: SuperPago
+status: active
+priority: 1
+description: Plataforma de pagos y servicios financieros
+
+repos:
+  backends:
+    - covacha-core
+    - covacha-payment
+    - covacha-botia
+    - covacha-transaction
+    - covacha-notification
+    - covacha-webhook
+    - covacha-inventory
+  frontends:
+    - mf-core
+    - mf-auth
+    - mf-dashboard
+    - mf-ia
+    - mf-inventory
+    - mf-marketing
+    - mf-payment
+    - mf-payment-card
+    - mf-settings
+    - mf-whatsapp
+    - mf-docs
+  shared:
+    - covacha-libs
+
+domains:
+  - api.superpago.com.mx
+  - portal.superpago.com.mx
+  - portal-api.superpago.com.mx
+
+infrastructure:
+  cloud: AWS
+  compute: EC2 (private subnet)
+  cdn: S3 + CloudFront
+  auth: Cognito
+  database: DynamoDB
+  queue: SQS
+  deploy: GitHub Actions + CodeDeploy
+
+team:
+  mac-1: frontend-heavy
+  mac-2: backend-heavy
+  orchestrator: claude-code
+  editor: cursor-agent
+  reviewer: copilot

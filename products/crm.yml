@@ -1,0 +1,14 @@
+name: CRM
+status: active
+priority: 3
+description: Gestión de relaciones con clientes
+
+repos:
+  backends:
+    - covacha-crm
+  shared:
+    - covacha-libs
+
+infrastructure:
+  cloud: AWS
+  database: DynamoDB

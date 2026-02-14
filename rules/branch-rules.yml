@@ -1,0 +1,44 @@
+# Reglas de Branches - Fuente de Verdad
+# Última actualización: 2026-02-14
+
+strategy: gitflow-simplified
+
+branches:
+  main:
+    protection: true
+    require_pr: true
+    required_reviews: 1
+    dismiss_stale_reviews: true
+    no_force_push: true
+    no_delete: true
+    auto_merge_from: develop
+
+  develop:
+    protection: false
+    ci_required: true
+    auto_merge_to_main: true
+    auto_merge_condition: "CI passes"
+
+  feature:
+    naming: "feature/<descripción>"
+    base: develop
+    merge_to: develop
+
+  bugfix:
+    naming: "bugfix/<descripción>"
+    base: develop
+    merge_to: develop
+
+  hotfix:
+    naming: "hotfix/<descripción>"
+    base: main
+    merge_to: [main, develop]
+
+workflow:
+  - "Crear branch feature/* desde develop"
+  - "Hacer cambios y push"
+  - "Crear PR hacia develop"
+  - "Review obligatorio (Copilot + humano si aplica)"
+  - "Merge a develop"
+  - "CI corre en develop"
+  - "Si CI pasa → auto-merge a main"

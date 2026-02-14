@@ -1,0 +1,337 @@
+# Grafo de dependencias del ecosistema BAAT Digital
+# Fuente de verdad para entender impacto de cambios
+# Última actualización: 2026-02-14
+
+# ============================================
+# SHARED LIBRARIES
+# ============================================
+covacha-libs:
+  type: shared-library
+  language: python
+  product: superpago
+  consumers:
+    - covacha-core
+    - covacha-payment
+    - covacha-botia
+    - covacha-transaction
+    - covacha-notification
+    - covacha-webhook
+    - covacha-inventory
+    - covacha-judicial
+    - covacha-crm
+  impact: CRITICAL
+  note: "Cualquier cambio aquí afecta a TODOS los backends (9 repos)"
+  breaking_patterns:
+    - "models/*.py"
+    - "repositories/*.py"
+    - "polices/*.py"
+    - "utils/*.py"
+
+# ============================================
+# BACKEND SERVICES - SuperPago
+# ============================================
+covacha-core:
+  type: backend-service
+  language: python
+  product: superpago
+  depends_on:
+    code: [covacha-libs]
+    services: [cognito, dynamodb, s3, sqs]
+  consumed_by:
+    http: [mf-core, mf-auth, mf-dashboard, mf-settings, mf-marketing]
+  api_base: "api.superpago.com.mx"
+  impact: HIGH
+  breaking_patterns:
+    - "src/mipay_core/config/routes/*.py"
+    - "src/mipay_core/serializers/*.py"
+
+covacha-payment:
+  type: backend-service
+  language: python
+  product: superpago
+  depends_on:
+    code: [covacha-libs]
+    services: [cognito, dynamodb, sqs]
+  consumed_by:
+    http: [mf-payment, mf-payment-card, mf-core]
+  impact: HIGH
+  breaking_patterns:
+    - "src/*/serializers/*.py"
+    - "src/*/config/routes/*.py"
+
+covacha-botia:
+  type: backend-service
+  language: python
+  product: superpago
+  depends_on:
+    code: [covacha-libs]
+    services: [cognito, dynamodb, sqs]
+  consumed_by:
+    http: [mf-ia, mf-whatsapp]
+  impact: MEDIUM
+
+covacha-transaction:
+  type: backend-service
+  language: python
+  product: superpago
+  depends_on:
+    code: [covacha-libs]
+    services: [cognito, dynamodb, sqs]
+  consumed_by:
+    http: [mf-core, mf-dashboard]
+  impact: MEDIUM
+
+covacha-notification:
+  type: backend-service
+  language: python
+  product: superpago
+  depends_on:
+    code: [covacha-libs]
+    services: [dynamodb, sqs, ses]
+  consumed_by:
+    http: [mf-settings]
+  impact: LOW
+
+covacha-webhook:
+  type: backend-service
+  language: python
+  product: superpago
+  depends_on:
+    code: [covacha-libs]
+    services: [dynamodb, sqs]
+  consumed_by:
+    http: []
+  impact: LOW
+  note: "Recibe webhooks externos, no tiene consumidores internos directos"
+
+covacha-inventory:
+  type: backend-service
+  language: python
+  product: superpago
+  depends_on:
+    code: [covacha-libs]
+    services: [dynamodb]
+  consumed_by:
+    http: [mf-inventory]
+  impact: MEDIUM
+
+# ============================================
+# BACKEND SERVICES - Otros productos
+# ============================================
+covacha-judicial:
+  type: backend-service
+  language: python
+  product: alerta-tribunal
+  depends_on:
+    code: [covacha-libs]
+    services: [dynamodb]
+  consumed_by:
+    http: []
+  impact: LOW
+  note: "Producto independiente AlertaTribunal"
+
+covacha-crm:
+  type: backend-service
+  language: python
+  product: crm
+  depends_on:
+    code: [covacha-libs]
+    services: [dynamodb]
+  consumed_by:
+    http: []
+  impact: LOW
+  note: "CRM independiente"
+
+# ============================================
+# FRONTEND - Shell Principal
+# ============================================
+mf-core:
+  type: frontend-shell
+  language: typescript
+  framework: angular-21
+  product: superpago
+  depends_on:
+    api: [covacha-core, covacha-payment, covacha-botia, covacha-transaction]
+  hosts:
+    - mf-auth
+    - mf-dashboard
+    - mf-ia
+    - mf-inventory
+    - mf-marketing
+    - mf-payment
+    - mf-payment-card
+    - mf-settings
+    - mf-whatsapp
+    - mf-docs
+  impact: CRITICAL
+  note: "Shell principal, cambios aquí afectan TODOS los micro frontends (10 MFs)"
+  breaking_patterns:
+    - "src/app/app.routes.ts"
+    - "src/environments/*.ts"
+    - "federation.config.js"
+
+# ============================================
+# FRONTEND - Micro Frontends
+# ============================================
+mf-auth:
+  type: frontend-mf
+  language: typescript
+  framework: angular-21
+  product: superpago
+  depends_on:
+    shell: [mf-core]
+    api: [covacha-core]
+  impact: HIGH
+  note: "Autenticación - crítico para acceso"
+
+mf-dashboard:
+  type: frontend-mf
+  language: typescript
+  framework: angular-21
+  product: superpago
+  depends_on:
+    shell: [mf-core]
+    api: [covacha-core, covacha-transaction]
+  impact: MEDIUM
+
+mf-ia:
+  type: frontend-mf
+  language: typescript
+  framework: angular-21
+  product: superpago
+  depends_on:
+    shell: [mf-core]
+    api: [covacha-botia]
+  impact: MEDIUM
+
+mf-inventory:
+  type: frontend-mf
+  language: typescript
+  framework: angular-21
+  product: superpago
+  depends_on:
+    shell: [mf-core]
+    api: [covacha-inventory]
+  impact: MEDIUM
+
+mf-marketing:
+  type: frontend-mf
+  language: typescript
+  framework: angular-21
+  product: superpago
+  depends_on:
+    shell: [mf-core]
+    api: [covacha-core]
+  impact: LOW
+
+mf-payment:
+  type: frontend-mf
+  language: typescript
+  framework: angular-21
+  product: superpago
+  testing_exception: "Jest (no Karma+Jasmine)"
+  depends_on:
+    shell: [mf-core]
+    api: [covacha-payment]
+  impact: HIGH
+
+mf-payment-card:
+  type: frontend-mf
+  language: typescript
+  framework: angular-21
+  product: superpago
+  testing_exception: "Jest (no Karma+Jasmine)"
+  depends_on:
+    shell: [mf-core]
+    api: [covacha-payment]
+  impact: HIGH
+
+mf-settings:
+  type: frontend-mf
+  language: typescript
+  framework: angular-21
+  product: superpago
+  depends_on:
+    shell: [mf-core]
+    api: [covacha-core, covacha-notification]
+  impact: LOW
+
+mf-whatsapp:
+  type: frontend-mf
+  language: typescript
+  framework: angular-21
+  product: superpago
+  depends_on:
+    shell: [mf-core]
+    api: [covacha-botia]
+  impact: MEDIUM
+
+mf-docs:
+  type: frontend-mf
+  language: typescript
+  framework: angular-21
+  product: superpago
+  depends_on:
+    shell: [mf-core]
+    api: []
+  impact: LOW
+  note: "Documentación - no consume APIs directamente"
+
+# ============================================
+# LEGACY
+# ============================================
+mipay_service:
+  type: legacy-backend
+  language: python
+  product: legacy-mipay
+  impact: LOW
+  note: "En proceso de migración a covacha-core"
+
+mipay_payment:
+  type: legacy-backend
+  language: python
+  product: legacy-mipay
+  impact: LOW
+
+mipay_web:
+  type: legacy-frontend
+  language: typescript
+  framework: angular
+  product: legacy-mipay
+  impact: LOW
+  note: "En proceso de migración a mf-core"
+
+# ============================================
+# OTROS
+# ============================================
+covachaIA:
+  type: standalone
+  language: python
+  product: ia-bots
+  impact: LOW
+
+mod_scrapper_mty:
+  type: standalone
+  language: python
+  product: alerta-tribunal
+  impact: LOW
+
+mf-template:
+  type: template
+  language: typescript
+  product: infraestructura
+  impact: LOW
+  note: "Template base para nuevos micro frontends"
+
+covacha-shared-libs:
+  type: shared-library
+  language: python
+  product: infraestructura
+  impact: LOW
+  note: "Verificar si se usa o es duplicado de covacha-libs"
+
+covacha-insomnia:
+  type: tooling
+  product: infraestructura
+  impact: LOW
+  note: "Colección de Insomnia para testing de APIs"

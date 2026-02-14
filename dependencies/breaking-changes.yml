@@ -1,0 +1,34 @@
+# Patrones de cambios que rompen otros repos
+# Consultar ANTES de modificar estos archivos
+
+high_risk_patterns:
+  covacha-libs:
+    - pattern: "models/*.py"
+      affects: "Todos los backends (9 repos)"
+      reason: "Los modelos se importan directamente"
+      action: "Crear PR en covacha-libs, esperar merge, luego actualizar consumidores"
+    - pattern: "repositories/*.py"
+      affects: "Todos los backends que usan esos repos"
+      reason: "Los repositories se heredan"
+      action: "Verificar que la interfaz no cambia, o actualizar consumidores"
+    - pattern: "polices/*.py"
+      affects: "Todos los backends con auth"
+      reason: "Policies se usan en decorators de rutas"
+
+  mf-core:
+    - pattern: "src/app/app.routes.ts"
+      affects: "Todos los micro frontends (10 MFs)"
+      reason: "Las rutas del shell definen cómo se cargan los MFs"
+    - pattern: "federation.config.js"
+      affects: "Todos los micro frontends"
+      reason: "Configuración de Module Federation"
+    - pattern: "src/environments/*.ts"
+      affects: "Todos los MFs que leen environment"
+
+  covacha-core:
+    - pattern: "src/mipay_core/config/routes/*.py"
+      affects: "Frontends que consumen esas rutas"
+      reason: "Cambio de endpoint rompe llamadas del frontend"
+    - pattern: "src/mipay_core/serializers/*.py"
+      affects: "Frontends que parsean esas respuestas"
+      reason: "Cambio de schema rompe parsing"

@@ -1,0 +1,26 @@
+# Mapa de código compartido entre productos
+# Qué se comparte y entre quiénes
+
+covacha-libs:
+  shared_between:
+    - superpago
+    - alerta-tribunal
+    - crm
+    - ia-bots
+  modules:
+    models: "Modelos DynamoDB compartidos (PynamoDB)"
+    repositories: "Repositorios base para acceso a datos"
+    polices: "Policies de autorización"
+    utils: "Utilidades comunes"
+  note: "Biblioteca central. Cambios requieren verificar TODOS los backends."
+
+covacha-core:
+  shared_between:
+    - superpago
+  provides_to:
+    mf-core: "API principal"
+    mf-auth: "Autenticación"
+    mf-dashboard: "Datos de dashboard"
+    mf-settings: "Configuración de usuario"
+    mf-marketing: "Datos de marketing"
+  note: "API principal de SuperPago. 28 blueprints."
