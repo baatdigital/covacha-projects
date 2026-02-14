@@ -1,0 +1,69 @@
+name: Cross-Repo Impact Notification
+
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  check-cross-repo:
+    if: contains(github.event.issue.labels.*.name, 'cross-repo')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse affected repos
+        id: parse
+        run: |
+          ISSUE_BODY="${{ github.event.issue.body }}"
+          echo "## Cross-Repo Impact Detected" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Issue: #${{ github.event.issue.number }} - ${{ github.event.issue.title }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Checking dependency graph..." >> $GITHUB_STEP_SUMMARY
+
+      - name: Run impact analysis
+        run: |
+          echo "========================================"
+          echo "Cross-repo issue detected"
+          echo "Issue: #${{ github.event.issue.number }}"
+          echo "Title: ${{ github.event.issue.title }}"
+          echo "========================================"
+          echo ""
+          echo "Dependency graph available at: dependencies/dependency-graph.yml"
+          echo "Review breaking-changes.yml before implementing"
+
+      - name: Add comment with impact
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            // Read dependency graph
+            let depGraph = '';
+            try {
+              depGraph = fs.readFileSync('dependencies/dependency-graph.yml', 'utf8');
+            } catch (e) {
+              depGraph = 'Could not read dependency graph';
+            }
+            
+            const comment = `## 🔗 Cross-Repo Impact Analysis
+            
+            This issue has been tagged as **cross-repo**. Please review:
+            
+            1. 📊 [Dependency Graph](https://github.com/baatdigital/covacha-projects/blob/main/dependencies/dependency-graph.yml)
+            2. ⚠️ [Breaking Changes](https://github.com/baatdigital/covacha-projects/blob/main/dependencies/breaking-changes.yml)
+            3. 📋 [Testing Rules](https://github.com/baatdigital/covacha-projects/blob/main/rules/testing-rules.yml)
+            
+            ### Checklist
+            - [ ] Repos afectados identificados
+            - [ ] Orden de ejecución definido
+            - [ ] Issues hijos creados en cada repo
+            - [ ] Breaking changes revisados
+            `;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: comment
+            });

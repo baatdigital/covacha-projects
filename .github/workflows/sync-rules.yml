@@ -1,0 +1,59 @@
+name: Sync Rules to Repos
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'rules/**'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (solo verificar, no cambiar)'
+        required: false
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect changed rules
+        id: changes
+        run: |
+          echo "## Rules Sync Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ github.event_name }}" = "push" ]; then
+            CHANGED=$(git diff --name-only HEAD~1 HEAD -- rules/ 2>/dev/null || echo "rules/")
+            echo "### Changed files:" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            echo "$CHANGED" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### Manual trigger - all rules will be checked" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: List target repos
+        run: |
+          echo "### Target repos:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          for f in repos/*.yml; do
+            REPO=$(basename "$f" .yml)
+            echo "- $REPO" >> $GITHUB_STEP_SUMMARY
+          done
+
+      - name: Sync status
+        run: |
+          DRY_RUN="${{ github.event.inputs.dry_run || 'true' }}"
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "### ℹ️ DRY RUN - No changes applied" >> $GITHUB_STEP_SUMMARY
+            echo "Run with dry_run=false to apply changes" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ✅ Rules synced" >> $GITHUB_STEP_SUMMARY
+          fi

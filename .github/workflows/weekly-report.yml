@@ -1,0 +1,64 @@
+name: Weekly Cross-Product Report
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Lunes a las 9am UTC
+  workflow_dispatch:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate report
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "# 📊 Weekly Report - BAAT Digital Ecosystem" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Generated: $(date -u '+%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "## Products" >> $GITHUB_STEP_SUMMARY
+          for product in products/*.yml; do
+            NAME=$(grep "^name:" "$product" | cut -d' ' -f2-)
+            STATUS=$(grep "^status:" "$product" | cut -d' ' -f2-)
+            PRIORITY=$(grep "^priority:" "$product" | cut -d' ' -f2-)
+            echo "- **$NAME** (P$PRIORITY) - $STATUS" >> $GITHUB_STEP_SUMMARY
+          done
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "## Active Cross-Repo Features" >> $GITHUB_STEP_SUMMARY
+          ACTIVE_COUNT=$(ls cross-repo/active/*.yml 2>/dev/null | wc -l || echo 0)
+          if [ "$ACTIVE_COUNT" -gt 0 ]; then
+            for f in cross-repo/active/*.yml; do
+              echo "- $(basename "$f" .yml)" >> $GITHUB_STEP_SUMMARY
+            done
+          else
+            echo "No active cross-repo features" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "## Repos Summary" >> $GITHUB_STEP_SUMMARY
+          REPO_COUNT=$(ls repos/*.yml 2>/dev/null | wc -l || echo 0)
+          echo "Total active repos: $REPO_COUNT" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "## Quick Links" >> $GITHUB_STEP_SUMMARY
+          echo "- [SuperPago Board](https://github.com/orgs/baatdigital/projects/1)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Master Board](https://github.com/orgs/baatdigital/projects/2)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Dependency Graph](https://github.com/baatdigital/covacha-projects/blob/main/dependencies/dependency-graph.yml)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Testing Rules](https://github.com/baatdigital/covacha-projects/blob/main/rules/testing-rules.yml)" >> $GITHUB_STEP_SUMMARY
+
+      - name: Create issue with report
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          WEEK=$(date -u '+%Y-W%V')
+          gh issue create \
+            --repo baatdigital/covacha-projects \
+            --title "📊 Weekly Report - $WEEK" \
+            --body "See workflow run for details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --label "weekly-report" || echo "Could not create issue"
