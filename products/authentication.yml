@@ -1,0 +1,28 @@
+name: Authentication
+status: active
+priority: 1
+description: Autenticacion, autorizacion, gestion de usuarios y control de acceso
+
+repos:
+  backends:
+    - covacha-core
+  frontends:
+    - mf-auth
+  shared:
+    - covacha-libs
+
+features:
+  - Login / Logout
+  - Registro de usuarios
+  - Recuperacion de contrasena
+  - OAuth2 (Cognito)
+  - Gestion de tokens (JWT)
+  - Permisos y roles
+  - Multi-tenancy (tenant por dominio)
+  - Shared state de sesion (covacha:auth, covacha:user)
+
+infrastructure:
+  cloud: AWS
+  auth: Cognito
+  deploy: GitHub Actions
+  note: "Modulo critico - afecta acceso a todos los MFs del ecosistema"

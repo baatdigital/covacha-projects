@@ -1,29 +1,22 @@
 name: SuperPago
 status: active
 priority: 1
-description: Plataforma de pagos y servicios financieros
+description: Plataforma core de pagos, transacciones e infraestructura base
 
 repos:
   backends:
     - covacha-core
     - covacha-payment
-    - covacha-botia
     - covacha-transaction
     - covacha-notification
     - covacha-webhook
     - covacha-inventory
   frontends:
     - mf-core
-    - mf-auth
-    - mf-dashboard
-    - mf-ia
-    - mf-inventory
-    - mf-marketing
     - mf-payment
     - mf-payment-card
     - mf-settings
-    - mf-whatsapp
-    - mf-docs
+    - mf-inventory
   shared:
     - covacha-libs
 

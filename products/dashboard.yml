@@ -1,0 +1,27 @@
+name: Dashboard
+status: active
+priority: 2
+description: Panel de metricas, analiticas, reportes y visualizacion de datos del negocio
+
+repos:
+  backends:
+    - covacha-core
+    - covacha-transaction
+    - covacha-notification
+  frontends:
+    - mf-dashboard
+  shared:
+    - covacha-libs
+
+features:
+  - Dashboard principal de metricas
+  - Reportes de transacciones
+  - Graficas de rendimiento
+  - Notificaciones y alertas
+  - KPIs del negocio
+  - Resumen de actividad
+
+infrastructure:
+  cloud: AWS
+  cdn: S3 + CloudFront
+  deploy: GitHub Actions

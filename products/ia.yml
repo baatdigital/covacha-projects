@@ -1,0 +1,35 @@
+name: IA
+status: active
+priority: 2
+description: Inteligencia artificial, chatbots, agentes conversacionales y automatizacion WhatsApp
+
+repos:
+  backends:
+    - covacha-botia
+  frontends:
+    - mf-ia
+    - mf-whatsapp
+  standalone:
+    - covachaIA
+  shared:
+    - covacha-libs
+
+domains:
+  - api.superpago.com.mx/api/v1/agents
+  - api.superpago.com.mx/api/v1/chat
+  - webhook.superpago.com.mx
+
+features:
+  - Agentes IA conversacionales
+  - Chatbots WhatsApp
+  - Automatizacion de respuestas
+  - Integracion WhatsApp Business API
+  - Gestion de templates WhatsApp
+  - Webhooks de mensajeria
+
+infrastructure:
+  cloud: AWS
+  ai: OpenAI + AWS Bedrock
+  messaging: WhatsApp Business API
+  queue: SQS
+  deploy: GitHub Actions
