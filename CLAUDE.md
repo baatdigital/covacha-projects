@@ -12,23 +12,49 @@ Este repo es el **CEREBRO CENTRAL** del ecosistema BAAT Digital / SuperPago. Aqu
 
 ```
 covacha-projects/
-├── products/              # Definicion de cada producto + epicas
-│   ├── superpago.yml      # Producto principal (pagos, SPEI, transacciones)
-│   ├── marketing.yml      # Agencia digital, social media, landings
-│   ├── dashboard.yml      # Metricas y reportes
-│   ├── ia.yml             # Bots e inteligencia artificial
-│   ├── crm.yml            # CRM independiente
-│   ├── authentication.yml # Autenticacion multi-tenant
-│   ├── website.yml        # Sitios web publicos
-│   ├── alerta-tribunal.yml # Alertas legales
-│   ├── legacy-mipay.yml   # Legacy en migracion
-│   ├── SPEI-PRODUCT-PLAN.md           # EP-SP-001 a EP-SP-010 (52 US)
-│   ├── SPEI-FRONTEND-EPICS-MULTI-TIER.md # EP-SP-011 a EP-SP-013
-│   ├── SPEI-EXPANSION-EPICS.md        # EP-SP-014 a EP-SP-020 (33 US)
-│   ├── BILLPAY-ONBOARDING-EPICS.md    # EP-SP-021 a EP-SP-028
-│   ├── BILLPAY-PRODUCT-PLAN.md        # Plan detallado BillPay
-│   ├── NOTIFICATIONS-EPICS.md         # EP-SP-029 a EP-SP-030
-│   └── MARKETING-EPICS.md             # EP-MK-006 a EP-MK-013 (38 US)
+├── products/                          # Definicion de cada producto + epicas
+│   ├── superpago/                     # Producto principal (pagos, SPEI, transacciones)
+│   │   ├── superpago.yml              # Metadata del producto
+│   │   ├── SPEI-PRODUCT-PLAN.md       # EP-SP-001 a EP-SP-010 (52 US)
+│   │   ├── SPEI-FRONTEND-EPICS-MULTI-TIER.md # EP-SP-011 a EP-SP-013
+│   │   ├── SPEI-EXPANSION-EPICS.md    # EP-SP-014 a EP-SP-020 (33 US)
+│   │   ├── BILLPAY-ONBOARDING-EPICS.md # EP-SP-021 a EP-SP-028 (32 US)
+│   │   ├── BILLPAY-PRODUCT-PLAN.md    # Plan detallado BillPay
+│   │   ├── NOTIFICATIONS-EPICS.md     # EP-SP-029 a EP-SP-030 (14 US)
+│   │   └── SUPERPAGO-AI-AGENTS-EPICS.md # EP-SP-031 a EP-SP-040 (55 US)
+│   │
+│   ├── marketing/                     # Agencia digital, social media, landings
+│   │   ├── marketing.yml              # Metadata del producto
+│   │   ├── MARKETING-EPICS.md         # EP-MK-006 a EP-MK-013 (38 US)
+│   │   └── MARKETING-AI-AGENTS-EPICS.md # EP-MK-014 a EP-MK-023 (55 US)
+│   │
+│   ├── authentication/                # Autenticacion multi-tenant (P1 critico)
+│   │   ├── authentication.yml         # Metadata del producto
+│   │   └── AUTHENTICATION-EPICS.md    # EP-AU-001 a EP-AU-008 (45 US)
+│   │
+│   ├── dashboard/                     # Metricas y reportes
+│   │   ├── dashboard.yml              # Metadata del producto
+│   │   └── DASHBOARD-EPICS.md         # EP-DB-001 a EP-DB-008 (45 US)
+│   │
+│   ├── ia/                            # Plataforma IA, bots, agentes
+│   │   ├── ia.yml                     # Metadata del producto
+│   │   └── IA-BOTS-EPICS.md           # EP-IA-001 a EP-IA-010 (55 US)
+│   │
+│   ├── alerta-tribunal/               # Alertas judiciales automatizadas
+│   │   ├── alerta-tribunal.yml        # Metadata del producto
+│   │   └── ALERTA-TRIBUNAL-EPICS.md   # EP-AT-001 a EP-AT-008 (46 US)
+│   │
+│   ├── crm/                           # CRM independiente
+│   │   ├── crm.yml                    # Metadata del producto
+│   │   └── CRM-EPICS.md              # EP-CR-001 a EP-CR-008 (48 US)
+│   │
+│   ├── website/                       # Landing pages y portales publicos
+│   │   ├── website.yml                # Metadata del producto
+│   │   └── WEBSITE-EPICS.md           # EP-WB-001 a EP-WB-006 (36 US)
+│   │
+│   └── legacy-mipay/                  # Legacy en migracion
+│       ├── legacy-mipay.yml           # Metadata del producto
+│       └── LEGACY-MIPAY-MIGRATION-PLAN.md # EP-LM-001 a EP-LM-008 (42 US)
 │
 ├── repos/                 # Metadata de cada repositorio
 │   ├── covacha-core.yml   # Backend principal
@@ -133,7 +159,7 @@ covacha-projects/
 
 ### Antes de crear una historia de usuario
 
-1. Lee `products/<producto>.yml` para saber que repos involucra
+1. Lee `products/<producto>/<producto>.yml` para saber que repos involucra
 2. Lee `dependencies/dependency-graph.yml` para entender el impacto
 3. Si el feature toca >1 repo, crea un issue CROSS aqui primero
 4. Luego crea issues individuales en cada repo, referenciando el CROSS
@@ -168,26 +194,99 @@ covacha-projects/
 
 ## Mapa de Epicas por Producto
 
-### SuperPago (EP-SP-001 a EP-SP-030)
+### SuperPago (EP-SP-001 a EP-SP-040)
 
 | Archivo | Epicas | User Stories | Estado |
 |---------|--------|-------------|--------|
-| SPEI-PRODUCT-PLAN.md | EP-SP-001 a EP-SP-010 | US-SP-001 a US-SP-051 | Planificacion |
-| SPEI-FRONTEND-EPICS-MULTI-TIER.md | EP-SP-011 a EP-SP-013 | (incluidas arriba) | Planificacion |
-| SPEI-EXPANSION-EPICS.md | EP-SP-014 a EP-SP-020 | US-SP-052 a US-SP-084 | Planificacion |
-| BILLPAY-ONBOARDING-EPICS.md | EP-SP-021 a EP-SP-028 | US-SP-085 a US-SP-116 | Planificacion |
-| NOTIFICATIONS-EPICS.md | EP-SP-029 a EP-SP-030 | US-SP-117+ | Planificacion |
+| superpago/SPEI-PRODUCT-PLAN.md | EP-SP-001 a EP-SP-010 | US-SP-001 a US-SP-051 | Planificacion |
+| superpago/SPEI-FRONTEND-EPICS-MULTI-TIER.md | EP-SP-011 a EP-SP-013 | (incluidas arriba) | Planificacion |
+| superpago/SPEI-EXPANSION-EPICS.md | EP-SP-014 a EP-SP-020 | US-SP-052 a US-SP-084 | Planificacion |
+| superpago/BILLPAY-ONBOARDING-EPICS.md | EP-SP-021 a EP-SP-028 | US-SP-085 a US-SP-116 | Planificacion |
+| superpago/NOTIFICATIONS-EPICS.md | EP-SP-029 a EP-SP-030 | US-SP-117 a US-SP-130 | Planificacion |
+| superpago/SUPERPAGO-AI-AGENTS-EPICS.md | EP-SP-031 a EP-SP-040 | US-SP-131 a US-SP-185 | Planificacion |
 
-**Total SuperPago**: 30 epicas, ~130 user stories
+**Total SuperPago**: 40 epicas, ~185 user stories
 
-### Marketing (EP-MK-001 a EP-MK-013)
+### Marketing (EP-MK-001 a EP-MK-023)
 
 | Archivo | Epicas | User Stories | Estado |
 |---------|--------|-------------|--------|
 | (GitHub Issues #1-5, #8) | EP-MK-001 a EP-MK-005 | - | Completado |
-| MARKETING-EPICS.md | EP-MK-006 a EP-MK-013 | US-MK-001 a US-MK-038 | Planificacion |
+| marketing/MARKETING-EPICS.md | EP-MK-006 a EP-MK-013 | US-MK-001 a US-MK-038 | Planificacion |
+| marketing/MARKETING-AI-AGENTS-EPICS.md | EP-MK-014 a EP-MK-023 | US-MK-039 a US-MK-093 | Planificacion |
 
-**Total Marketing**: 13 epicas (5 completadas, 8 pendientes), 38 user stories pendientes
+**Total Marketing**: 23 epicas (5 completadas, 18 pendientes), 93 user stories
+
+### Authentication (EP-AU-001 a EP-AU-008)
+
+| Archivo | Epicas | User Stories | Estado |
+|---------|--------|-------------|--------|
+| authentication/AUTHENTICATION-EPICS.md | EP-AU-001 a EP-AU-008 | US-AU-001 a US-AU-045 | Planificacion |
+
+**Total Authentication**: 8 epicas, 45 user stories
+
+### Dashboard (EP-DB-001 a EP-DB-008)
+
+| Archivo | Epicas | User Stories | Estado |
+|---------|--------|-------------|--------|
+| dashboard/DASHBOARD-EPICS.md | EP-DB-001 a EP-DB-008 | US-DB-001 a US-DB-045 | Planificacion |
+
+**Total Dashboard**: 8 epicas, 45 user stories
+
+### IA/Bots (EP-IA-001 a EP-IA-010)
+
+| Archivo | Epicas | User Stories | Estado |
+|---------|--------|-------------|--------|
+| ia/IA-BOTS-EPICS.md | EP-IA-001 a EP-IA-010 | US-IA-001 a US-IA-055 | Planificacion |
+
+**Total IA/Bots**: 10 epicas, 55 user stories
+
+### AlertaTribunal (EP-AT-001 a EP-AT-008)
+
+| Archivo | Epicas | User Stories | Estado |
+|---------|--------|-------------|--------|
+| alerta-tribunal/ALERTA-TRIBUNAL-EPICS.md | EP-AT-001 a EP-AT-008 | US-AT-001 a US-AT-046 | Planificacion |
+
+**Total AlertaTribunal**: 8 epicas, 46 user stories
+
+### CRM (EP-CR-001 a EP-CR-008)
+
+| Archivo | Epicas | User Stories | Estado |
+|---------|--------|-------------|--------|
+| crm/CRM-EPICS.md | EP-CR-001 a EP-CR-008 | US-CR-001 a US-CR-048 | Planificacion |
+
+**Total CRM**: 8 epicas, 48 user stories
+
+### Website (EP-WB-001 a EP-WB-006)
+
+| Archivo | Epicas | User Stories | Estado |
+|---------|--------|-------------|--------|
+| website/WEBSITE-EPICS.md | EP-WB-001 a EP-WB-006 | US-WB-001 a US-WB-036 | Planificacion |
+
+**Total Website**: 6 epicas, 36 user stories
+
+### Legacy MiPay (EP-LM-001 a EP-LM-008)
+
+| Archivo | Epicas | User Stories | Estado |
+|---------|--------|-------------|--------|
+| legacy-mipay/LEGACY-MIPAY-MIGRATION-PLAN.md | EP-LM-001 a EP-LM-008 | US-LM-001 a US-LM-042 | Migracion |
+
+**Total Legacy MiPay**: 8 epicas, 42 user stories
+
+### Totales del Ecosistema
+
+| Producto | Epicas | User Stories | Prioridad |
+|----------|--------|-------------|-----------|
+| SuperPago | 40 | ~185 | P1 |
+| Authentication | 8 | 45 | P1 |
+| Marketing | 23 | 93 | P2 |
+| Dashboard | 8 | 45 | P2 |
+| IA/Bots | 10 | 55 | P2 |
+| AlertaTribunal | 8 | 46 | P2 |
+| CRM | 8 | 48 | P3 |
+| Website | 6 | 36 | P3 |
+| Legacy MiPay | 8 | 42 | P5 |
+| **TOTAL** | **119** | **~595** | - |
 
 ---
 
@@ -197,10 +296,24 @@ covacha-projects/
 
 | Tipo | Formato | Ejemplo |
 |------|---------|---------|
-| Epica SuperPago | EP-SP-XXX | EP-SP-014 |
-| Epica Marketing | EP-MK-XXX | EP-MK-006 |
-| User Story SuperPago | US-SP-XXX | US-SP-052 |
-| User Story Marketing | US-MK-XXX | US-MK-001 |
+| Epica SuperPago | EP-SP-XXX | EP-SP-031 |
+| Epica Marketing | EP-MK-XXX | EP-MK-014 |
+| Epica Authentication | EP-AU-XXX | EP-AU-001 |
+| Epica Dashboard | EP-DB-XXX | EP-DB-001 |
+| Epica IA/Bots | EP-IA-XXX | EP-IA-001 |
+| Epica AlertaTribunal | EP-AT-XXX | EP-AT-001 |
+| Epica CRM | EP-CR-XXX | EP-CR-001 |
+| Epica Website | EP-WB-XXX | EP-WB-001 |
+| Epica Legacy MiPay | EP-LM-XXX | EP-LM-001 |
+| User Story SuperPago | US-SP-XXX | US-SP-131 |
+| User Story Marketing | US-MK-XXX | US-MK-039 |
+| User Story Authentication | US-AU-XXX | US-AU-001 |
+| User Story Dashboard | US-DB-XXX | US-DB-001 |
+| User Story IA/Bots | US-IA-XXX | US-IA-001 |
+| User Story AlertaTribunal | US-AT-XXX | US-AT-001 |
+| User Story CRM | US-CR-XXX | US-CR-001 |
+| User Story Website | US-WB-XXX | US-WB-001 |
+| User Story Legacy MiPay | US-LM-XXX | US-LM-001 |
 | Feature cross-repo | CROSS-XXX | CROSS-001 |
 | Issue individual | ISS-XXX | ISS-042 |
 
