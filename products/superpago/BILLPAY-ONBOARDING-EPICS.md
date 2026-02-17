@@ -140,7 +140,7 @@ Boxito (Organization)
 
 | ID | Epica | Complejidad | Sprint Sugerido | Dependencias |
 |----|-------|-------------|-----------------|--------------|
-| EP-SP-021 | Monato BillPay Driver | L | 8-9 | EP-SP-002, EP-SP-018 (US-SP-071) |
+| EP-SP-021 | Monato BillPay Driver ✅ | L | 8-9 | EP-SP-002, EP-SP-018 (US-SP-071) |
 | EP-SP-022 | Operacion BILLPAY (Transaccional) | L | 9-10 | EP-SP-021, EP-SP-003, EP-SP-001 |
 | EP-SP-023 | Conciliacion Automatica BillPay | L | 10-11 | EP-SP-022 |
 | EP-SP-024 | Onboarding de Cliente Empresa | XL | 8-10 | EP-SP-001, EP-SP-002 |
@@ -161,6 +161,8 @@ Boxito (Organization)
 ---
 
 ### EP-SP-021: Monato BillPay Driver
+
+> **Estado: COMPLETADO (backend)** — PayBillService + BillerController.pay() + ruta `POST /billers/{id}/pay`. 18 tests. Branch: feature/ISS-017-bill-pay-pago-servicios.
 
 **Descripcion:**
 Implementacion concreta del driver de BillPay usando Monato como agregador de pago de servicios. Sigue el Strategy Pattern establecido en EP-SP-002 (SPEIProvider/MonatoDriver). El driver `MonatoBillPayDriver` implementa la interface `BillPayProvider` definida en US-SP-071 (EP-SP-018) y agrega el flujo completo: Query deuda -> Pay -> Confirm. Soporta servicios: CFE (luz), Telmex, agua, gas, TV por cable, internet, recargas telefonicas, SAT, IMSS.
