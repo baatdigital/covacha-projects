@@ -1,22 +1,95 @@
 """
 Cliente GitHub para operaciones con el Project Board de baatdigital.
-Usa gh CLI via subprocess (autenticado en el sistema).
+GraphQL via requests (evita problema de '!' en gh api graphql).
+Comandos simples (issue close, pr list) via gh CLI.
 """
 
 import json
 import subprocess
 from typing import Any
 
+import requests
+
 from config import GITHUB_ORG, GITHUB_PROJECT_ID, GITHUB_STATUS_FIELD_ID
 
-_ITEMS_QUERY = (
-    "query($project:ID!,$cursor:String){node(id:$project){...on ProjectV2{"
-    "items(first:100,after:$cursor){pageInfo{hasNextPage endCursor}"
-    "nodes{id fieldValues(first:20){nodes{...on ProjectV2ItemFieldSingleSelectValue{"
-    "name field{...on ProjectV2FieldCommon{id}}}}}"
-    "content{...on Issue{number title state "
-    "labels(first:10){nodes{name}}assignees(first:5){nodes{login}}}}}}}}"
-)
+_GRAPHQL_URL = "https://api.github.com/graphql"
+
+_ITEMS_QUERY = """
+query($project: ID!, $cursor: String) {
+  node(id: $project) {
+    ... on ProjectV2 {
+      items(first: 100, after: $cursor) {
+        pageInfo { hasNextPage endCursor }
+        nodes {
+          id
+          fieldValues(first: 20) {
+            nodes {
+              ... on ProjectV2ItemFieldSingleSelectValue {
+                name
+                field { ... on ProjectV2FieldCommon { id } }
+              }
+            }
+          }
+          content {
+            ... on Issue {
+              number title state
+              labels(first: 10) { nodes { name } }
+              assignees(first: 5) { nodes { login } }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+"""
+
+_MOVE_STATUS_MUTATION = """
+mutation($project: ID!, $item: ID!, $field: ID!, $value: String!) {
+  updateProjectV2ItemFieldValue(input: {
+    projectId: $project
+    itemId: $item
+    fieldId: $field
+    value: { singleSelectOptionId: $value }
+  }) {
+    projectV2Item { id }
+  }
+}
+"""
+
+
+def _gh_token() -> str:
+    """Obtiene el token de GitHub del gh CLI autenticado."""
+    result = subprocess.run(
+        ["gh", "auth", "token"],
+        check=True, capture_output=True, text=True,
+    )
+    return result.stdout.strip()
+
+
+def _graphql(query: str, variables: dict) -> dict:
+    """
+    Ejecuta una query/mutation GraphQL contra la API de GitHub.
+
+    Args:
+        query: Query o mutation GraphQL
+        variables: Variables de la query
+
+    Returns:
+        Sección 'data' de la respuesta JSON
+    """
+    token = _gh_token()
+    resp = requests.post(
+        _GRAPHQL_URL,
+        headers={"Authorization": f"Bearer {token}"},
+        json={"query": query, "variables": variables},
+        timeout=30,
+    )
+    resp.raise_for_status()
+    body = resp.json()
+    if "errors" in body:
+        raise RuntimeError(f"Error GraphQL: {body['errors']}")
+    return body.get("data", {})
 
 _MOVE_STATUS_MUTATION = (
     "mutation($project:ID!,$item:ID!,$field:ID!,$value:String!){"
@@ -26,7 +99,10 @@ _MOVE_STATUS_MUTATION = (
 
 
 def run_gh_command(args: list[str]) -> dict | str:
-    """Ejecuta gh CLI y retorna JSON parseado o str. Propaga CalledProcessError."""
+    """
+    Ejecuta gh CLI para comandos simples (issue, pr, etc.).
+    Para GraphQL usar _graphql() directamente.
+    """
     result = subprocess.run(["gh"] + args, check=True, capture_output=True, text=True)
     output = result.stdout.strip()
     if not output:
@@ -71,15 +147,9 @@ def get_project_items(status_filter: str | None = None) -> list[dict]:
     items: list[dict] = []
     cursor: str | None = None
     while True:
-        gql_args: list[str] = [
-            "api", "graphql",
-            "-f", f"query={_ITEMS_QUERY}",
-            "-f", f"project={GITHUB_PROJECT_ID}",
-        ]
-        if cursor:
-            gql_args += ["-f", f"cursor={cursor}"]
-        response: Any = run_gh_command(gql_args)
-        node_data = response.get("data", {}).get("node", {}).get("items", {})
+        variables: dict = {"project": GITHUB_PROJECT_ID, "cursor": cursor}
+        data = _graphql(_ITEMS_QUERY, variables)
+        node_data = data.get("node", {}).get("items", {})
         page_info = node_data.get("pageInfo", {})
         for node in node_data.get("nodes", []):
             if not node.get("content"):
@@ -101,14 +171,12 @@ def move_issue_to_status(item_node_id: str, status_option_id: str) -> None:
         item_node_id: Node ID del item en el Project (no el número de issue)
         status_option_id: ID de la opción de status (STATUS_TODO/IN_PROGRESS/DONE)
     """
-    run_gh_command([
-        "api", "graphql",
-        "-f", f"query={_MOVE_STATUS_MUTATION}",
-        "-f", f"project={GITHUB_PROJECT_ID}",
-        "-f", f"item={item_node_id}",
-        "-f", f"field={GITHUB_STATUS_FIELD_ID}",
-        "-f", f"value={status_option_id}",
-    ])
+    _graphql(_MOVE_STATUS_MUTATION, {
+        "project": GITHUB_PROJECT_ID,
+        "item": item_node_id,
+        "field": GITHUB_STATUS_FIELD_ID,
+        "value": status_option_id,
+    })
 
 
 def close_issue(issue_number: int, repo: str) -> None:
