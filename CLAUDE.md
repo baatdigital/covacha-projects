@@ -4,7 +4,7 @@
 
 Este repo es el **CEREBRO CENTRAL** del ecosistema BAAT Digital / SuperPago. Aqui se definen y coordinan TODOS los productos, repos, dependencias, epicas y reglas del ecosistema.
 
-**NO contiene codigo ejecutable.** Solo YAML de configuracion, Markdown de planificacion, y scripts de orquestacion.
+**Contiene:** YAML de configuracion, Markdown de planificacion, scripts de orquestacion, y el sistema de memoria compartida de Agent Teams.
 
 ---
 
@@ -12,6 +12,26 @@ Este repo es el **CEREBRO CENTRAL** del ecosistema BAAT Digital / SuperPago. Aqu
 
 ```
 covacha-projects/
+├── infra/
+│   └── create_agent_memory_table.py   # Crea tabla DynamoDB covacha-agent-memory
+├── scripts/
+│   ├── agent_memory/                  # Sistema de memoria compartida (NUEVO)
+│   │   ├── config.py                  # Constantes AWS + GitHub + model mapping
+│   │   ├── model_selector.py          # labels → modelo Claude (haiku/sonnet/opus)
+│   │   ├── dynamo_client.py           # CRUD DynamoDB + locking atomico
+│   │   ├── github_client.py           # GraphQL + gh CLI
+│   │   ├── sync_github.py             # GitHub Project Board → DynamoDB
+│   │   ├── bootstrap.py               # DynamoDB → CONTEXT.md (inicio de sesion)
+│   │   ├── claim_task.py              # CLI: reclamar tarea + lock
+│   │   ├── release_task.py            # CLI: liberar tarea + learnings
+│   │   ├── team_status.py             # CLI: dashboard de equipos
+│   │   └── tests/                     # pytest, 28 tests
+│   ├── create-cross-story.sh          # Crea issues CROSS en multiples repos
+│   ├── impact-analysis.sh             # Analiza impacto cross-repo
+│   ├── priority-matrix.sh             # Matriz de prioridades
+│   └── sync-rules.sh                  # Sincroniza rules/ a todos los repos
+├── memory/
+│   └── MEMORY.md                      # Patrones globales (cargado por Claude Code)
 ├── products/                          # Definicion de cada producto + epicas
 │   ├── superpago/                     # Producto principal (pagos, SPEI, transacciones)
 │   │   ├── superpago.yml              # Metadata del producto
@@ -419,6 +439,63 @@ feature/* -> push -> CI (tests + coverage)
 - **Mac-1**: frontend-heavy
 - **Mac-2**: backend-heavy
 - Labels en issues: `mac-1`, `mac-2` para evitar colisiones
+
+---
+
+## Sistema de Memoria Compartida (Agent Teams)
+
+### Flujo obligatorio al iniciar una sesion
+
+```bash
+cd /Users/casp/sandboxes/superpago/covacha-projects
+
+# 1. Bootstrap: genera CONTEXT.md con contexto fresco de DynamoDB + GitHub
+python scripts/agent_memory/bootstrap.py --team backend --machine mac-1 --module covacha-payment
+
+# 2. Reclamar tarea (lock atomico + mueve board a In Progress)
+python scripts/agent_memory/claim_task.py --task 043 --team backend --machine mac-1
+
+# 3. Implementar (leer CONTEXT.md + MEMORY.md generados)
+
+# 4. Liberar tarea + guardar learnings
+python scripts/agent_memory/release_task.py \
+  --task 043 --team backend --machine mac-1 \
+  --status done --learning "usar decimal.Decimal para montos, no float"
+
+# 5. Ver estado del equipo en cualquier momento
+python scripts/agent_memory/team_status.py --label backend
+```
+
+### Seleccion de modelo por tipo de tarea
+
+| Labels del issue | Modelo recomendado | Uso |
+| --- | --- | --- |
+| research, docs, sync, chore | **haiku** | ~40% de tareas |
+| feature, bugfix, backend, frontend | **sonnet** | ~55% de tareas |
+| architecture, epic, cross-repo | **opus** | ~5% de tareas |
+
+El modelo recomendado aparece en el CONTEXT.md generado por bootstrap.py.
+
+### Como usar en Agent Teams (Task tool)
+
+```python
+# El Lead lee CONTEXT.md para saber el modelo de cada teammate
+Task(
+    subagent_type="backend-architect",
+    model="sonnet",   # leer de recommended_model en CONTEXT.md
+    prompt="Implementa ISS-043. Lee CONTEXT.md en covacha-payment/ primero."
+)
+
+# Operaciones del sistema siempre usan haiku (barato)
+Task(subagent_type="Explore", model="haiku", prompt="Busca archivos X")
+```
+
+### Setup y operaciones
+
+- **Tabla DynamoDB:** `covacha-agent-memory` (us-east-1, PAY_PER_REQUEST)
+- **Cron sync:** `.github/workflows/agent_memory_sync.yml` (cada 15min)
+- **Setup inicial:** `python infra/create_agent_memory_table.py`
+- **Tests:** `cd scripts/agent_memory && pytest tests/ -v` (28 tests)
 
 ---
 
