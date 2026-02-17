@@ -3,7 +3,7 @@
 **Fecha**: 2026-02-14
 **Product Owner**: SuperPago
 **Proveedor SPEI**: Monato Fincore
-**Estado**: Planificacion
+**Estado**: En Desarrollo (Backend EP-SP-001 a EP-SP-010 completados)
 
 ---
 
@@ -120,18 +120,18 @@ CONCENTRADORA (Organization-level)
 
 ## Mapa de Epicas
 
-| ID | Epica | Complejidad | Sprint | Dependencias |
-|----|-------|-------------|--------|--------------|
-| EP-SP-001 | Account Core Engine | XL | 1-2 | Ninguna |
-| EP-SP-002 | Monato Driver (Strategy Pattern) | L | 1-2 | Ninguna (paralela a EP-001) |
-| EP-SP-003 | Double-Entry Ledger | L | 2-3 | EP-SP-001 |
-| EP-SP-004 | SPEI Out (Transferencias Salientes) | L | 3 | EP-SP-001, EP-SP-002, EP-SP-003 |
-| EP-SP-005 | Webhook Handler SPEI In | L | 3 | EP-SP-001, EP-SP-002, EP-SP-003 |
-| EP-SP-006 | Movimientos Internos (Grafo) | M | 3-4 | EP-SP-001, EP-SP-003 |
-| EP-SP-007 | mf-sp - Scaffold y Dashboard | L | 2-3 | EP-SP-001 (API lista) |
-| EP-SP-008 | mf-sp - Transferencias y Movimientos | L | 4 | EP-SP-004, EP-SP-007 |
-| EP-SP-009 | Reconciliacion y Auditoria | M | 4-5 | EP-SP-003, EP-SP-004, EP-SP-005 |
-| EP-SP-010 | Limites, Politicas y Notificaciones | M | 5-6 | EP-SP-004, EP-SP-005 |
+| ID | Epica | Complejidad | Sprint | Dependencias | Estado |
+|----|-------|-------------|--------|--------------|--------|
+| EP-SP-001 | Account Core Engine | XL | 1-2 | Ninguna | COMPLETADO (backend) |
+| EP-SP-002 | Monato Driver (Strategy Pattern) | L | 1-2 | Ninguna (paralela a EP-001) | COMPLETADO (backend) |
+| EP-SP-003 | Double-Entry Ledger | L | 2-3 | EP-SP-001 | COMPLETADO (backend) |
+| EP-SP-004 | SPEI Out (Transferencias Salientes) | L | 3 | EP-SP-001, EP-SP-002, EP-SP-003 | COMPLETADO (backend) |
+| EP-SP-005 | Webhook Handler SPEI In | L | 3 | EP-SP-001, EP-SP-002, EP-SP-003 | COMPLETADO (backend) |
+| EP-SP-006 | Movimientos Internos (Grafo) | M | 3-4 | EP-SP-001, EP-SP-003 | COMPLETADO (backend) |
+| EP-SP-007 | mf-sp - Scaffold y Dashboard | L | 2-3 | EP-SP-001 (API lista) | PENDIENTE (frontend) |
+| EP-SP-008 | mf-sp - Transferencias y Movimientos | L | 4 | EP-SP-004, EP-SP-007 | PENDIENTE (frontend) |
+| EP-SP-009 | Reconciliacion y Auditoria | M | 4-5 | EP-SP-003, EP-SP-004, EP-SP-005 | COMPLETADO (backend) |
+| EP-SP-010 | Limites, Politicas y Notificaciones | M | 5-6 | EP-SP-004, EP-SP-005 | COMPLETADO (backend) |
 
 ---
 
@@ -141,6 +141,8 @@ CONCENTRADORA (Organization-level)
 
 ### EP-SP-001: Account Core Engine
 
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-payment` branch `develop` (2026-02-17)
+
 **Descripcion:**
 Motor de cuentas financieras en `covacha-payment`. Modela la jerarquia de cuentas (CONCENTRADORA, CLABE, DISPERSION, RESERVADA) como un grafo dirigido con relaciones padre-hijo. Cada cuenta tiene tipo, estado, saldo calculado, y metadata. Este es el corazon del sistema SPEI.
 
@@ -148,13 +150,13 @@ Motor de cuentas financieras en `covacha-payment`. Modela la jerarquia de cuenta
 - US-SP-001, US-SP-002, US-SP-003, US-SP-004, US-SP-005
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Se pueden crear los 4 tipos de cuenta con validaciones de jerarquia
-- [ ] El grafo de relaciones padre-hijo se persiste en DynamoDB
-- [ ] Cada cuenta tiene un estado (PENDING, ACTIVE, FROZEN, CLOSED)
-- [ ] Las transiciones de estado siguen reglas de negocio validadas
-- [ ] El saldo se calcula desde el ledger (no se almacena como campo directo)
-- [ ] API REST CRUD completa con paginacion y filtros
-- [ ] Cobertura de tests >= 98%
+- [x] Se pueden crear los 4 tipos de cuenta con validaciones de jerarquia
+- [x] El grafo de relaciones padre-hijo se persiste en DynamoDB
+- [x] Cada cuenta tiene un estado (PENDING, ACTIVE, FROZEN, CLOSED)
+- [x] Las transiciones de estado siguen reglas de negocio validadas
+- [x] El saldo se calcula desde el ledger (no se almacena como campo directo)
+- [x] API REST CRUD completa con paginacion y filtros
+- [x] Cobertura de tests >= 98%
 - [ ] Documentacion OpenAPI de todos los endpoints
 
 **Dependencias:** Ninguna (puede empezar de inmediato)
@@ -167,6 +169,8 @@ Motor de cuentas financieras en `covacha-payment`. Modela la jerarquia de cuenta
 
 ### EP-SP-002: Monato Driver (Strategy Pattern)
 
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-payment` branch `develop` (2026-02-17)
+
 **Descripcion:**
 Capa de abstraccion multi-proveedor para operaciones SPEI. Usa Strategy Pattern para que el sistema sea agnostico al proveedor. Hoy implementa Monato Fincore, manana puede agregar STP, Arcus, Mastercard sin cambiar la logica de negocio. Se construye como workspace separado o modulo independiente dentro de `covacha-payment`.
 
@@ -174,18 +178,18 @@ Capa de abstraccion multi-proveedor para operaciones SPEI. Usa Strategy Pattern 
 - US-SP-006, US-SP-007, US-SP-008, US-SP-009
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Interface `SPEIProvider` definida con todos los metodos necesarios
-- [ ] `MonatoDriver` implementa `SPEIProvider` completamente
-- [ ] Crear cuenta privada en Monato y obtener CLABE
-- [ ] Crear instrumento de pago en Monato
-- [ ] Ejecutar money_out via Monato
-- [ ] Registrar webhook en Monato
-- [ ] Consultar catalogo de participantes SPEI
-- [ ] Penny validation funcional
-- [ ] Manejo de errores con retry y circuit breaker
-- [ ] Idempotency key en todas las operaciones mutativas
-- [ ] Logs estructurados para debugging de integracion
-- [ ] Tests con mocks del API de Monato >= 98% coverage
+- [x] Interface `SPEIProvider` definida con todos los metodos necesarios
+- [x] `MonatoDriver` implementa `SPEIProvider` completamente
+- [x] Crear cuenta privada en Monato y obtener CLABE
+- [x] Crear instrumento de pago en Monato
+- [x] Ejecutar money_out via Monato
+- [x] Registrar webhook en Monato
+- [x] Consultar catalogo de participantes SPEI
+- [x] Penny validation funcional
+- [x] Manejo de errores con retry y circuit breaker
+- [x] Idempotency key en todas las operaciones mutativas
+- [x] Logs estructurados para debugging de integracion
+- [x] Tests con mocks del API de Monato >= 98% coverage
 
 **Dependencias:** Ninguna (puede empezar en paralelo con EP-SP-001)
 
@@ -197,6 +201,8 @@ Capa de abstraccion multi-proveedor para operaciones SPEI. Usa Strategy Pattern 
 
 ### EP-SP-003: Double-Entry Ledger
 
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-payment` branch `develop` (2026-02-17)
+
 **Descripcion:**
 Sistema contable de partida doble. Cada movimiento financiero (SPEI in, SPEI out, movimiento interno, comision) genera exactamente 2 asientos: un debito y un credito. El saldo de cualquier cuenta se calcula sumando sus asientos. Esto garantiza consistencia financiera y audit trail completo.
 
@@ -204,15 +210,15 @@ Sistema contable de partida doble. Cada movimiento financiero (SPEI in, SPEI out
 - US-SP-010, US-SP-011, US-SP-012, US-SP-013
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Modelo `LedgerEntry` con debito/credito, cuenta, monto, referencia
-- [ ] Toda transaccion genera exactamente 2 entries (SUM debitos = SUM creditos)
-- [ ] Saldo de cuenta = SUM(creditos) - SUM(debitos) del ledger
-- [ ] No se puede editar ni eliminar un entry (append-only)
-- [ ] Soporte para reversos (genera entries inversos, no borra)
-- [ ] Query de estado de cuenta por rango de fechas
-- [ ] Balance trial: verificacion de que el sistema esta balanceado
+- [x] Modelo `LedgerEntry` con debito/credito, cuenta, monto, referencia
+- [x] Toda transaccion genera exactamente 2 entries (SUM debitos = SUM creditos)
+- [x] Saldo de cuenta = SUM(creditos) - SUM(debitos) del ledger
+- [x] No se puede editar ni eliminar un entry (append-only)
+- [x] Soporte para reversos (genera entries inversos, no borra)
+- [x] Query de estado de cuenta por rango de fechas
+- [x] Balance trial: verificacion de que el sistema esta balanceado
 - [ ] Performance: calculo de saldo en < 200ms para cuentas con 10k+ entries
-- [ ] Tests >= 98% con escenarios de concurrencia
+- [x] Tests >= 98% con escenarios de concurrencia
 
 **Dependencias:** EP-SP-001 (necesita el modelo de cuentas)
 
@@ -224,6 +230,8 @@ Sistema contable de partida doble. Cada movimiento financiero (SPEI in, SPEI out
 
 ### EP-SP-004: SPEI Out (Transferencias Salientes)
 
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-payment` branch `develop` (2026-02-17)
+
 **Descripcion:**
 Flujo completo de transferencias SPEI out. Un usuario o sistema inicia una transferencia desde una cuenta CLABE o DISPERSION hacia una cuenta externa en cualquier banco de Mexico. El flujo incluye: validacion de saldo, creacion de asientos contables, envio via Monato, tracking de estado, y notificacion del resultado.
 
@@ -231,17 +239,17 @@ Flujo completo de transferencias SPEI out. Un usuario o sistema inicia una trans
 - US-SP-014, US-SP-015, US-SP-016, US-SP-017
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Transferencia SPEI out desde cuenta CLABE a cuenta externa
-- [ ] Transferencia SPEI out desde cuenta DISPERSION a cuenta externa
-- [ ] Cuenta RESERVADA solo permite SPEI out al destino fijo configurado
-- [ ] Cuenta CONCENTRADORA no permite SPEI out (bloqueado)
-- [ ] Validacion de saldo suficiente antes de enviar
-- [ ] Idempotency key para evitar transferencias duplicadas
-- [ ] Estados de transferencia: PENDING -> PROCESSING -> COMPLETED/FAILED/REVERSED
-- [ ] Asientos contables se crean al iniciar (hold) y se confirman/reversan al completar
-- [ ] Penny validation antes de primera transferencia a cuenta nueva
-- [ ] Registro de beneficiarios frecuentes
-- [ ] Comision SPEI se registra como asiento separado
+- [x] Transferencia SPEI out desde cuenta CLABE a cuenta externa
+- [x] Transferencia SPEI out desde cuenta DISPERSION a cuenta externa
+- [x] Cuenta RESERVADA solo permite SPEI out al destino fijo configurado
+- [x] Cuenta CONCENTRADORA no permite SPEI out (bloqueado)
+- [x] Validacion de saldo suficiente antes de enviar
+- [x] Idempotency key para evitar transferencias duplicadas
+- [x] Estados de transferencia: PENDING -> PROCESSING -> COMPLETED/FAILED/REVERSED
+- [x] Asientos contables se crean al iniciar (hold) y se confirman/reversan al completar
+- [x] Penny validation antes de primera transferencia a cuenta nueva
+- [x] Registro de beneficiarios frecuentes
+- [x] Comision SPEI se registra como asiento separado
 
 **Dependencias:** EP-SP-001, EP-SP-002, EP-SP-003
 
@@ -253,6 +261,8 @@ Flujo completo de transferencias SPEI out. Un usuario o sistema inicia una trans
 
 ### EP-SP-005: Webhook Handler SPEI In
 
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-payment` branch `develop` (2026-02-17)
+
 **Descripcion:**
 Handler de webhooks de Monato para depositos entrantes (money_in). Cuando alguien envia dinero via SPEI a una CLABE de SuperPago, Monato notifica via webhook. El handler valida la firma, identifica la cuenta destino, crea asientos contables, y notifica al usuario. Se implementa en `covacha-webhook` en la ruta `/webhook/spei/monato/`.
 
@@ -260,16 +270,16 @@ Handler de webhooks de Monato para depositos entrantes (money_in). Cuando alguie
 - US-SP-018, US-SP-019, US-SP-020, US-SP-021
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Endpoint POST `/webhook/spei/monato/` recibe eventos de Monato
-- [ ] Validacion de firma/token del webhook
-- [ ] Procesamiento idempotente (mismo evento 2 veces = 1 sola operacion)
-- [ ] Identifica cuenta CLABE destino en el sistema
-- [ ] Crea asientos contables de credito en la cuenta CLABE
-- [ ] Si la CLABE tiene concentradora padre, propaga saldo
-- [ ] Notifica al usuario (push, email, o webhook interno)
-- [ ] Manejo de eventos desconocidos (log + ignore, no falla)
-- [ ] Retry queue para procesamiento fallido (SQS dead letter)
-- [ ] Logs detallados para debugging de integracion
+- [x] Endpoint POST `/webhook/spei/monato/` recibe eventos de Monato
+- [x] Validacion de firma/token del webhook
+- [x] Procesamiento idempotente (mismo evento 2 veces = 1 sola operacion)
+- [x] Identifica cuenta CLABE destino en el sistema
+- [x] Crea asientos contables de credito en la cuenta CLABE
+- [x] Si la CLABE tiene concentradora padre, propaga saldo
+- [x] Notifica al usuario (push, email, o webhook interno)
+- [x] Manejo de eventos desconocidos (log + ignore, no falla)
+- [x] Retry queue para procesamiento fallido (SQS dead letter)
+- [x] Logs detallados para debugging de integracion
 - [ ] Response 200 rapido (< 500ms), procesamiento async
 
 **Dependencias:** EP-SP-001, EP-SP-002, EP-SP-003
@@ -282,6 +292,8 @@ Handler de webhooks de Monato para depositos entrantes (money_in). Cuando alguie
 
 ### EP-SP-006: Movimientos Internos (Grafo)
 
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-payment` branch `develop` (2026-02-17)
+
 **Descripcion:**
 Transferencias entre cuentas de la misma organizacion. Son instantaneas, sin costo, y siguen las reglas del grafo de cuentas. Ejemplos: mover fondos de CLABE a CONCENTRADORA, dispersar de CONCENTRADORA a DISPERSION, alimentar cuenta RESERVADA.
 
@@ -289,19 +301,19 @@ Transferencias entre cuentas de la misma organizacion. Son instantaneas, sin cos
 - US-SP-022, US-SP-023, US-SP-024
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Transferencia interna entre cuentas de la misma organizacion
-- [ ] Validacion de reglas del grafo (solo movimientos permitidos por tipo)
-- [ ] Operacion instantanea (no pasa por SPEI)
-- [ ] Sin costo (comision = 0)
-- [ ] Asientos contables de partida doble se generan
-- [ ] Soporte para dispersion masiva (1 origen -> N destinos en 1 operacion)
-- [ ] Rollback si alguna transferencia del batch falla
-- [ ] Reglas de movimiento validadas:
+- [x] Transferencia interna entre cuentas de la misma organizacion
+- [x] Validacion de reglas del grafo (solo movimientos permitidos por tipo)
+- [x] Operacion instantanea (no pasa por SPEI)
+- [x] Sin costo (comision = 0)
+- [x] Asientos contables de partida doble se generan
+- [x] Soporte para dispersion masiva (1 origen -> N destinos en 1 operacion)
+- [x] Rollback si alguna transferencia del batch falla
+- [x] Reglas de movimiento validadas:
   - CLABE -> CONCENTRADORA (subida de fondos)
   - CONCENTRADORA -> DISPERSION (alimentacion)
   - CONCENTRADORA -> RESERVADA (alimentacion)
   - CLABE -> RESERVADA (alimentacion directa)
-- [ ] Movimientos no permitidos devuelven error descriptivo
+- [x] Movimientos no permitidos devuelven error descriptivo
 
 **Dependencias:** EP-SP-001, EP-SP-003
 
@@ -312,6 +324,8 @@ Transferencias entre cuentas de la misma organizacion. Son instantaneas, sin cos
 ---
 
 ### EP-SP-007: mf-sp - Scaffold y Dashboard
+
+> **Estado: PENDIENTE** - Frontend no iniciado. Backend APIs disponibles en `covacha-payment`.
 
 **Descripcion:**
 Creacion del nuevo micro-frontend `mf-sp` (SuperPago SPEI) con Angular 21 y Native Federation. Incluye scaffold del proyecto, registro en el Shell (mf-core), y las paginas fundamentales: dashboard de cuentas, detalle de cuenta, y creacion de cuenta.
@@ -342,6 +356,8 @@ Creacion del nuevo micro-frontend `mf-sp` (SuperPago SPEI) con Angular 21 y Nati
 ---
 
 ### EP-SP-008: mf-sp - Transferencias y Movimientos
+
+> **Estado: PENDIENTE** - Frontend no iniciado. Depende de EP-SP-007 (scaffold mf-sp).
 
 **Descripcion:**
 UI para ejecutar transferencias SPEI out, movimientos internos, y ver historial de movimientos. Incluye formularios de transferencia con validaciones, confirmacion, tracking de estado, y tabla de movimientos con filtros y paginacion.
@@ -378,6 +394,8 @@ UI para ejecutar transferencias SPEI out, movimientos internos, y ver historial 
 
 ### EP-SP-009: Reconciliacion y Auditoria
 
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-payment` branch `develop` (2026-02-17)
+
 **Descripcion:**
 Sistema de reconciliacion automatica que compara los registros internos del ledger con los reportes de Monato. Detecta discrepancias, genera alertas, y provee herramientas de auditoria para el equipo de operaciones.
 
@@ -385,12 +403,12 @@ Sistema de reconciliacion automatica que compara los registros internos del ledg
 - US-SP-033, US-SP-034, US-SP-035
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Job de reconciliacion diaria (compara ledger vs Monato)
-- [ ] Detecta discrepancias: montos diferentes, transacciones faltantes, estados inconsistentes
+- [x] Job de reconciliacion diaria (compara ledger vs Monato)
+- [x] Detecta discrepancias: montos diferentes, transacciones faltantes, estados inconsistentes
 - [ ] Dashboard de reconciliacion en mf-sp (vista admin)
-- [ ] Alerta automatica cuando hay discrepancia > umbral configurable
-- [ ] Audit trail: quien hizo que, cuando, desde donde
-- [ ] Reporte de balance trial (debitos = creditos en todo el sistema)
+- [x] Alerta automatica cuando hay discrepancia > umbral configurable
+- [x] Audit trail: quien hizo que, cuando, desde donde
+- [x] Reporte de balance trial (debitos = creditos en todo el sistema)
 - [ ] Export de reportes para contabilidad
 - [ ] Resolucion manual de discrepancias con registro
 
@@ -404,6 +422,8 @@ Sistema de reconciliacion automatica que compara los registros internos del ledg
 
 ### EP-SP-010: Limites, Politicas y Notificaciones
 
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-payment` branch `develop` (2026-02-17)
+
 **Descripcion:**
 Capa de politicas de negocio: limites de transaccion (diario, mensual, por operacion), politicas de aprobacion (montos altos requieren autorizacion), notificaciones en tiempo real (depositos, transferencias completadas/fallidas), y rate limiting para proteccion contra abuso.
 
@@ -411,13 +431,13 @@ Capa de politicas de negocio: limites de transaccion (diario, mensual, por opera
 - US-SP-036, US-SP-037, US-SP-038, US-SP-039
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Limites configurables por cuenta y por organizacion:
+- [x] Limites configurables por cuenta y por organizacion:
   - Monto maximo por transferencia
   - Monto maximo diario
   - Monto maximo mensual
   - Numero maximo de operaciones por dia
-- [ ] Politica de aprobacion: transferencias > umbral requieren autorizacion
-- [ ] Notificaciones:
+- [x] Politica de aprobacion: transferencias > umbral requieren autorizacion
+- [x] Notificaciones:
   - Deposito SPEI recibido (email + push)
   - Transferencia completada
   - Transferencia fallida
