@@ -91,12 +91,6 @@ def _graphql(query: str, variables: dict) -> dict:
         raise RuntimeError(f"Error GraphQL: {body['errors']}")
     return body.get("data", {})
 
-_MOVE_STATUS_MUTATION = (
-    "mutation($project:ID!,$item:ID!,$field:ID!,$value:String!){"
-    "updateProjectV2ItemFieldValue(input:{projectId:$project itemId:$item "
-    "fieldId:$field value:{singleSelectOptionId:$value}}){projectV2Item{id}}}"
-)
-
 
 def run_gh_command(args: list[str]) -> dict | str:
     """
