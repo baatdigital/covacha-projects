@@ -79,7 +79,7 @@ Persona fisica o sistema en un punto autorizado (tipo OXXO) que procesa Cash-In/
 |----|-------|-------------|-----------------|------------------------|--------|
 | EP-SP-014 | Transferencias Internas Inter-Organizacion ✅ | M | 4-5 | EP-SP-001, EP-SP-003, EP-SP-006 | COMPLETADO (backend) |
 | EP-SP-015 | Cash-In / Cash-Out (Red de Puntos) ✅ | XL | 5-7 | EP-SP-001, EP-SP-003, EP-SP-010 | COMPLETADO (backend) |
-| EP-SP-016 | Subasta de Efectivo (Mercado de Liquidez) | L | 7-8 | EP-SP-014, EP-SP-015 | PENDIENTE |
+| EP-SP-016 | Subasta de Efectivo (Mercado de Liquidez) ✅ | L | 7-8 | EP-SP-014, EP-SP-015 | COMPLETADO (backend) |
 | EP-SP-017 | Agente IA WhatsApp - Core (covacha-botia) | XL | 5-7 | EP-SP-001, EP-SP-004, EP-SP-005 | PENDIENTE |
 | EP-SP-018 | Agente IA WhatsApp - BillPay y Notificaciones | L | 7-8 | EP-SP-017 | PENDIENTE |
 | EP-SP-019 | Reglas de Integridad de Datos (Cross-cutting) | L | 1-2 (paralela) | EP-SP-001, EP-SP-003 | COMPLETADO (backend) |
@@ -167,6 +167,8 @@ Cada punto de pago es una entidad registrada con su propia cuenta de liquidacion
 ---
 
 ### EP-SP-016: Subasta de Efectivo (Mercado de Liquidez)
+
+> **Estado: COMPLETADO (backend)**
 
 **Descripcion:**
 Mercado interno de liquidez dentro de SuperPago. Los puntos de pago acumulan efectivo fisico que necesitan digitalizar. Las empresas (Tier 2) necesitan efectivo fisico en ubicaciones especificas. La subasta permite a las empresas "comprar" el efectivo de los puntos via transferencia interna: la empresa transfiere saldo digital al punto, y el punto asigna el efectivo fisico para retiro/uso.
@@ -766,7 +768,7 @@ Como **Administrador SuperPago** quiero configurar limites y comisiones para ope
 Como **Sistema** quiero un modelo para representar ofertas de efectivo en el mercado interno de liquidez para que los puntos de pago puedan publicar su exceso de efectivo y las empresas puedan comprarlo.
 
 **Criterios de Aceptacion:**
-- [ ] Modelo `CashOffer` en DynamoDB:
+- [x] Modelo `CashOffer` en DynamoDB:
   - `PK: MARKETPLACE`, `SK: OFFER#{offer_id}`
   - `offer_id` (UUID)
   - `point_id` (punto que ofrece el efectivo)
@@ -779,9 +781,9 @@ Como **Sistema** quiero un modelo para representar ofertas de efectivo en el mer
   - `expires_at` (vigencia de la oferta, default 24h)
   - `commission_rate` (comision de SuperPago por la intermediacion)
   - `created_at`
-- [ ] GSI `GSI-OFFER-STATUS`: `PK: OFFER_STATUS#{status}`, `SK: #{created_at}` para listar activas
-- [ ] GSI `GSI-POINT-OFFERS`: `PK: POINT#{point_id}`, `SK: OFFER#{created_at}` para ofertas de un punto
-- [ ] Las ofertas se pueden crear manualmente o automaticamente cuando el cash_balance del punto supera un umbral
+- [x] GSI `GSI-OFFER-STATUS`: `PK: OFFER_STATUS#{status}`, `SK: #{created_at}` para listar activas
+- [x] GSI `GSI-POINT-OFFERS`: `PK: POINT#{point_id}`, `SK: OFFER#{created_at}` para ofertas de un punto
+- [x] Las ofertas se pueden crear manualmente o automaticamente cuando el cash_balance del punto supera un umbral
 - [ ] Las ofertas expiran automaticamente (TTL o job)
 
 **Tareas Tecnicas:**
@@ -806,15 +808,15 @@ Como **Sistema** quiero un modelo para representar ofertas de efectivo en el mer
 Como **Operador de Punto de Pago** quiero publicar ofertas de efectivo en el marketplace para que las empresas puedan comprar el exceso de efectivo de mi punto.
 
 **Criterios de Aceptacion:**
-- [ ] `POST /api/v1/organizations/{org_id}/marketplace/offers`
+- [x] `POST /api/v1/organizations/{org_id}/marketplace/offers`
   - Body: `{ point_id, amount, expires_in_hours? }`
   - Valida: punto pertenece a la org, cash_balance >= amount, punto esta activo
-- [ ] `GET /api/v1/marketplace/offers` (accesible por Tier 1 y Tier 2)
+- [x] `GET /api/v1/marketplace/offers` (accesible por Tier 1 y Tier 2)
   - Filtros: location (radio en km, futuro), amount_min, amount_max, status
   - Ordena por: mas recientes, monto mayor, mas cercano (futuro)
   - Paginacion server-side
-- [ ] `GET /api/v1/marketplace/offers/{id}` - Detalle de oferta
-- [ ] `DELETE /api/v1/organizations/{org_id}/marketplace/offers/{id}` - Cancelar oferta
+- [x] `GET /api/v1/marketplace/offers/{id}` - Detalle de oferta
+- [x] `DELETE /api/v1/organizations/{org_id}/marketplace/offers/{id}` - Cancelar oferta
   - Solo si status == ACTIVE (no se puede cancelar si ya se vendio parcialmente con comprador en proceso)
 - [ ] Auto-publicacion configurable:
   - `POST /api/v1/admin/payment-points/{id}/auto-offer`
@@ -843,11 +845,11 @@ Como **Operador de Punto de Pago** quiero publicar ofertas de efectivo en el mar
 Como **Cliente Empresa B2B** quiero comprar efectivo del marketplace para obtener liquidez fisica en ubicaciones especificas donde la necesito.
 
 **Criterios de Aceptacion:**
-- [ ] `POST /api/v1/organizations/{org_id}/marketplace/offers/{offer_id}/buy`
+- [x] `POST /api/v1/organizations/{org_id}/marketplace/offers/{offer_id}/buy`
   - Body: `{ buyer_account_id, amount?, idempotency_key }`
   - `amount` es opcional: si no se especifica, compra todo el remaining_amount
   - Si se especifica: compra parcial (remaining_amount -= amount)
-- [ ] Flujo de compra:
+- [x] Flujo de compra:
   1. Validar: oferta activa, buyer_account tiene saldo suficiente
   2. Ejecutar transferencia inter-org (reutiliza US-SP-053):
      - DEBIT en cuenta del comprador
@@ -862,9 +864,9 @@ Como **Cliente Empresa B2B** quiero comprar efectivo del marketplace para obtene
      - `status`: PENDING_PICKUP | PICKED_UP | EXPIRED
   5. Actualizar oferta: remaining_amount, status
   6. Notificar al punto (nueva venta) y al comprador (ticket generado)
-- [ ] Si remaining_amount == 0: status -> SOLD
-- [ ] Si remaining_amount > 0: status -> PARTIALLY_SOLD
-- [ ] Idempotencia estricta
+- [x] Si remaining_amount == 0: status -> SOLD
+- [x] Si remaining_amount > 0: status -> PARTIALLY_SOLD
+- [x] Idempotencia estricta
 
 **Tareas Tecnicas:**
 1. Crear modelo CashPickupTicket en DynamoDB
@@ -889,7 +891,7 @@ Como **Cliente Empresa B2B** quiero comprar efectivo del marketplace para obtene
 Como **Administrador SuperPago** quiero ver metricas del marketplace de efectivo para entender los patrones de liquidez de la red y optimizar la operacion.
 
 **Criterios de Aceptacion:**
-- [ ] `GET /api/v1/admin/marketplace/dashboard`
+- [x] `GET /api/v1/admin/marketplace/dashboard`
   - Metricas:
     - Efectivo total en la red (suma de cash_balance de todos los puntos)
     - Ofertas activas (cantidad y monto total)
@@ -902,9 +904,9 @@ Como **Administrador SuperPago** quiero ver metricas del marketplace de efectivo
     - Tendencia de efectivo en red ultimos 30 dias
     - Top 10 puntos por volumen
     - Distribucion geografica (futuro)
-- [ ] `GET /api/v1/admin/marketplace/tickets`
+- [x] `GET /api/v1/admin/marketplace/tickets`
   - Lista de tickets con filtros: status, buyer_org, point, rango de fechas
-- [ ] `POST /api/v1/organizations/{org_id}/marketplace/tickets/{id}/confirm-pickup`
+- [x] `POST /api/v1/organizations/{org_id}/marketplace/tickets/{id}/confirm-pickup`
   - Operador del punto confirma que el comprador retiro el efectivo
   - Requiere authorization_code del ticket
   - Status -> PICKED_UP
