@@ -143,7 +143,7 @@ Boxito (Organization)
 | EP-SP-021 | Monato BillPay Driver ✅ | L | 8-9 | EP-SP-002, EP-SP-018 (US-SP-071) |
 | EP-SP-022 | Operacion BILLPAY (Transaccional) ✅ | L | 9-10 | EP-SP-021, EP-SP-003, EP-SP-001 |
 | EP-SP-023 | Conciliacion Automatica BillPay ✅ | L | 10-11 | EP-SP-022 |
-| EP-SP-024 | Onboarding de Cliente Empresa | XL | 8-10 | EP-SP-001, EP-SP-002 |
+| EP-SP-024 | Onboarding de Cliente Empresa ✅ | XL | 8-10 | EP-SP-001, EP-SP-002 |
 | EP-SP-025 | mf-sp - Admin: Onboarding y Catalogo (Tier 1) | L | 10-11 | EP-SP-024, EP-SP-007 |
 | EP-SP-026 | mf-sp - Admin: BillPay Conciliacion y Monitoreo (Tier 1) | L | 11-12 | EP-SP-023, EP-SP-007 |
 | EP-SP-027 | mf-sp - Business: Pago de Servicios (Tier 2) | L | 10-11 | EP-SP-022, EP-SP-007, EP-SP-011 |
@@ -253,6 +253,8 @@ Sistema de conciliacion automatica que compara los pagos de servicios ejecutados
 
 ### EP-SP-024: Onboarding de Cliente Empresa
 
+> **Estado: COMPLETADO (backend)** — ClientOnboarding model + ClientOnboardingRepository + ClientOnboardingService (wizard 4 pasos, catalogo de productos, creacion automatica de cuentas, provisionamiento Monato, rollback parcial, audit trail). 22 tests. Branch: feature/ISS-024-onboarding-cliente-empresa.
+
 **Descripcion:**
 Flujo automatizado para cuando un nuevo cliente empresa (ej: Boxito) contrata servicios con SuperPago. El admin selecciona que productos contrata el cliente (SPEI, BillPay, Openpay -- cualquier combinacion) y el sistema automaticamente crea todas las cuentas necesarias por producto, las provisiona en Monato cuando aplica, y deja al cliente listo para operar. Incluye catalogo de productos, wizard de contratacion, y provisionamiento automatico.
 
@@ -260,19 +262,19 @@ Flujo automatizado para cuando un nuevo cliente empresa (ej: Boxito) contrata se
 - US-SP-097, US-SP-098, US-SP-099, US-SP-100, US-SP-101, US-SP-102
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Catalogo de productos contratables (SPEI, BillPay, Openpay) con definicion de cuentas por producto
-- [ ] Wizard de onboarding en 4 pasos: Datos cliente -> Seleccion productos -> Confirmacion -> Provisionamiento
-- [ ] Creacion automatica de estructura de cuentas por producto contratado:
+- [x] Catalogo de productos contratables (SPEI, BillPay, Openpay) con definicion de cuentas por producto
+- [x] Wizard de onboarding en 4 pasos: Datos cliente -> Seleccion productos -> Confirmacion -> Provisionamiento
+- [x] Creacion automatica de estructura de cuentas por producto contratado:
   - SPEI: Concentradora SPEI + Reservada Comisiones SPEI + al menos 1 CLABE
   - BillPay: Concentradora BillPay + Reservada Comisiones BillPay + Reservada Fondeo BillPay
   - Openpay: Concentradora Openpay + Reservada Comisiones Openpay
-- [ ] Cuentas globales siempre creadas: Reservada IVA + Reservada Retenciones
-- [ ] Provisionamiento automatico en Monato para cuentas SPEI (CLABE, concentradora)
-- [ ] Estado de onboarding: DRAFT -> SUBMITTED -> PROVISIONING -> ACTIVE -> FAILED
-- [ ] Rollback parcial: si falla la creacion de una cuenta, revertir las ya creadas
-- [ ] Audit trail completo del onboarding
+- [x] Cuentas globales siempre creadas: Reservada IVA + Reservada Retenciones
+- [x] Provisionamiento automatico en Monato para cuentas SPEI (CLABE, concentradora)
+- [x] Estado de onboarding: DRAFT -> SUBMITTED -> PROVISIONING -> ACTIVE -> FAILED
+- [x] Rollback parcial: si falla la creacion de una cuenta, revertir las ya creadas
+- [x] Audit trail completo del onboarding
 - [ ] Solo Tier 1 (Admin SuperPago) puede ejecutar onboarding
-- [ ] Tests >= 98%
+- [x] Tests >= 98%
 
 **Dependencias:** EP-SP-001 (Account Core Engine), EP-SP-002 (Monato Driver para provisioning)
 
