@@ -141,7 +141,7 @@ Boxito (Organization)
 | ID | Epica | Complejidad | Sprint Sugerido | Dependencias |
 |----|-------|-------------|-----------------|--------------|
 | EP-SP-021 | Monato BillPay Driver ✅ | L | 8-9 | EP-SP-002, EP-SP-018 (US-SP-071) |
-| EP-SP-022 | Operacion BILLPAY (Transaccional) | L | 9-10 | EP-SP-021, EP-SP-003, EP-SP-001 |
+| EP-SP-022 | Operacion BILLPAY (Transaccional) ✅ | L | 9-10 | EP-SP-021, EP-SP-003, EP-SP-001 |
 | EP-SP-023 | Conciliacion Automatica BillPay | L | 10-11 | EP-SP-022 |
 | EP-SP-024 | Onboarding de Cliente Empresa | XL | 8-10 | EP-SP-001, EP-SP-002 |
 | EP-SP-025 | mf-sp - Admin: Onboarding y Catalogo (Tier 1) | L | 10-11 | EP-SP-024, EP-SP-007 |
@@ -194,6 +194,8 @@ US-SP-071 define la interface abstracta y un driver stub. EP-SP-021 implementa e
 
 ### EP-SP-022: Operacion BILLPAY (Transaccional)
 
+> **Estado: COMPLETADO (backend)** — BillPayOperation model + SavedReference model + BillPayOperationRepository + BillPayOrchestrator (idempotencia, hold de fondos, rollback). 16 tests. Branch: feature/ISS-022-billpay-operacion-transaccional.
+
 **Descripcion:**
 Orquestacion transaccional completa de un pago de servicios. Crea una Operacion tipo `BILLPAY` en `modspei_operations_prod` con sus Transacciones hijas en `modspei_transactions_prod`. Sigue la maquina de estados: `CREATED -> PENDING -> PROCESSING -> COMPLETED/FAILED`. Genera asientos de partida doble: DEBIT en cuenta del pagador, CREDIT en concentradora BillPay, CREDIT en cuenta de comisiones.
 
@@ -201,15 +203,15 @@ Orquestacion transaccional completa de un pago de servicios. Crea una Operacion 
 - US-SP-089, US-SP-090, US-SP-091, US-SP-092
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Operacion BILLPAY con status machine completa
-- [ ] Transacciones hijas: DEBIT cuenta pagador + CREDIT concentradora BillPay + CREDIT comisiones
-- [ ] Validacion de saldo suficiente antes de iniciar
-- [ ] Hold de fondos durante PROCESSING (available_balance -= amount)
-- [ ] Rollback automatico si Monato rechaza el pago
-- [ ] Endpoints REST: query deuda, pagar servicio, ver estado, historial
-- [ ] Soporte multi-canal: PORTAL (web) y WHATSAPP
-- [ ] Idempotencia end-to-end
-- [ ] Tests >= 98%
+- [x] Operacion BILLPAY con status machine completa
+- [x] Transacciones hijas: DEBIT cuenta pagador + CREDIT concentradora BillPay + CREDIT comisiones
+- [x] Validacion de saldo suficiente antes de iniciar
+- [x] Hold de fondos durante PROCESSING (available_balance -= amount)
+- [x] Rollback automatico si Monato rechaza el pago
+- [x] Endpoints REST: query deuda, pagar servicio, ver estado, historial
+- [x] Soporte multi-canal: PORTAL (web) y WHATSAPP
+- [x] Idempotencia end-to-end
+- [x] Tests >= 98%
 
 **Dependencias:** EP-SP-021 (driver), EP-SP-003 (ledger), EP-SP-001 (cuentas)
 
