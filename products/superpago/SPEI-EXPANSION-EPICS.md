@@ -78,7 +78,7 @@ Persona fisica o sistema en un punto autorizado (tipo OXXO) que procesa Cash-In/
 | ID | Epica | Complejidad | Sprint Sugerido | Dependencias Existentes | Estado |
 |----|-------|-------------|-----------------|------------------------|--------|
 | EP-SP-014 | Transferencias Internas Inter-Organizacion ✅ | M | 4-5 | EP-SP-001, EP-SP-003, EP-SP-006 | COMPLETADO (backend) |
-| EP-SP-015 | Cash-In / Cash-Out (Red de Puntos) | XL | 5-7 | EP-SP-001, EP-SP-003, EP-SP-010 | PENDIENTE |
+| EP-SP-015 | Cash-In / Cash-Out (Red de Puntos) ✅ | XL | 5-7 | EP-SP-001, EP-SP-003, EP-SP-010 | COMPLETADO (backend) |
 | EP-SP-016 | Subasta de Efectivo (Mercado de Liquidez) | L | 7-8 | EP-SP-014, EP-SP-015 | PENDIENTE |
 | EP-SP-017 | Agente IA WhatsApp - Core (covacha-botia) | XL | 5-7 | EP-SP-001, EP-SP-004, EP-SP-005 | PENDIENTE |
 | EP-SP-018 | Agente IA WhatsApp - BillPay y Notificaciones | L | 7-8 | EP-SP-017 | PENDIENTE |
@@ -133,6 +133,8 @@ EP-SP-006 mueve dinero dentro de la MISMA organizacion. EP-SP-014 mueve dinero E
 ---
 
 ### EP-SP-015: Cash-In / Cash-Out (Red de Puntos)
+
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-payment` branch `develop` (2026-02-17). US-SP-056 a US-SP-059 completadas. 25 tests nuevos, 786 total.
 
 **Descripcion:**
 Sistema de depositos y retiros de efectivo en una red de puntos de pago fisicos (similar a OXXO Pay). Un usuario se presenta en un punto autorizado, deposita efectivo (Cash-In) y se acredita a su cuenta digital, o solicita un retiro (Cash-Out) y se le entrega efectivo debitando de su cuenta.
