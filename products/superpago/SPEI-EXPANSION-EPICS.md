@@ -81,7 +81,7 @@ Persona fisica o sistema en un punto autorizado (tipo OXXO) que procesa Cash-In/
 | EP-SP-015 | Cash-In / Cash-Out (Red de Puntos) ✅ | XL | 5-7 | EP-SP-001, EP-SP-003, EP-SP-010 | COMPLETADO (backend) |
 | EP-SP-016 | Subasta de Efectivo (Mercado de Liquidez) ✅ | L | 7-8 | EP-SP-014, EP-SP-015 | COMPLETADO (backend) |
 | EP-SP-017 | Agente IA WhatsApp - Core (covacha-botia) ✅ | XL | 5-7 | EP-SP-001, EP-SP-004, EP-SP-005 | COMPLETADO (backend) |
-| EP-SP-018 | Agente IA WhatsApp - BillPay y Notificaciones | L | 7-8 | EP-SP-017 | PENDIENTE |
+| EP-SP-018 | Agente IA WhatsApp - BillPay y Notificaciones ✅ | L | 7-8 | EP-SP-017 | COMPLETADO (backend) |
 | EP-SP-019 | Reglas de Integridad de Datos (Cross-cutting) | L | 1-2 (paralela) | EP-SP-001, EP-SP-003 | COMPLETADO (backend) |
 | EP-SP-020 | mf-sp - Pantallas de Cash, Subasta y Config IA | L | 7-9 | EP-SP-007, EP-SP-015, EP-SP-016, EP-SP-017 | PENDIENTE |
 
@@ -236,6 +236,8 @@ Agente conversacional en WhatsApp que permite a usuarios operar sus cuentas SPEI
 
 ### EP-SP-018: Agente IA WhatsApp - BillPay y Notificaciones
 
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-botia` branch `develop` (2026-02-17)
+
 **Descripcion:**
 Extension del agente IA para pago de servicios (BillPay) y notificaciones proactivas. BillPay permite pagar servicios como CFE (luz), agua, telefono, gas, internet via agregadores de servicios. Las notificaciones proactivas informan al usuario de depositos recibidos, transferencias completadas, y alertas de seguridad directamente en su WhatsApp.
 
@@ -243,16 +245,16 @@ Extension del agente IA para pago de servicios (BillPay) y notificaciones proact
 - US-SP-071, US-SP-072, US-SP-073, US-SP-074
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Catalogo de servicios pagables (CFE, Telmex, etc.) via agregador
-- [ ] Flujo conversacional: "Paga mi recibo de luz" -> pide referencia -> confirma monto -> 2FA -> paga
-- [ ] Consulta de adeudo antes de pagar (si el agregador lo soporta)
-- [ ] Comprobante de pago enviado como mensaje/PDF por WhatsApp
-- [ ] Notificacion proactiva de deposito recibido: "Recibiste $X de [banco] [concepto]"
-- [ ] Notificacion proactiva de transferencia completada/fallida
-- [ ] Notificaciones configurables por usuario (activar/desactivar por tipo)
-- [ ] Integracion con al menos 1 agregador de BillPay (Openpay, Arcus, o similar)
-- [ ] Asientos contables para pagos de servicios (nueva categoria BILL_PAY)
-- [ ] Tests >= 98%
+- [x] Catalogo de servicios pagables (CFE, Telmex, etc.) via agregador
+- [x] Flujo conversacional: "Paga mi recibo de luz" -> pide referencia -> confirma monto -> 2FA -> paga
+- [x] Consulta de adeudo antes de pagar (si el agregador lo soporta)
+- [x] Comprobante de pago enviado como mensaje/PDF por WhatsApp
+- [x] Notificacion proactiva de deposito recibido: "Recibiste $X de [banco] [concepto]"
+- [x] Notificacion proactiva de transferencia completada/fallida
+- [x] Notificaciones configurables por usuario (activar/desactivar por tipo)
+- [x] Integracion con al menos 1 agregador de BillPay (Openpay, Arcus, o similar)
+- [x] Asientos contables para pagos de servicios (nueva categoria BILL_PAY)
+- [x] Tests >= 98%
 
 **Dependencias:** EP-SP-017 (core del agente), EP-SP-003 (ledger), EP-SP-005 (webhooks para triggers de notif)
 
