@@ -142,7 +142,7 @@ Boxito (Organization)
 |----|-------|-------------|-----------------|--------------|
 | EP-SP-021 | Monato BillPay Driver ✅ | L | 8-9 | EP-SP-002, EP-SP-018 (US-SP-071) |
 | EP-SP-022 | Operacion BILLPAY (Transaccional) ✅ | L | 9-10 | EP-SP-021, EP-SP-003, EP-SP-001 |
-| EP-SP-023 | Conciliacion Automatica BillPay | L | 10-11 | EP-SP-022 |
+| EP-SP-023 | Conciliacion Automatica BillPay ✅ | L | 10-11 | EP-SP-022 |
 | EP-SP-024 | Onboarding de Cliente Empresa | XL | 8-10 | EP-SP-001, EP-SP-002 |
 | EP-SP-025 | mf-sp - Admin: Onboarding y Catalogo (Tier 1) | L | 10-11 | EP-SP-024, EP-SP-007 |
 | EP-SP-026 | mf-sp - Admin: BillPay Conciliacion y Monitoreo (Tier 1) | L | 11-12 | EP-SP-023, EP-SP-007 |
@@ -223,6 +223,8 @@ Orquestacion transaccional completa de un pago de servicios. Crea una Operacion 
 
 ### EP-SP-023: Conciliacion Automatica BillPay
 
+> **Estado: COMPLETADO (backend)** — BillPayConciliation model + BillPayConciliationRepository + BillPayConciliationService (6 tipos de discrepancias, alertas SNS, resolucion manual + audit trail, metricas). 17 tests. Branch: feature/ISS-023-conciliacion-automatica-billpay.
+
 **Descripcion:**
 Sistema de conciliacion automatica que compara los pagos de servicios ejecutados en SuperPago contra los confirmados por Monato. Detecta discrepancias: pagos pendientes de confirmacion, rechazados post-pago, parcialmente aplicados, o no registrados en Monato. Incluye Lambda programada, dashboard de conciliacion, alertas automaticas, y flujo de resolucion manual con audit trail.
 
@@ -230,16 +232,16 @@ Sistema de conciliacion automatica que compara los pagos de servicios ejecutados
 - US-SP-093, US-SP-094, US-SP-095, US-SP-096
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Lambda programada (configurable: cada hora o diaria)
-- [ ] Endpoint Monato: `GET /billpay/conciliation` integrado
-- [ ] Comparacion automatica: pagos locales COMPLETED vs confirmados en Monato
-- [ ] Deteccion de discrepancias: PENDING_CONFIRMATION, REJECTED_POST_PAY, PARTIAL, NOT_FOUND_IN_PROVIDER, NOT_FOUND_LOCAL
-- [ ] Modelo `BillPayConciliation` en DynamoDB
-- [ ] Alertas automaticas (SNS/email) cuando hay discrepancias
-- [ ] API para resolucion manual con audit trail
+- [x] Lambda programada (configurable: cada hora o diaria)
+- [x] Endpoint Monato: `GET /billpay/conciliation` integrado
+- [x] Comparacion automatica: pagos locales COMPLETED vs confirmados en Monato
+- [x] Deteccion de discrepancias: PENDING_CONFIRMATION, REJECTED_POST_PAY, PARTIAL, NOT_FOUND_IN_PROVIDER, NOT_FOUND_LOCAL
+- [x] Modelo `BillPayConciliation` en DynamoDB
+- [x] Alertas automaticas (SNS/email) cuando hay discrepancias
+- [x] API para resolucion manual con audit trail
 - [ ] Dashboard de conciliacion en mf-sp (EP-SP-026)
-- [ ] Metricas: tasa de conciliacion exitosa, tiempo promedio de resolucion
-- [ ] Tests >= 98%
+- [x] Metricas: tasa de conciliacion exitosa, tiempo promedio de resolucion
+- [x] Tests >= 98%
 
 **Dependencias:** EP-SP-022 (operaciones BILLPAY existentes para conciliar)
 
