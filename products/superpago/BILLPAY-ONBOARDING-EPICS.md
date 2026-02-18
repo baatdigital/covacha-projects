@@ -138,16 +138,16 @@ Boxito (Organization)
 
 ## Mapa de Epicas Nuevas
 
-| ID | Epica | Complejidad | Sprint Sugerido | Dependencias |
-|----|-------|-------------|-----------------|--------------|
-| EP-SP-021 | Monato BillPay Driver ✅ | L | 8-9 | EP-SP-002, EP-SP-018 (US-SP-071) |
-| EP-SP-022 | Operacion BILLPAY (Transaccional) ✅ | L | 9-10 | EP-SP-021, EP-SP-003, EP-SP-001 |
-| EP-SP-023 | Conciliacion Automatica BillPay ✅ | L | 10-11 | EP-SP-022 |
-| EP-SP-024 | Onboarding de Cliente Empresa ✅ | XL | 8-10 | EP-SP-001, EP-SP-002 |
-| EP-SP-025 | mf-sp - Admin: Onboarding y Catalogo (Tier 1) | L | 10-11 | EP-SP-024, EP-SP-007 |
-| EP-SP-026 | mf-sp - Admin: BillPay Conciliacion y Monitoreo (Tier 1) | L | 11-12 | EP-SP-023, EP-SP-007 |
-| EP-SP-027 | mf-sp - Business: Pago de Servicios (Tier 2) | L | 10-11 | EP-SP-022, EP-SP-007, EP-SP-011 |
-| EP-SP-028 | mf-sp - Personal: Mis Servicios (Tier 3) | M | 11-12 | EP-SP-027, EP-SP-012 |
+| ID | Epica | Complejidad | Sprint Sugerido | Dependencias | Estado |
+|----|-------|-------------|-----------------|--------------|--------|
+| EP-SP-021 | Monato BillPay Driver ✅ | L | 8-9 | EP-SP-002, EP-SP-018 (US-SP-071) | COMPLETADO (backend) |
+| EP-SP-022 | Operacion BILLPAY (Transaccional) ✅ | L | 9-10 | EP-SP-021, EP-SP-003, EP-SP-001 | COMPLETADO (backend) |
+| EP-SP-023 | Conciliacion Automatica BillPay ✅ | L | 10-11 | EP-SP-022 | COMPLETADO (backend) |
+| EP-SP-024 | Onboarding de Cliente Empresa ✅ | XL | 8-10 | EP-SP-001, EP-SP-002 | COMPLETADO (backend) |
+| EP-SP-025 | mf-sp - Admin: Onboarding y Catalogo (Tier 1) | L | 10-11 | EP-SP-024, EP-SP-007 | **COMPLETADO (frontend stub)** |
+| EP-SP-026 | mf-sp - Admin: BillPay Conciliacion y Monitoreo (Tier 1) | L | 11-12 | EP-SP-023, EP-SP-007 | **COMPLETADO (frontend stub)** |
+| EP-SP-027 | mf-sp - Business: Pago de Servicios (Tier 2) | L | 10-11 | EP-SP-022, EP-SP-007, EP-SP-011 | **COMPLETADO (frontend stub)** |
+| EP-SP-028 | mf-sp - Personal: Mis Servicios (Tier 3) | M | 11-12 | EP-SP-027, EP-SP-012 | **COMPLETADO (frontend stub)** |
 
 **Totales:**
 - 8 epicas nuevas
