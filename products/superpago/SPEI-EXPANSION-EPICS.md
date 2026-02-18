@@ -80,7 +80,7 @@ Persona fisica o sistema en un punto autorizado (tipo OXXO) que procesa Cash-In/
 | EP-SP-014 | Transferencias Internas Inter-Organizacion ✅ | M | 4-5 | EP-SP-001, EP-SP-003, EP-SP-006 | COMPLETADO (backend) |
 | EP-SP-015 | Cash-In / Cash-Out (Red de Puntos) ✅ | XL | 5-7 | EP-SP-001, EP-SP-003, EP-SP-010 | COMPLETADO (backend) |
 | EP-SP-016 | Subasta de Efectivo (Mercado de Liquidez) ✅ | L | 7-8 | EP-SP-014, EP-SP-015 | COMPLETADO (backend) |
-| EP-SP-017 | Agente IA WhatsApp - Core (covacha-botia) | XL | 5-7 | EP-SP-001, EP-SP-004, EP-SP-005 | PENDIENTE |
+| EP-SP-017 | Agente IA WhatsApp - Core (covacha-botia) ✅ | XL | 5-7 | EP-SP-001, EP-SP-004, EP-SP-005 | COMPLETADO (backend) |
 | EP-SP-018 | Agente IA WhatsApp - BillPay y Notificaciones | L | 7-8 | EP-SP-017 | PENDIENTE |
 | EP-SP-019 | Reglas de Integridad de Datos (Cross-cutting) | L | 1-2 (paralela) | EP-SP-001, EP-SP-003 | COMPLETADO (backend) |
 | EP-SP-020 | mf-sp - Pantallas de Cash, Subasta y Config IA | L | 7-9 | EP-SP-007, EP-SP-015, EP-SP-016, EP-SP-017 | PENDIENTE |
@@ -204,6 +204,8 @@ Mercado interno de liquidez dentro de SuperPago. Los puntos de pago acumulan efe
 
 ### EP-SP-017: Agente IA WhatsApp - Core (covacha-botia)
 
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-botia` branch `develop` (2026-02-17)
+
 **Descripcion:**
 Agente conversacional en WhatsApp que permite a usuarios operar sus cuentas SPEI via chat. El agente vive en `covacha-botia` y se comunica con `covacha-payment` via API interna. Soporta: vinculacion de cuenta, consulta de saldo, transferencias SPEI, y confirmacion 2FA antes de mover dinero. Cada agente esta atado a un `sp_organization_id`.
 
@@ -211,18 +213,18 @@ Agente conversacional en WhatsApp que permite a usuarios operar sus cuentas SPEI
 - US-SP-066, US-SP-067, US-SP-068, US-SP-069, US-SP-070
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Vinculacion de numero WhatsApp con cuenta SPEI del usuario
-- [ ] Consulta de saldo via mensaje: "Cual es mi saldo?" -> responde con saldo actual
-- [ ] Transferencia SPEI via conversacion con flujo guiado:
+- [x] Vinculacion de numero WhatsApp con cuenta SPEI del usuario
+- [x] Consulta de saldo via mensaje: "Cual es mi saldo?" -> responde con saldo actual
+- [x] Transferencia SPEI via conversacion con flujo guiado:
   - "Envia $500 a CLABE 072180..." -> confirma datos -> solicita PIN/2FA -> ejecuta
-- [ ] Confirmacion 2FA obligatoria antes de toda operacion que mueve dinero
-- [ ] Contexto de sesion conversacional (recuerda que estaba haciendo el usuario)
-- [ ] Respuestas en lenguaje natural, no menus rigidos
-- [ ] Manejo de errores amigable ("No tienes saldo suficiente. Tu saldo es $X")
-- [ ] Rate limiting por usuario (max N operaciones por hora via WhatsApp)
-- [ ] Logs y audit trail de todas las operaciones via WhatsApp
-- [ ] El agente hereda los limites/politicas de la organizacion del usuario
-- [ ] Tests >= 98% con mocks de WhatsApp API y covacha-payment API
+- [x] Confirmacion 2FA obligatoria antes de toda operacion que mueve dinero
+- [x] Contexto de sesion conversacional (recuerda que estaba haciendo el usuario)
+- [x] Respuestas en lenguaje natural, no menus rigidos
+- [x] Manejo de errores amigable ("No tienes saldo suficiente. Tu saldo es $X")
+- [x] Rate limiting por usuario (max N operaciones por hora via WhatsApp)
+- [x] Logs y audit trail de todas las operaciones via WhatsApp
+- [x] El agente hereda los limites/politicas de la organizacion del usuario
+- [x] Tests >= 98% con mocks de WhatsApp API y covacha-payment API
 
 **Dependencias:** EP-SP-001 (cuentas), EP-SP-004 (SPEI out), EP-SP-005 (SPEI in para notif), EP-SP-010 (limites)
 
