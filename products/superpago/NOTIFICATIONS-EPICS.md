@@ -2,7 +2,7 @@
 
 **Fecha**: 2026-02-14
 **Product Owner**: SuperPago
-**Estado**: Planificacion
+**Estado**: EP-SP-029 COMPLETADO (backend) | EP-SP-030 Planificacion
 **Continua desde**: BILLPAY-ONBOARDING-EPICS.md (EP-SP-021 a EP-SP-028, US-SP-085 a US-SP-116)
 **User Stories**: US-SP-117 en adelante (continua desde US-SP-116)
 
@@ -206,10 +206,10 @@ GSI: PK=NOTIF_DLQ#ORG#{org_id}, SK={timestamp}
 
 ## Mapa de Epicas Nuevas
 
-| ID | Epica | Complejidad | Sprint Sugerido | Dependencias |
-|----|-------|-------------|-----------------|--------------|
-| EP-SP-029 | Notificaciones Financieras Backend | XL | 12-14 | EP-SP-010, EP-SP-004, EP-SP-005, EP-SP-017 |
-| EP-SP-030 | Frontend de Configuracion y Tiempo Real | L | 14-16 | EP-SP-029, EP-SP-007, EP-SP-008, EP-SP-011, EP-SP-012 |
+| ID | Epica | Complejidad | Sprint Sugerido | Dependencias | Estado |
+|----|-------|-------------|-----------------|--------------|--------|
+| EP-SP-029 | Notificaciones Financieras Backend | XL | 12-14 | EP-SP-010, EP-SP-004, EP-SP-005, EP-SP-017 | **COMPLETADO (backend)** |
+| EP-SP-030 | Frontend de Configuracion y Tiempo Real | L | 14-16 | EP-SP-029, EP-SP-007, EP-SP-008, EP-SP-011, EP-SP-012 | Planificacion |
 
 ---
 
@@ -218,6 +218,8 @@ GSI: PK=NOTIF_DLQ#ORG#{org_id}, SK={timestamp}
 ---
 
 ### EP-SP-029: Notificaciones Financieras Backend
+
+> **Estado: COMPLETADO (backend)** — 38/38 tests passing. Commit: `7660ac1` en `covacha-notification/develop`. 2026-02-17.
 
 **Descripcion:**
 Sistema completo de notificaciones financieras en covacha-notification. Incluye modelo de preferencias de notificacion por organizacion y usuario, dispatcher central que enruta eventos financieros a los canales correctos segun tier y preferencias, webhook outbound HTTP para clientes B2B con firma HMAC y retry con backoff, integracion con SES (email), SNS (SMS), covacha-botia (WhatsApp) y Slack (admin), templates por canal y evento con soporte i18n, dead letter queue para notificaciones fallidas, y audit trail completo de todas las notificaciones enviadas.
