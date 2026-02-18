@@ -77,7 +77,7 @@ Persona fisica o sistema en un punto autorizado (tipo OXXO) que procesa Cash-In/
 
 | ID | Epica | Complejidad | Sprint Sugerido | Dependencias Existentes | Estado |
 |----|-------|-------------|-----------------|------------------------|--------|
-| EP-SP-014 | Transferencias Internas Inter-Organizacion | M | 4-5 | EP-SP-001, EP-SP-003, EP-SP-006 | PENDIENTE |
+| EP-SP-014 | Transferencias Internas Inter-Organizacion ✅ | M | 4-5 | EP-SP-001, EP-SP-003, EP-SP-006 | COMPLETADO (backend) |
 | EP-SP-015 | Cash-In / Cash-Out (Red de Puntos) | XL | 5-7 | EP-SP-001, EP-SP-003, EP-SP-010 | PENDIENTE |
 | EP-SP-016 | Subasta de Efectivo (Mercado de Liquidez) | L | 7-8 | EP-SP-014, EP-SP-015 | PENDIENTE |
 | EP-SP-017 | Agente IA WhatsApp - Core (covacha-botia) | XL | 5-7 | EP-SP-001, EP-SP-004, EP-SP-005 | PENDIENTE |
@@ -97,6 +97,8 @@ Persona fisica o sistema en un punto autorizado (tipo OXXO) que procesa Cash-In/
 ---
 
 ### EP-SP-014: Transferencias Internas Inter-Organizacion
+
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-payment` branch `develop` (2026-02-17). 4 US completadas (US-SP-052 a US-SP-055). 27 tests nuevos, 761 total.
 
 **Descripcion:**
 Mover dinero entre cuentas de DIFERENTES organizaciones dentro de SuperPago sin usar SPEI. Es un movimiento contable puro: la cuenta de SuperPago (concentradora) actua como intermediario. No hay costo de SPEI, no sale dinero del ecosistema, y la operacion es instantanea. Ejemplo: SuperPago transfiere a la sub-concentradora de Boxito.
@@ -328,7 +330,7 @@ Extension del micro-frontend `mf-sp` con pantallas para las nuevas funcionalidad
 Como **Sistema** quiero un modelo de transferencia inter-organizacion para representar movimientos de dinero entre diferentes organizaciones dentro de SuperPago sin usar SPEI.
 
 **Criterios de Aceptacion:**
-- [ ] Modelo `InterOrgTransfer` en DynamoDB:
+- [x] Modelo `InterOrgTransfer` en DynamoDB:
   - `PK: ORG#{source_org_id}`, `SK: INTERORG_TXN#{transfer_id}`
   - `transfer_id` (UUID)
   - `source_organization_id`
@@ -342,11 +344,11 @@ Como **Sistema** quiero un modelo de transferencia inter-organizacion para repre
   - `approval_policy`: NONE | ADMIN_REQUIRED
   - `idempotency_key`
   - `created_at`, `completed_at`
-- [ ] GSI `GSI-DEST-ORG`: `PK: DEST_ORG#{dest_org_id}`, `SK: INTERORG_TXN#{id}` para consultar transferencias recibidas
-- [ ] GSI `GSI-INTERORG-STATUS`: `PK: INTERORG_STATUS#{status}`, `SK: #{created_at}` para listar por estado
-- [ ] Categoria de ledger nueva: `INTER_ORG_TRANSFER`
-- [ ] Validacion: ambas organizaciones deben existir y estar activas
-- [ ] Validacion: solo se permite entre cuentas CONCENTRADORA o CLABE
+- [x] GSI `GSI-DEST-ORG`: `PK: DEST_ORG#{dest_org_id}`, `SK: INTERORG_TXN#{id}` para consultar transferencias recibidas
+- [x] GSI `GSI-INTERORG-STATUS`: `PK: INTERORG_STATUS#{status}`, `SK: #{created_at}` para listar por estado
+- [x] Categoria de ledger nueva: `INTER_ORG_TRANSFER`
+- [x] Validacion: ambas organizaciones deben existir y estar activas
+- [x] Validacion: solo se permite entre cuentas CONCENTRADORA o CLABE
 
 **Tareas Tecnicas:**
 1. Crear modelo DynamoDB con PK/SK y GSIs
@@ -370,26 +372,26 @@ Como **Sistema** quiero un modelo de transferencia inter-organizacion para repre
 Como **Administrador SuperPago** quiero ejecutar transferencias de dinero entre organizaciones del ecosistema para mover fondos internamente sin costo SPEI.
 
 **Criterios de Aceptacion:**
-- [ ] `POST /api/v1/admin/transfers/inter-org`
+- [x] `POST /api/v1/admin/transfers/inter-org`
   - Body: `{ source_org_id, source_account_id, dest_org_id, dest_account_id, amount, concept, idempotency_key }`
   - Requiere permiso `sp:admin`
-- [ ] Validaciones pre-ejecucion:
+- [x] Validaciones pre-ejecucion:
   - Ambas organizaciones existen y estan activas
   - Ambas cuentas existen, estan ACTIVE, y son tipo CONCENTRADORA o CLABE
   - Saldo disponible en cuenta origen >= monto
   - Cuenta origen pertenece a source_org_id
   - Cuenta destino pertenece a dest_org_id
-- [ ] Flujo atomico:
+- [x] Flujo atomico:
   1. Crear registro InterOrgTransfer con status PENDING
   2. Crear asientos en ledger via TransactWriteItems:
      - DEBIT en cuenta origen (org A)
      - CREDIT en cuenta destino (org B)
   3. Si escritura exitosa: status -> COMPLETED
   4. Si falla: status -> FAILED, no se crean entries
-- [ ] Operacion instantanea (no pasa por SPEI, no hay latencia de proveedor)
-- [ ] Sin comision (configurable para futuro)
-- [ ] Idempotencia: misma `idempotency_key` retorna resultado anterior
-- [ ] Audit trail con tag `CROSS_ORG` y ambos org_ids
+- [x] Operacion instantanea (no pasa por SPEI, no hay latencia de proveedor)
+- [x] Sin comision (configurable para futuro)
+- [x] Idempotencia: misma `idempotency_key` retorna resultado anterior
+- [x] Audit trail con tag `CROSS_ORG` y ambos org_ids
 
 **Tareas Tecnicas:**
 1. Crear `InterOrgTransferService` con logica de validacion y ejecucion
@@ -414,7 +416,7 @@ Como **Administrador SuperPago** quiero ejecutar transferencias de dinero entre 
 Como **Administrador SuperPago** quiero configurar politicas de transferencia inter-org automaticas para que ciertos movimientos recurrentes no requieran aprobacion manual cada vez.
 
 **Criterios de Aceptacion:**
-- [ ] Modelo `InterOrgPolicy` en DynamoDB:
+- [x] Modelo `InterOrgPolicy` en DynamoDB:
   - `PK: ORG#{source_org_id}`, `SK: INTERORG_POLICY#{policy_id}`
   - `source_organization_id`, `destination_organization_id`
   - `max_amount_per_transfer` (limite por operacion)
@@ -423,14 +425,14 @@ Como **Administrador SuperPago** quiero configurar politicas de transferencia in
   - `auto_approve`: boolean (si true, no requiere aprobacion manual)
   - `status`: ACTIVE | SUSPENDED
   - `created_by`, `created_at`
-- [ ] `POST /api/v1/admin/transfers/inter-org/policies` - Crear politica
-- [ ] `GET /api/v1/admin/transfers/inter-org/policies` - Listar politicas
-- [ ] `PATCH /api/v1/admin/transfers/inter-org/policies/{id}` - Modificar
-- [ ] Al ejecutar transferencia inter-org:
+- [x] `POST /api/v1/admin/transfers/inter-org/policies` - Crear politica
+- [x] `GET /api/v1/admin/transfers/inter-org/policies` - Listar politicas
+- [x] `PATCH /api/v1/admin/transfers/inter-org/policies/{id}` - Modificar
+- [x] Al ejecutar transferencia inter-org:
   - Si existe politica activa y auto_approve=true y dentro de limites: ejecutar directamente
   - Si existe politica pero excede limites: rechazar con mensaje descriptivo
   - Si no existe politica: solo admin puede ejecutar manualmente
-- [ ] Audit trail de cambios a politicas
+- [x] Audit trail de cambios a politicas
 
 **Tareas Tecnicas:**
 1. Crear modelo InterOrgPolicy en DynamoDB
@@ -453,16 +455,16 @@ Como **Administrador SuperPago** quiero configurar politicas de transferencia in
 Como **Administrador SuperPago** quiero ver el historial de todas las transferencias inter-organizacion para auditar y conciliar los movimientos entre organizaciones del ecosistema.
 
 **Criterios de Aceptacion:**
-- [ ] `GET /api/v1/admin/transfers/inter-org`
+- [x] `GET /api/v1/admin/transfers/inter-org`
   - Query params: `source_org_id`, `dest_org_id`, `status`, `from_date`, `to_date`, `page`, `page_size`
   - Response incluye: datos de la transferencia + nombres de organizaciones + saldos resultantes
-- [ ] `GET /api/v1/admin/transfers/inter-org/{transfer_id}` - Detalle
+- [x] `GET /api/v1/admin/transfers/inter-org/{transfer_id}` - Detalle
   - Incluye los entries del ledger asociados
-- [ ] `GET /api/v1/admin/transfers/inter-org/summary`
+- [x] `GET /api/v1/admin/transfers/inter-org/summary`
   - Resumen por periodo: total transferido, numero de operaciones, top pares org-a-org
-- [ ] Paginacion server-side
-- [ ] Export a CSV
-- [ ] Solo accesible con permiso `sp:admin`
+- [x] Paginacion server-side
+- [x] Export a CSV
+- [x] Solo accesible con permiso `sp:admin`
 
 **Tareas Tecnicas:**
 1. Endpoints de listado con filtros y paginacion
