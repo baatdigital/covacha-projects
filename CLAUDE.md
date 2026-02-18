@@ -227,15 +227,16 @@ covacha-projects/
 
 **Total SuperPago**: 40 epicas, ~185 user stories
 
-### Marketing (EP-MK-001 a EP-MK-023)
+### Marketing (EP-MK-001 a EP-MK-024)
 
 | Archivo | Epicas | User Stories | Estado |
 |---------|--------|-------------|--------|
 | (GitHub Issues #1-5, #8) | EP-MK-001 a EP-MK-005 | - | Completado |
 | marketing/MARKETING-EPICS.md | EP-MK-006 a EP-MK-013 | US-MK-001 a US-MK-038 | Planificacion |
 | marketing/MARKETING-AI-AGENTS-EPICS.md | EP-MK-014 a EP-MK-023 | US-MK-039 a US-MK-093 | Planificacion |
+| marketing/MARKETING-SOCIAL-REPORTS-EPICS.md | EP-MK-024 | US-MK-094 a US-MK-100 | Planificacion |
 
-**Total Marketing**: 23 epicas (5 completadas, 18 pendientes), 93 user stories
+**Total Marketing**: 24 epicas (5 completadas, 19 pendientes), 100 user stories
 
 ### Authentication (EP-AU-001 a EP-AU-008)
 
@@ -299,14 +300,14 @@ covacha-projects/
 |----------|--------|-------------|-----------|
 | SuperPago | 40 | ~185 | P1 |
 | Authentication | 8 | 45 | P1 |
-| Marketing | 23 | 93 | P2 |
+| Marketing | 24 | 100 | P2 |
 | Dashboard | 8 | 45 | P2 |
 | IA/Bots | 10 | 55 | P2 |
 | AlertaTribunal | 8 | 46 | P2 |
 | CRM | 8 | 48 | P3 |
 | Website | 6 | 36 | P3 |
 | Legacy MiPay | 8 | 42 | P5 |
-| **TOTAL** | **119** | **~595** | - |
+| **TOTAL** | **120** | **~602** | - |
 
 ---
 
