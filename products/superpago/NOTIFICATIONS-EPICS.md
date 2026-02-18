@@ -209,7 +209,7 @@ GSI: PK=NOTIF_DLQ#ORG#{org_id}, SK={timestamp}
 | ID | Epica | Complejidad | Sprint Sugerido | Dependencias | Estado |
 |----|-------|-------------|-----------------|--------------|--------|
 | EP-SP-029 | Notificaciones Financieras Backend | XL | 12-14 | EP-SP-010, EP-SP-004, EP-SP-005, EP-SP-017 | **COMPLETADO (backend)** |
-| EP-SP-030 | Frontend de Configuracion y Tiempo Real | L | 14-16 | EP-SP-029, EP-SP-007, EP-SP-008, EP-SP-011, EP-SP-012 | Planificacion |
+| EP-SP-030 | Frontend de Configuracion y Tiempo Real | L | 14-16 | EP-SP-029, EP-SP-007, EP-SP-008, EP-SP-011, EP-SP-012 | **COMPLETADO (frontend stub)** |
 
 ---
 
