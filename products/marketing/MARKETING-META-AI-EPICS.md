@@ -2,7 +2,7 @@
 
 **Fecha**: 2026-02-18
 **Product Owner**: BaatDigital / Marketing
-**Estado**: Planificacion
+**Estado**: EN PROGRESO (backend core + provider + tests completados)
 **Continua desde**: MARKETING-EPICS.md (EP-MK-013: AI Config Multi-Provider)
 **User Stories**: US-MK-101 a US-MK-107
 
@@ -669,18 +669,15 @@ Como **gestor de agencia** quiero configurar Meta AI / LLama como proveedor de I
 - [ ] Toggle on/off para activar/desactivar Meta AI sin borrar config
 
 **Tareas Tecnicas:**
-- [ ] **Backend**: Crear `MetaAIConfigService` en `covacha-core/services/meta_ai_config_service.py`
-- [ ] **Backend**: Endpoints CRUD:
-  - `POST /api/v1/organization/{orgId}/clients/{clientId}/ai-providers/meta` (crear config)
-  - `GET /api/v1/organization/{orgId}/clients/{clientId}/ai-providers/meta` (obtener config)
-  - `PUT /api/v1/organization/{orgId}/clients/{clientId}/ai-providers/meta` (actualizar)
-  - `DELETE /api/v1/organization/{orgId}/clients/{clientId}/ai-providers/meta` (eliminar)
-  - `POST /api/v1/organization/{orgId}/clients/{clientId}/ai-providers/meta/validate` (test key)
+- [x] **Backend**: Crear `MetaAIConfigService` en `covacha-core/services/meta_ai_config_service.py` (catalogo, hosts, validate, generate, recommend)
+- [x] **Backend**: Endpoints basicos: GET models, GET hosts, POST validate-key, POST generate, GET recommend
+- [ ] **Backend**: Endpoints CRUD completos por cliente (POST/GET/PUT/DELETE config por clientId)
 - [ ] **Backend**: Cifrado de API key con `cryptography.fernet` (key en env var `AI_ENCRYPTION_KEY`)
 - [ ] **Frontend**: Crear `MetaAIConfigWizardComponent` (4 pasos standalone)
 - [ ] **Frontend**: Crear `HostingProviderSelectorComponent` con cards descriptivas
-- [ ] **Frontend**: Integrar en tab "AI" de client settings (junto a OpenAI/Claude/Gemini)
-- [ ] **Tests unitarios (10+)**: config CRUD, cifrado API key, validacion endpoint, auto-fill endpoint, toggle on/off
+- [x] **Frontend**: Integrar META en wizard AI Provider (capacidades, modelos por prioridad)
+- [x] **Frontend**: Crear `MetaAIService` Angular con signals (models, hosts, generate, validate)
+- [x] **Tests unitarios (39)**: service 24 + controller 15 (catalogo, filtros, hosts, validate, generate, recommend)
 - [ ] **Tests de integracion (4+)**: crear config → validar key mock → persistir DynamoDB, cifrado round-trip
 - [ ] **Tests E2E (2+)**: wizard completo → guardar → verificar en settings; editar config existente
 
@@ -707,11 +704,14 @@ Como **gestor de agencia** quiero explorar un catalogo visual de todos los model
 - [ ] Tooltip con descripcion detallada y caso de uso recomendado al hover
 
 **Tareas Tecnicas:**
-- [ ] **Backend**: Endpoint `GET /api/v1/ai-providers/meta/models` (retorna catalogo estatico + precios actualizados)
+- [x] **Backend**: Endpoint `GET /organization/{org_id}/meta-ai/models` con filtros (family, vision_only, host)
+- [x] **Backend**: MetaAIProvider en covacha-libs con catalogo 8 modelos LLama (40 tests)
+- [x] **Frontend**: Actualizar catalogo META en client.model.ts (8 modelos con IDs correctos)
+- [x] **Frontend**: MetaAIService con getModels(), helpers (getVisionModels, getCheapestModel, etc.)
 - [ ] **Frontend**: Crear `LlamaModelCatalogComponent` con grid de model cards
 - [ ] **Frontend**: Crear `ModelComparisonComponent` para comparativa lado a lado
 - [ ] **Frontend**: Crear `ModelCardComponent` con badges, metricas y CTA
-- [ ] **Tests unitarios (6+)**: rendering de catalogo, filtros, comparativa, seleccion
+- [x] **Tests unitarios (49)**: provider 40 (covacha-libs) + service catalog 9 (covacha-core)
 - [ ] **Tests de integracion (2+)**: endpoint de catalogo → response structure
 - [ ] **Tests E2E (2+)**: navegar catalogo → filtrar → comparar → seleccionar modelo
 
