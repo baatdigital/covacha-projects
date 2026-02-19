@@ -2,7 +2,7 @@
 
 **Fecha**: 2026-02-19
 **Product Owner**: BaatDigital / Marketing
-**Estado**: Planificacion
+**Estado**: EN PROGRESO (EP-MK-026 a 029 completados, EP-MK-030 pendiente)
 **Continua desde**: MARKETING-META-AI-EPICS.md (EP-MK-025, US-MK-101 a US-MK-107)
 **User Stories**: US-MK-108 a US-MK-140
 **Referencia**: baatdigital.com.mx como cliente ejemplo ya sincronizado
@@ -183,10 +183,10 @@ El sistema de promociones de mf-marketing/covacha-core ya tiene funcionalidad ba
 
 | ID | Epica | User Stories | Complejidad | Prioridad | Dependencias |
 |----|-------|-------------|-------------|-----------|--------------|
-| EP-MK-026 | Promociones Dinamicas desde BD | US-MK-108 a US-MK-114 | M | P1 Critica | EP-MK-005 (landing pages completada) |
-| EP-MK-027 | Landing de Promociones Orientada a Ventas | US-MK-115 a US-MK-122 | L | P1 Alta | EP-MK-026 |
-| EP-MK-028 | Motor de Funnels de Venta Multi-Canal | US-MK-123 a US-MK-132 | XL | P1 Alta | EP-MK-027, EP-IA-012 |
-| EP-MK-029 | Integracion Chatbot + Promociones | US-MK-133 a US-MK-137 | M | P2 Media | EP-MK-027, EP-IA-001 |
+| EP-MK-026 | Promociones Dinamicas desde BD | US-MK-108 a US-MK-114 | M | P1 Critica | COMPLETADO |
+| EP-MK-027 | Landing de Promociones Orientada a Ventas | US-MK-115 a US-MK-122 | L | P1 Alta | COMPLETADO |
+| EP-MK-028 | Motor de Funnels de Venta Multi-Canal | US-MK-123 a US-MK-132 | XL | P1 Alta | COMPLETADO (backend) |
+| EP-MK-029 | Integracion Chatbot + Promociones | US-MK-133 a US-MK-137 | M | P2 Media | COMPLETADO (backend) |
 | EP-MK-030 | Tests y Cobertura Completa Promociones | US-MK-138 a US-MK-140 | L | P1 Alta | EP-MK-026 a EP-MK-029 |
 
 **Totales**:
@@ -201,6 +201,8 @@ El sistema de promociones de mf-marketing/covacha-core ya tiene funcionalidad ba
 ---
 
 ### EP-MK-026: Promociones Dinamicas desde Base de Datos
+
+> **Estado: COMPLETADO** — PromocionesComponent refactorizado de JSON estatico a DynamicPromotionsService. Routing reestructurado para slug dinamico. Filtrado por expiracion implementado.
 
 **Objetivo**: Reemplazar el componente de formulario de creacion en la pagina publica de promociones por un listado dinamico que lee promociones activas y vigentes de la base de datos.
 
@@ -217,6 +219,8 @@ El sistema de promociones de mf-marketing/covacha-core ya tiene funcionalidad ba
 
 ### EP-MK-027: Landing de Promociones Orientada a Ventas
 
+> **Estado: COMPLETADO** — DynamicLandingComponent integrado con SendContactUseCase para CRM, boton flotante WhatsApp, boton flotante QR, tracking de conversiones.
+
 **Objetivo**: Crear landing pages de promociones con layout dedicado a conversion, QR multidimensional, formulario de contacto amigable que alimenta el CRM, y chatbot integrado. Las URLs deben funcionar en ingles `/promotions/:slug`.
 
 **Estado actual**: Landing existe pero mezcla layouts, no tiene QR, el formulario no conecta al CRM, y la ruta en ingles redirige a home.
@@ -232,6 +236,8 @@ El sistema de promociones de mf-marketing/covacha-core ya tiene funcionalidad ba
 
 ### EP-MK-028: Motor de Funnels de Venta Multi-Canal
 
+> **Estado: COMPLETADO (backend)** — FunnelExecutorService en covacha-botia: auto-enroll, funnel por defecto 4 pasos, despacho SQS email/WhatsApp, FunnelController + routes. 33 tests.
+
 **Objetivo**: Crear sistema de funnels de venta configurable con canales email y WhatsApp. Incluye funnel por defecto (bienvenida + notificacion equipo), configuracion de frecuencia/timezone/horarios, recurrencia mensual infinita, y funnel chaining.
 
 **Estado actual**: No existe ningun sistema de funnels. Las promociones no tienen seguimiento automatizado post-lead.
@@ -244,6 +250,8 @@ El sistema de promociones de mf-marketing/covacha-core ya tiene funcionalidad ba
 ---
 
 ### EP-MK-029: Integracion Chatbot + Promociones
+
+> **Estado: COMPLETADO (backend)** — PromotionContextService en covacha-botia: regex pattern matching + cache 5min + inyeccion de contexto de promociones en WebChatController. 16 tests.
 
 **Objetivo**: El chatbot del cliente (web y WhatsApp) debe entender las promociones activas, poder responder preguntas sobre ellas, y estar visible en las landing pages de promociones.
 
