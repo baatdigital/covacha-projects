@@ -72,6 +72,10 @@ covacha-projects/
 │   │   ├── website.yml                # Metadata del producto
 │   │   └── WEBSITE-EPICS.md           # EP-WB-001 a EP-WB-006 (36 US)
 │   │
+│   ├── inventory/                     # Gestion de inventario multi-cliente
+│   │   ├── inventory.yml              # Metadata del producto
+│   │   └── INVENTORY-EPICS.md         # EP-INV-001 a EP-INV-012 (65 US)
+│   │
 │   └── legacy-mipay/                  # Legacy en migracion
 │       ├── legacy-mipay.yml           # Metadata del producto
 │       └── LEGACY-MIPAY-MIGRATION-PLAN.md # EP-LM-001 a EP-LM-008 (42 US)
@@ -227,15 +231,18 @@ covacha-projects/
 
 **Total SuperPago**: 40 epicas, ~185 user stories
 
-### Marketing (EP-MK-001 a EP-MK-023)
+### Marketing (EP-MK-001 a EP-MK-025)
 
 | Archivo | Epicas | User Stories | Estado |
 |---------|--------|-------------|--------|
 | (GitHub Issues #1-5, #8) | EP-MK-001 a EP-MK-005 | - | Completado |
 | marketing/MARKETING-EPICS.md | EP-MK-006 a EP-MK-013 | US-MK-001 a US-MK-038 | Planificacion |
 | marketing/MARKETING-AI-AGENTS-EPICS.md | EP-MK-014 a EP-MK-023 | US-MK-039 a US-MK-093 | Planificacion |
+| marketing/MARKETING-SOCIAL-REPORTS-EPICS.md | EP-MK-024 | US-MK-094 a US-MK-100 | Planificacion |
+| marketing/MARKETING-META-AI-EPICS.md | EP-MK-025 | US-MK-101 a US-MK-107 | Planificacion |
+| marketing/MARKETING-PROMOTIONS-FUNNELS-EPICS.md | EP-MK-026 a EP-MK-030 | US-MK-108 a US-MK-140 | Planificacion |
 
-**Total Marketing**: 23 epicas (5 completadas, 18 pendientes), 93 user stories
+**Total Marketing**: 30 epicas (5 completadas, 25 pendientes), 140 user stories
 
 ### Authentication (EP-AU-001 a EP-AU-008)
 
@@ -253,13 +260,14 @@ covacha-projects/
 
 **Total Dashboard**: 8 epicas, 45 user stories
 
-### IA/Bots (EP-IA-001 a EP-IA-010)
+### IA/Bots (EP-IA-001 a EP-IA-016)
 
 | Archivo | Epicas | User Stories | Estado |
 |---------|--------|-------------|--------|
 | ia/IA-BOTS-EPICS.md | EP-IA-001 a EP-IA-010 | US-IA-001 a US-IA-055 | Planificacion |
+| ia/IA-FUNNELS-CLIENTS-EPICS.md | EP-IA-011 a EP-IA-016 | US-IA-056 a US-IA-098 | Planificacion |
 
-**Total IA/Bots**: 10 epicas, 55 user stories
+**Total IA/Bots**: 16 epicas, 98 user stories
 
 ### AlertaTribunal (EP-AT-001 a EP-AT-008)
 
@@ -293,20 +301,29 @@ covacha-projects/
 
 **Total Legacy MiPay**: 8 epicas, 42 user stories
 
+### Inventario (EP-INV-001 a EP-INV-012)
+
+| Archivo | Epicas | User Stories | Estado |
+|---------|--------|-------------|--------|
+| inventory/INVENTORY-EPICS.md | EP-INV-001 a EP-INV-012 | US-INV-001 a US-INV-065 | Planificacion |
+
+**Total Inventario**: 12 epicas, 65 user stories
+
 ### Totales del Ecosistema
 
 | Producto | Epicas | User Stories | Prioridad |
 |----------|--------|-------------|-----------|
 | SuperPago | 40 | ~185 | P1 |
 | Authentication | 8 | 45 | P1 |
-| Marketing | 23 | 93 | P2 |
+| Inventario | 12 | 65 | P2 |
+| Marketing | 30 | 140 | P2 |
 | Dashboard | 8 | 45 | P2 |
-| IA/Bots | 10 | 55 | P2 |
+| IA/Bots | 16 | 98 | P2 |
 | AlertaTribunal | 8 | 46 | P2 |
 | CRM | 8 | 48 | P3 |
 | Website | 6 | 36 | P3 |
 | Legacy MiPay | 8 | 42 | P5 |
-| **TOTAL** | **119** | **~595** | - |
+| **TOTAL** | **144** | **~750** | - |
 
 ---
 
@@ -324,6 +341,7 @@ covacha-projects/
 | Epica AlertaTribunal | EP-AT-XXX | EP-AT-001 |
 | Epica CRM | EP-CR-XXX | EP-CR-001 |
 | Epica Website | EP-WB-XXX | EP-WB-001 |
+| Epica Inventario | EP-INV-XXX | EP-INV-001 |
 | Epica Legacy MiPay | EP-LM-XXX | EP-LM-001 |
 | User Story SuperPago | US-SP-XXX | US-SP-131 |
 | User Story Marketing | US-MK-XXX | US-MK-039 |
@@ -333,6 +351,7 @@ covacha-projects/
 | User Story AlertaTribunal | US-AT-XXX | US-AT-001 |
 | User Story CRM | US-CR-XXX | US-CR-001 |
 | User Story Website | US-WB-XXX | US-WB-001 |
+| User Story Inventario | US-INV-XXX | US-INV-001 |
 | User Story Legacy MiPay | US-LM-XXX | US-LM-001 |
 | Feature cross-repo | CROSS-XXX | CROSS-001 |
 | Issue individual | ISS-XXX | ISS-042 |
@@ -503,3 +522,30 @@ Task(subagent_type="Explore", model="haiku", prompt="Busca archivos X")
 
 - [SuperPago Board](https://github.com/orgs/baatdigital/projects/1)
 - [Master Board](https://github.com/orgs/baatdigital/projects/2)
+
+
+---
+
+## Regla Arquitectonica Global: Modelos y Repositorios
+
+**REGLA CRITICA para todo el ecosistema:**
+
+> **covacha-libs es la UNICA fuente de verdad para modelos Pydantic y repositorios DynamoDB.**
+> **Los repos individuales (covacha-core, covacha-payment, etc.) NO deben definir modelos ni repositorios propios.**
+
+### Estructura correcta
+- Modelos → `covacha-libs/covacha_libs/models/<modulo>/`
+- Repositorios → `covacha-libs/covacha_libs/repositories/<modulo>/`
+- Services, Controllers, Routes, Jobs → repos individuales
+
+### Migracion pendiente (2026-02-19)
+Los siguientes repos aun tienen modelos/repos locales que necesitan migrarse:
+
+| Repo | Modelos locales | Repos locales | Prioridad |
+|------|----------------|---------------|-----------|
+| covacha-payment | 25 clases | 17 clases | ALTA |
+| covacha-notification | 12 clases | 5 clases | MEDIA |
+| covacha-botia | 3 clases | 2 clases | MEDIA |
+| covacha-transaction | 4 clases | 2 clases | MEDIA |
+| covacha-inventory | 8 clases (duplicadas) | 5 clases | ALTA |
+| covacha-core | COMPLETADO | COMPLETADO | DONE |
