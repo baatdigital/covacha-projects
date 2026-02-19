@@ -1,0 +1,33 @@
+name: Inventario
+status: active
+priority: 2
+description: Sistema completo de gestion de inventario multi-cliente con productos, stock, cotizaciones, ventas y reportes
+
+repos:
+  backends:
+    - covacha-inventory
+  frontends:
+    - mf-inventory
+  shared:
+    - covacha-libs
+
+domains:
+  - api.superpago.com.mx
+
+infrastructure:
+  cloud: AWS
+  compute: EC2 (private subnet)
+  cdn: S3 + CloudFront
+  auth: Cognito
+  database: DynamoDB
+  deploy: GitHub Actions + CodeDeploy
+
+epics_file: INVENTORY-EPICS.md
+epic_range: EP-INV-001 to EP-INV-012
+user_story_range: US-INV-001 to US-INV-065
+
+team:
+  mac-1: frontend (mf-inventory)
+  mac-2: backend (covacha-inventory)
+  orchestrator: claude-code
+  editor: cursor-agent
