@@ -2,7 +2,7 @@
 
 **Fecha**: 2026-02-14
 **Product Owner**: SuperPago
-**Estado**: Planificacion
+**Estado**: En Desarrollo (EP-SP-019 completada backend, resto en planificacion)
 **Continua desde**: SPEI-PRODUCT-PLAN.md (EP-SP-001 a EP-SP-010) y SPEI-FRONTEND-EPICS-MULTI-TIER.md (EP-SP-011 a EP-SP-013)
 **User Stories**: US-SP-052 en adelante (continua desde US-SP-051)
 
@@ -75,15 +75,15 @@ Persona fisica o sistema en un punto autorizado (tipo OXXO) que procesa Cash-In/
 
 ## Mapa de Epicas de Expansion
 
-| ID | Epica | Complejidad | Sprint Sugerido | Dependencias Existentes |
-|----|-------|-------------|-----------------|------------------------|
-| EP-SP-014 | Transferencias Internas Inter-Organizacion | M | 4-5 | EP-SP-001, EP-SP-003, EP-SP-006 |
-| EP-SP-015 | Cash-In / Cash-Out (Red de Puntos) | XL | 5-7 | EP-SP-001, EP-SP-003, EP-SP-010 |
-| EP-SP-016 | Subasta de Efectivo (Mercado de Liquidez) | L | 7-8 | EP-SP-014, EP-SP-015 |
-| EP-SP-017 | Agente IA WhatsApp - Core (covacha-botia) | XL | 5-7 | EP-SP-001, EP-SP-004, EP-SP-005 |
-| EP-SP-018 | Agente IA WhatsApp - BillPay y Notificaciones | L | 7-8 | EP-SP-017 |
-| EP-SP-019 | Reglas de Integridad de Datos (Cross-cutting) | L | 1-2 (paralela) | EP-SP-001, EP-SP-003 |
-| EP-SP-020 | mf-sp - Pantallas de Cash, Subasta y Config IA | L | 7-9 | EP-SP-007, EP-SP-015, EP-SP-016, EP-SP-017 |
+| ID | Epica | Complejidad | Sprint Sugerido | Dependencias Existentes | Estado |
+|----|-------|-------------|-----------------|------------------------|--------|
+| EP-SP-014 | Transferencias Internas Inter-Organizacion | M | 4-5 | EP-SP-001, EP-SP-003, EP-SP-006 | PENDIENTE |
+| EP-SP-015 | Cash-In / Cash-Out (Red de Puntos) | XL | 5-7 | EP-SP-001, EP-SP-003, EP-SP-010 | PENDIENTE |
+| EP-SP-016 | Subasta de Efectivo (Mercado de Liquidez) | L | 7-8 | EP-SP-014, EP-SP-015 | PENDIENTE |
+| EP-SP-017 | Agente IA WhatsApp - Core (covacha-botia) | XL | 5-7 | EP-SP-001, EP-SP-004, EP-SP-005 | PENDIENTE |
+| EP-SP-018 | Agente IA WhatsApp - BillPay y Notificaciones | L | 7-8 | EP-SP-017 | PENDIENTE |
+| EP-SP-019 | Reglas de Integridad de Datos (Cross-cutting) | L | 1-2 (paralela) | EP-SP-001, EP-SP-003 | COMPLETADO (backend) |
+| EP-SP-020 | mf-sp - Pantallas de Cash, Subasta y Config IA | L | 7-9 | EP-SP-007, EP-SP-015, EP-SP-016, EP-SP-017 | PENDIENTE |
 
 **Totales de expansion:**
 - 7 epicas nuevas
@@ -256,6 +256,8 @@ Extension del agente IA para pago de servicios (BillPay) y notificaciones proact
 
 ### EP-SP-019: Reglas de Integridad de Datos (Cross-cutting)
 
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-payment` branch `develop` (2026-02-17)
+
 **Descripcion:**
 Capa transversal de proteccion de integridad financiera. Se implementa en PARALELO con las demas epicas (Sprint 1-2) porque afecta a TODOS los servicios. Incluye: sp_organization_id obligatorio en toda tabla y operacion, prevencion de race conditions con DynamoDB ConditionExpressions y TransactWriteItems, idempotencia estricta con tabla dedicada, y prevencion de double-spending con locks optimistas.
 
@@ -263,16 +265,16 @@ Capa transversal de proteccion de integridad financiera. Se implementa en PARALE
 - US-SP-075, US-SP-076, US-SP-077, US-SP-078, US-SP-079
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] `sp_organization_id` presente y validado en TODA operacion y TODA tabla
-- [ ] Middleware que rechaza requests sin `X-SP-Organization-Id` header
-- [ ] Tabla de idempotencia dedicada con TTL configurable
-- [ ] Toda operacion mutativa requiere `idempotency_key`
-- [ ] DynamoDB TransactWriteItems para operaciones multi-entry
-- [ ] ConditionExpressions para prevenir saldo negativo
-- [ ] Lock optimista en saldo para prevenir double-spending
+- [x] `sp_organization_id` presente y validado en TODA operacion y TODA tabla
+- [x] Middleware que rechaza requests sin `X-SP-Organization-Id` header
+- [x] Tabla de idempotencia dedicada con TTL configurable
+- [x] Toda operacion mutativa requiere `idempotency_key`
+- [x] DynamoDB TransactWriteItems para operaciones multi-entry
+- [x] ConditionExpressions para prevenir saldo negativo
+- [x] Lock optimista en saldo para prevenir double-spending
 - [ ] Tests de concurrencia (simular N requests simultaneos)
 - [ ] Documentacion de patrones de integridad para desarrolladores
-- [ ] Tests >= 98%
+- [x] Tests >= 98%
 
 **Dependencias:** EP-SP-001, EP-SP-003 (se aplica a ambos desde el inicio)
 

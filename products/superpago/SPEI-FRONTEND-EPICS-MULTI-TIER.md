@@ -105,13 +105,13 @@ SuperPago (Tier 1 - Admin)
 
 ## Mapa de Epicas Frontend
 
-| ID | Epica | Complejidad | Sprint | Dependencias |
-|----|-------|-------------|--------|--------------|
-| EP-SP-007 | mf-sp Scaffold + Arquitectura Multi-Tier | L | 2-3 | Ninguna (frontend) |
-| EP-SP-008 | Portal Admin SuperPago (Tier 1) | XL | 3-4 | EP-SP-007, EP-SP-001 (API), EP-SP-003 (Ledger API) |
-| EP-SP-011 | Portal Cliente Empresa B2B (Tier 2) | XL | 4-5 | EP-SP-007, EP-SP-013, EP-SP-001, EP-SP-004, EP-SP-006 |
-| EP-SP-012 | Portal Usuario Final B2C (Tier 3) | M | 5 | EP-SP-007, EP-SP-013, EP-SP-001 |
-| EP-SP-013 | Componentes Compartidos entre Tiers | L | 3-4 | EP-SP-007 |
+| ID | Epica | Complejidad | Sprint | Dependencias | Estado |
+|----|-------|-------------|--------|--------------|--------|
+| EP-SP-007 | mf-sp Scaffold + Arquitectura Multi-Tier | L | 2-3 | Ninguna (frontend) | PENDIENTE |
+| EP-SP-008 | Portal Admin SuperPago (Tier 1) | XL | 3-4 | EP-SP-007, EP-SP-001 (API), EP-SP-003 (Ledger API) | PENDIENTE |
+| EP-SP-011 | Portal Cliente Empresa B2B (Tier 2) | XL | 4-5 | EP-SP-007, EP-SP-013, EP-SP-001, EP-SP-004, EP-SP-006 | PENDIENTE |
+| EP-SP-012 | Portal Usuario Final B2C (Tier 3) | M | 5 | EP-SP-007, EP-SP-013, EP-SP-001 | PENDIENTE |
+| EP-SP-013 | Componentes Compartidos entre Tiers | L | 3-4 | EP-SP-007 | PENDIENTE |
 
 ---
 

@@ -1,0 +1,48 @@
+name: Auto-merge develop to main
+
+on:
+  push:
+    branches: [develop]
+  workflow_run:
+    workflows: ["*"]
+    types: [completed]
+    branches: [develop]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    if: github.ref == 'refs/heads/develop' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'develop')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check CI status
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DEVELOP_SHA=$(git rev-parse origin/develop)
+          echo "Develop SHA: $DEVELOP_SHA"
+          CHECKS=$(gh api repos/${{ github.repository }}/commits/$DEVELOP_SHA/check-runs --jq '.check_runs | map(select(.conclusion != "success" and .conclusion != "skipped" and .conclusion != null and .name != "auto-merge")) | length')
+          if [ "$CHECKS" -gt 0 ]; then
+            echo "CI checks pending or failing. Skipping auto-merge."
+            exit 0
+          fi
+          echo "All CI checks passed."
+
+      - name: Create or update PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXISTING_PR=$(gh pr list --base main --head develop --json number --jq '.[0].number' 2>/dev/null)
+          if [ -z "$EXISTING_PR" ]; then
+            gh pr create --base main --head develop --title "Auto-merge: develop → main" --body "Automated PR from develop to main after CI passes." || echo "PR already exists or no changes"
+            EXISTING_PR=$(gh pr list --base main --head develop --json number --jq '.[0].number' 2>/dev/null)
+          fi
+          if [ -n "$EXISTING_PR" ]; then
+            gh pr merge "$EXISTING_PR" --merge --auto || echo "Auto-merge already enabled or merge not possible"
+          fi
