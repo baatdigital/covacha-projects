@@ -2,7 +2,7 @@
 
 **Fecha**: 2026-02-19
 **Product Owner**: SuperPago / BaatDigital
-**Estado**: Planificacion
+**Estado**: EN PROGRESO (EP-IA-011 y EP-IA-012 completados, EP-IA-013 a 016 pendientes)
 **Continua desde**: IA-BOTS-EPICS.md (EP-IA-001 a EP-IA-010, US-IA-001 a US-IA-055)
 **User Stories**: US-IA-056 a US-IA-098
 **Repos afectados**: covacha-botia, mf-ia, covacha-libs, covacha-core
@@ -182,8 +182,8 @@ Sin embargo, hay necesidades criticas que no estan cubiertas:
 
 | ID | Epica | User Stories | Complejidad | Prioridad | Dependencias |
 |----|-------|-------------|-------------|-----------|--------------|
-| EP-IA-011 | Gestion de Clientes Multi-Modulo | US-IA-056 a US-IA-062 | M | P1 Critica | EP-IA-001 (orquestador, si existe) |
-| EP-IA-012 | Motor de Funnels de Venta | US-IA-063 a US-IA-072 | XL | P1 Alta | EP-IA-011 |
+| EP-IA-011 | Gestion de Clientes Multi-Modulo | US-IA-056 a US-IA-062 | M | P1 Critica | COMPLETADO |
+| EP-IA-012 | Motor de Funnels de Venta | US-IA-063 a US-IA-072 | XL | P1 Alta | COMPLETADO (backend) |
 | EP-IA-013 | Canal Email en Funnels | US-IA-073 a US-IA-079 | L | P1 Alta | EP-IA-012 |
 | EP-IA-014 | Canal WhatsApp en Funnels | US-IA-080 a US-IA-086 | L | P1 Alta | EP-IA-012, EP-IA-003 (WhatsApp) |
 | EP-IA-015 | Tests 100% covacha-botia | US-IA-087 a US-IA-092 | L | P1 Alta | EP-IA-011 a EP-IA-014 |
@@ -202,6 +202,8 @@ Sin embargo, hay necesidades criticas que no estan cubiertas:
 
 ### EP-IA-011: Gestion de Clientes Multi-Modulo
 
+> **Estado: COMPLETADO** — Fix localStorage key mismatch: dual-key (MARKETING_CLIENT_KEY + IA_CLIENT_KEY) para sincronizacion cross-MF. Eliminado ngOnDestroy que borraba el cliente.
+
 **Objetivo**: Reparar y mejorar la gestion de clientes en mf-ia. Los clientes con servicio IA contratado deben listarse correctamente, sincronizarse desde mf-marketing, y mantener `current_sp_client_id` persistente.
 
 **Estado actual**: La lista de clientes dejo de funcionar. La sincronizacion desde mf-marketing no opera. El `current_sp_client_id` se pierde al navegar.
@@ -211,6 +213,8 @@ Sin embargo, hay necesidades criticas que no estan cubiertas:
 ---
 
 ### EP-IA-012: Motor de Funnels de Venta
+
+> **Estado: COMPLETADO (backend)** — FunnelExecutorService + FunnelController + funnel_routes en covacha-botia. Auto-enroll, funnel por defecto 4 pasos (WhatsApp/Email), despacho SQS, avance de leads. 17 tests.
 
 **Objetivo**: Crear el motor de funnels de venta en covacha-botia con executor, scheduler, templates, condiciones y chaining. Este motor es consumido por mf-marketing (EP-MK-028) y mf-ia para configuracion.
 
