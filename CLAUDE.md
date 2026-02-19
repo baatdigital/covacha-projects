@@ -240,8 +240,9 @@ covacha-projects/
 | marketing/MARKETING-AI-AGENTS-EPICS.md | EP-MK-014 a EP-MK-023 | US-MK-039 a US-MK-093 | Planificacion |
 | marketing/MARKETING-SOCIAL-REPORTS-EPICS.md | EP-MK-024 | US-MK-094 a US-MK-100 | Planificacion |
 | marketing/MARKETING-META-AI-EPICS.md | EP-MK-025 | US-MK-101 a US-MK-107 | Planificacion |
+| marketing/MARKETING-PROMOTIONS-FUNNELS-EPICS.md | EP-MK-026 a EP-MK-030 | US-MK-108 a US-MK-140 | Planificacion |
 
-**Total Marketing**: 25 epicas (5 completadas, 20 pendientes), 107 user stories
+**Total Marketing**: 30 epicas (5 completadas, 25 pendientes), 140 user stories
 
 ### Authentication (EP-AU-001 a EP-AU-008)
 
@@ -259,13 +260,14 @@ covacha-projects/
 
 **Total Dashboard**: 8 epicas, 45 user stories
 
-### IA/Bots (EP-IA-001 a EP-IA-010)
+### IA/Bots (EP-IA-001 a EP-IA-016)
 
 | Archivo | Epicas | User Stories | Estado |
 |---------|--------|-------------|--------|
 | ia/IA-BOTS-EPICS.md | EP-IA-001 a EP-IA-010 | US-IA-001 a US-IA-055 | Planificacion |
+| ia/IA-FUNNELS-CLIENTS-EPICS.md | EP-IA-011 a EP-IA-016 | US-IA-056 a US-IA-098 | Planificacion |
 
-**Total IA/Bots**: 10 epicas, 55 user stories
+**Total IA/Bots**: 16 epicas, 98 user stories
 
 ### AlertaTribunal (EP-AT-001 a EP-AT-008)
 
@@ -314,14 +316,14 @@ covacha-projects/
 | SuperPago | 40 | ~185 | P1 |
 | Authentication | 8 | 45 | P1 |
 | Inventario | 12 | 65 | P2 |
-| Marketing | 25 | 107 | P2 |
+| Marketing | 30 | 140 | P2 |
 | Dashboard | 8 | 45 | P2 |
-| IA/Bots | 10 | 55 | P2 |
+| IA/Bots | 16 | 98 | P2 |
 | AlertaTribunal | 8 | 46 | P2 |
 | CRM | 8 | 48 | P3 |
 | Website | 6 | 36 | P3 |
 | Legacy MiPay | 8 | 42 | P5 |
-| **TOTAL** | **133** | **~674** | - |
+| **TOTAL** | **144** | **~750** | - |
 
 ---
 
