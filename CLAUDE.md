@@ -522,3 +522,30 @@ Task(subagent_type="Explore", model="haiku", prompt="Busca archivos X")
 
 - [SuperPago Board](https://github.com/orgs/baatdigital/projects/1)
 - [Master Board](https://github.com/orgs/baatdigital/projects/2)
+
+
+---
+
+## Regla Arquitectonica Global: Modelos y Repositorios
+
+**REGLA CRITICA para todo el ecosistema:**
+
+> **covacha-libs es la UNICA fuente de verdad para modelos Pydantic y repositorios DynamoDB.**
+> **Los repos individuales (covacha-core, covacha-payment, etc.) NO deben definir modelos ni repositorios propios.**
+
+### Estructura correcta
+- Modelos → `covacha-libs/covacha_libs/models/<modulo>/`
+- Repositorios → `covacha-libs/covacha_libs/repositories/<modulo>/`
+- Services, Controllers, Routes, Jobs → repos individuales
+
+### Migracion pendiente (2026-02-19)
+Los siguientes repos aun tienen modelos/repos locales que necesitan migrarse:
+
+| Repo | Modelos locales | Repos locales | Prioridad |
+|------|----------------|---------------|-----------|
+| covacha-payment | 25 clases | 17 clases | ALTA |
+| covacha-notification | 12 clases | 5 clases | MEDIA |
+| covacha-botia | 3 clases | 2 clases | MEDIA |
+| covacha-transaction | 4 clases | 2 clases | MEDIA |
+| covacha-inventory | 8 clases (duplicadas) | 5 clases | ALTA |
+| covacha-core | COMPLETADO | COMPLETADO | DONE |
