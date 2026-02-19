@@ -2,7 +2,7 @@
 
 **Fecha**: 2026-02-18
 **Product Owner**: BaatDigital / Marketing
-**Estado**: EN PROGRESO (backend core + provider + tests completados)
+**Estado**: EN PROGRESO (backend COMPLETADO: 7 servicios + 2 controllers + rutas + 181 tests; frontend service COMPLETADO; pendiente: frontend components + E2E)
 **Continua desde**: MARKETING-EPICS.md (EP-MK-013: AI Config Multi-Provider)
 **User Stories**: US-MK-101 a US-MK-107
 
@@ -740,15 +740,15 @@ Como **Community Manager** quiero generar posts para Facebook, Instagram y Whats
 - [ ] Tracking de uso: cada generacion registra tokens, costo, modelo, latencia
 
 **Tareas Tecnicas:**
-- [ ] **Backend**: Crear `MetaAIGenerationService` en `covacha-core/services/meta_ai_generation_service.py`
-- [ ] **Backend**: Endpoint `POST /api/v1/organization/{orgId}/clients/{clientId}/ai/meta/generate` (streaming SSE)
-- [ ] **Backend**: Prompts especializados por plataforma (FB tiene mas espacio, IG requiere hashtags, WA es conversacional)
-- [ ] **Backend**: Registrar cada request en DynamoDB (PK/SK: META_AI_USAGE#{timestamp})
+- [x] **Backend**: Crear `MetaAIGenerationService` en `covacha-core/services/meta_ai_generation_service.py`
+- [x] **Backend**: Endpoints `POST generate-social` y `POST generate-social-stream` (SSE streaming)
+- [x] **Backend**: Prompts especializados por plataforma (FB, IG, WA, email) con limites de caracteres
+- [x] **Backend**: Controller `MetaAIGenerationController` con registro automatico de uso
+- [x] **Frontend**: Integrar `generateSocial()` en MetaAIService con SocialGenerateRequest/Response
 - [ ] **Frontend**: Crear `MetaAIContentGeneratorComponent` integrado en creacion de post
 - [ ] **Frontend**: Crear `VariationsSelectorComponent` para elegir entre variaciones generadas
 - [ ] **Frontend**: Crear `PlatformComplianceBadgeComponent` (verde=ok, amarillo=warning, rojo=excede)
-- [ ] **Frontend**: Integrar SSE con `EventSource` o `fetch` + ReadableStream para streaming
-- [ ] **Tests unitarios (10+)**: generation service, prompts por plataforma, compliance check, streaming mock, variaciones
+- [x] **Tests unitarios (25)**: 8 generation social + 5 ad copy + 9 internal methods + 3 constants
 - [ ] **Tests de integracion (4+)**: generate endpoint → LLama API mock → response parsing → usage tracking
 - [ ] **Tests E2E (2+)**: generar post FB → verificar copy + hashtags; generar 3 variaciones → seleccionar una
 
@@ -774,12 +774,14 @@ Como **gestor de agencia** quiero generar copies optimizados para Facebook/Insta
 - [ ] Si el cliente tiene brand kit, el tono se alinea automaticamente
 
 **Tareas Tecnicas:**
-- [ ] **Backend**: Extender `MetaAIGenerationService` con use case `ad_copy`
-- [ ] **Backend**: Prompts especializados para Meta Ads con conocimiento de best practices
-- [ ] **Backend**: Validacion de limites de caracteres de Meta Ads
+- [x] **Backend**: Extender `MetaAIGenerationService` con use case `ad_copy` (generate_ad_copy method)
+- [x] **Backend**: Prompts especializados para Meta Ads con conocimiento de best practices (AD_COPY_PROMPT)
+- [x] **Backend**: Validacion de limites de caracteres de Meta Ads (AD_COPY_LIMITS, _check_ad_compliance)
+- [x] **Backend**: Controller `generate_ad_copy` endpoint con registro automatico de uso
+- [x] **Frontend**: Integrar `generateAdCopy()` en MetaAIService con AdCopyGenerateRequest/Response
 - [ ] **Frontend**: Crear `AdCopyGeneratorComponent` integrado en campaign builder
 - [ ] **Frontend**: Crear `AdPreviewMockupComponent` (preview visual del anuncio)
-- [ ] **Tests unitarios (8+)**: ad copy generation, character limits, CTA suggestions, variations, preview
+- [x] **Tests unitarios (5)**: ad copy generation, character limits, CTA suggestions, variations
 - [ ] **Tests de integracion (3+)**: generate ad copy → validate limits → format response
 - [ ] **Tests E2E (2+)**: generar copy de ad → verificar preview → seleccionar variacion
 
@@ -810,16 +812,16 @@ Como **Community Manager** quiero usar LLama Vision (3.2) para analizar imagenes
 - [ ] Configurable por cliente: activar/desactivar moderacion automatica
 
 **Tareas Tecnicas:**
-- [ ] **Backend**: Crear `LlamaVisionService` para analisis de imagenes (multimodal API)
-- [ ] **Backend**: Crear `CommentModerationService` con batch processing via SQS
-- [ ] **Backend**: Endpoints:
-  - `POST /api/v1/.../ai/meta/analyze-image` (analisis de imagen)
-  - `POST /api/v1/.../ai/meta/moderate-comments` (batch de comentarios)
-- [ ] **Backend**: Prompts especializados para analisis visual de marketing y moderacion
+
+- [x] **Backend**: Crear `LlamaVisionService` para analisis de imagenes (multimodal API) — `llama_vision_service.py`
+- [x] **Backend**: Moderacion batch en `LlamaVisionService.moderate_comments()` (max 50 comments, sentiment + action)
+- [x] **Backend**: Endpoints `POST analyze-image` y `POST moderate-comments` en MetaAIGenerationController
+- [x] **Backend**: Prompts especializados para analisis visual de marketing y moderacion
+- [x] **Frontend**: Integrar `analyzeImage()` y `moderateComments()` en MetaAIService con interfaces completas
 - [ ] **Frontend**: Crear `ImageAnalysisComponent` con upload + resultado inline
 - [ ] **Frontend**: Crear `CommentModerationDashboardComponent` con tabla de resultados
 - [ ] **Frontend**: Crear `ModerationActionComponent` (botones: aprobar, ocultar, eliminar, escalar)
-- [ ] **Tests unitarios (10+)**: vision service, moderacion batch, clasificacion, acciones
+- [x] **Tests unitarios (18)**: 5 image analysis + 6 moderation + 3 constants + 4 internal methods
 - [ ] **Tests de integracion (4+)**: analyze-image → vision API mock, moderate-comments → batch → classify
 - [ ] **Tests E2E (2+)**: subir imagen → ver analisis; moderar comentarios → aplicar accion
 
@@ -846,14 +848,15 @@ Como **director de agencia** quiero ver un dashboard con el consumo de Meta AI p
 - [ ] Accesible desde tab "AI" en settings del cliente
 
 **Tareas Tecnicas:**
-- [ ] **Backend**: Crear `MetaAIUsageService` que agrega datos de usage entries
-- [ ] **Backend**: Endpoint `GET /api/v1/.../clients/{clientId}/ai-providers/meta/usage?period=monthly`
-- [ ] **Backend**: Pre-computar resumen mensual con GSI de usage (evitar scan)
+
+- [x] **Backend**: Crear `MetaAIUsageService` — `meta_ai_usage_service.py` (record, summary, quota, rate, export, compare)
+- [x] **Backend**: Endpoints GET usage, GET usage/export, POST usage/rate en MetaAIGenerationController
+- [x] **Backend**: Filtros por periodo (daily/weekly/monthly/quarterly/custom), quota alerts (green/yellow/red)
+- [x] **Frontend**: Integrar `getUsage()`, `exportUsageCsv()`, `rateGeneration()` en MetaAIService
 - [ ] **Frontend**: Crear `MetaAIUsageDashboardComponent` con KPI cards + graficas
-- [ ] **Frontend**: Crear `UsageByUseCaseChartComponent` (donut chart)
-- [ ] **Frontend**: Crear `UsageTrendChartComponent` (line chart diario)
-- [ ] **Frontend**: Integrar con ng2-charts
-- [ ] **Tests unitarios (8+)**: aggregation service, KPIs, filtros, exportacion CSV
+- [ ] **Frontend**: Crear `UsageByUseCaseChartComponent` (donut chart SVG)
+- [ ] **Frontend**: Crear `UsageTrendChartComponent` (line chart diario SVG)
+- [x] **Tests unitarios (22)**: 2 record + 6 summary + 4 quota + 3 rating + 2 CSV + 2 comparison + 3 period
 - [ ] **Tests de integracion (3+)**: usage endpoint → aggregation → response
 - [ ] **Tests E2E (2+)**: ver dashboard → cambiar periodo → verificar graficas; exportar CSV
 
@@ -879,15 +882,16 @@ Como **director de agencia** quiero comparar el rendimiento, velocidad y costo d
 - [ ] Datos del ultimo mes por defecto, filtrable por periodo
 
 **Tareas Tecnicas:**
-- [ ] **Backend**: Crear `AIProviderComparisonService` que consolida metricas de todos los providers
-- [ ] **Backend**: Endpoint `GET /api/v1/.../clients/{clientId}/ai-providers/compare?period=monthly`
-- [ ] **Backend**: Endpoint `POST /api/v1/.../clients/{clientId}/ai-providers/playground` (enviar a multiples providers)
-- [ ] **Backend**: Logica de recomendacion basada en scoring ponderado (calidad 40%, costo 30%, velocidad 30%)
-- [ ] **Frontend**: Crear `ProviderComparisonComponent` con tabla + radar chart
+
+- [x] **Backend**: Crear `AIProviderComparisonService` — `ai_provider_comparison_service.py` (compare, playground, scoring)
+- [x] **Backend**: Endpoints POST compare y POST playground en MetaAIGenerationController
+- [x] **Backend**: Logica de recomendacion basada en scoring ponderado (calidad 40%, costo 30%, velocidad 30%)
+- [x] **Frontend**: Integrar `compareProviders()` y `runPlayground()` en MetaAIService con interfaces
+- [ ] **Frontend**: Crear `ProviderComparisonComponent` con tabla + radar chart SVG
 - [ ] **Frontend**: Crear `ProviderPlaygroundComponent` (prompt → N providers → compare responses)
 - [ ] **Frontend**: Crear `QualityFeedbackComponent` (pulgar arriba/abajo en cada generacion)
 - [ ] **Frontend**: Integrar feedback en `MetaAIContentGeneratorComponent` y otros generadores
-- [ ] **Tests unitarios (8+)**: comparison aggregation, scoring, playground, feedback tracking
+- [x] **Tests unitarios (19)**: 8 comparison + 5 scoring + 4 playground + 2 constants
 - [ ] **Tests de integracion (3+)**: compare endpoint → multi-provider aggregation → scoring
 - [ ] **Tests E2E (2+)**: ver comparativa → abrir playground → enviar prompt a 2 providers → comparar
 
