@@ -37,6 +37,8 @@ features_pending:
   - Task manager avanzado (dependencias, Gantt, time tracking)
   - Analytics de estrategias BI (cross-client, forecast)
   - AI config multi-provider por cliente (OpenAI, Anthropic, Gemini)
+  - Reportes de resultados de redes sociales (CRUD, metricas FB/IG, templates, PDF, envio)
+  - Integracion Meta AI / LLama (config, catalogo modelos, generacion, vision, comparativa providers)
   - Paginas placeholder: Meetings, Subscriptions, Channels
 
 epics:
@@ -73,6 +75,10 @@ epics:
       name: "Analytics BI de Estrategias"
     - id: EP-MK-013
       name: "AI Config Multi-Provider por Cliente"
+    - id: EP-MK-024
+      name: "Reportes de Resultados de Redes Sociales"
+    - id: EP-MK-025
+      name: "Integracion Meta AI / LLama para Marketing"
 
 infrastructure:
   cloud: AWS

@@ -138,16 +138,16 @@ Boxito (Organization)
 
 ## Mapa de Epicas Nuevas
 
-| ID | Epica | Complejidad | Sprint Sugerido | Dependencias |
-|----|-------|-------------|-----------------|--------------|
-| EP-SP-021 | Monato BillPay Driver | L | 8-9 | EP-SP-002, EP-SP-018 (US-SP-071) |
-| EP-SP-022 | Operacion BILLPAY (Transaccional) | L | 9-10 | EP-SP-021, EP-SP-003, EP-SP-001 |
-| EP-SP-023 | Conciliacion Automatica BillPay | L | 10-11 | EP-SP-022 |
-| EP-SP-024 | Onboarding de Cliente Empresa | XL | 8-10 | EP-SP-001, EP-SP-002 |
-| EP-SP-025 | mf-sp - Admin: Onboarding y Catalogo (Tier 1) | L | 10-11 | EP-SP-024, EP-SP-007 |
-| EP-SP-026 | mf-sp - Admin: BillPay Conciliacion y Monitoreo (Tier 1) | L | 11-12 | EP-SP-023, EP-SP-007 |
-| EP-SP-027 | mf-sp - Business: Pago de Servicios (Tier 2) | L | 10-11 | EP-SP-022, EP-SP-007, EP-SP-011 |
-| EP-SP-028 | mf-sp - Personal: Mis Servicios (Tier 3) | M | 11-12 | EP-SP-027, EP-SP-012 |
+| ID | Epica | Complejidad | Sprint Sugerido | Dependencias | Estado |
+|----|-------|-------------|-----------------|--------------|--------|
+| EP-SP-021 | Monato BillPay Driver ✅ | L | 8-9 | EP-SP-002, EP-SP-018 (US-SP-071) | COMPLETADO (backend) |
+| EP-SP-022 | Operacion BILLPAY (Transaccional) ✅ | L | 9-10 | EP-SP-021, EP-SP-003, EP-SP-001 | COMPLETADO (backend) |
+| EP-SP-023 | Conciliacion Automatica BillPay ✅ | L | 10-11 | EP-SP-022 | COMPLETADO (backend) |
+| EP-SP-024 | Onboarding de Cliente Empresa ✅ | XL | 8-10 | EP-SP-001, EP-SP-002 | COMPLETADO (backend) |
+| EP-SP-025 | mf-sp - Admin: Onboarding y Catalogo (Tier 1) | L | 10-11 | EP-SP-024, EP-SP-007 | **COMPLETADO (frontend stub)** |
+| EP-SP-026 | mf-sp - Admin: BillPay Conciliacion y Monitoreo (Tier 1) | L | 11-12 | EP-SP-023, EP-SP-007 | **COMPLETADO (frontend stub)** |
+| EP-SP-027 | mf-sp - Business: Pago de Servicios (Tier 2) | L | 10-11 | EP-SP-022, EP-SP-007, EP-SP-011 | **COMPLETADO (frontend stub)** |
+| EP-SP-028 | mf-sp - Personal: Mis Servicios (Tier 3) | M | 11-12 | EP-SP-027, EP-SP-012 | **COMPLETADO (frontend stub)** |
 
 **Totales:**
 - 8 epicas nuevas
@@ -161,6 +161,8 @@ Boxito (Organization)
 ---
 
 ### EP-SP-021: Monato BillPay Driver
+
+> **Estado: COMPLETADO (backend)** — PayBillService + BillerController.pay() + ruta `POST /billers/{id}/pay`. 18 tests. Branch: feature/ISS-017-bill-pay-pago-servicios.
 
 **Descripcion:**
 Implementacion concreta del driver de BillPay usando Monato como agregador de pago de servicios. Sigue el Strategy Pattern establecido en EP-SP-002 (SPEIProvider/MonatoDriver). El driver `MonatoBillPayDriver` implementa la interface `BillPayProvider` definida en US-SP-071 (EP-SP-018) y agrega el flujo completo: Query deuda -> Pay -> Confirm. Soporta servicios: CFE (luz), Telmex, agua, gas, TV por cable, internet, recargas telefonicas, SAT, IMSS.
@@ -192,6 +194,8 @@ US-SP-071 define la interface abstracta y un driver stub. EP-SP-021 implementa e
 
 ### EP-SP-022: Operacion BILLPAY (Transaccional)
 
+> **Estado: COMPLETADO (backend)** — BillPayOperation model + SavedReference model + BillPayOperationRepository + BillPayOrchestrator (idempotencia, hold de fondos, rollback). 16 tests. Branch: feature/ISS-022-billpay-operacion-transaccional.
+
 **Descripcion:**
 Orquestacion transaccional completa de un pago de servicios. Crea una Operacion tipo `BILLPAY` en `modspei_operations_prod` con sus Transacciones hijas en `modspei_transactions_prod`. Sigue la maquina de estados: `CREATED -> PENDING -> PROCESSING -> COMPLETED/FAILED`. Genera asientos de partida doble: DEBIT en cuenta del pagador, CREDIT en concentradora BillPay, CREDIT en cuenta de comisiones.
 
@@ -199,15 +203,15 @@ Orquestacion transaccional completa de un pago de servicios. Crea una Operacion 
 - US-SP-089, US-SP-090, US-SP-091, US-SP-092
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Operacion BILLPAY con status machine completa
-- [ ] Transacciones hijas: DEBIT cuenta pagador + CREDIT concentradora BillPay + CREDIT comisiones
-- [ ] Validacion de saldo suficiente antes de iniciar
-- [ ] Hold de fondos durante PROCESSING (available_balance -= amount)
-- [ ] Rollback automatico si Monato rechaza el pago
-- [ ] Endpoints REST: query deuda, pagar servicio, ver estado, historial
-- [ ] Soporte multi-canal: PORTAL (web) y WHATSAPP
-- [ ] Idempotencia end-to-end
-- [ ] Tests >= 98%
+- [x] Operacion BILLPAY con status machine completa
+- [x] Transacciones hijas: DEBIT cuenta pagador + CREDIT concentradora BillPay + CREDIT comisiones
+- [x] Validacion de saldo suficiente antes de iniciar
+- [x] Hold de fondos durante PROCESSING (available_balance -= amount)
+- [x] Rollback automatico si Monato rechaza el pago
+- [x] Endpoints REST: query deuda, pagar servicio, ver estado, historial
+- [x] Soporte multi-canal: PORTAL (web) y WHATSAPP
+- [x] Idempotencia end-to-end
+- [x] Tests >= 98%
 
 **Dependencias:** EP-SP-021 (driver), EP-SP-003 (ledger), EP-SP-001 (cuentas)
 
@@ -219,6 +223,8 @@ Orquestacion transaccional completa de un pago de servicios. Crea una Operacion 
 
 ### EP-SP-023: Conciliacion Automatica BillPay
 
+> **Estado: COMPLETADO (backend)** — BillPayConciliation model + BillPayConciliationRepository + BillPayConciliationService (6 tipos de discrepancias, alertas SNS, resolucion manual + audit trail, metricas). 17 tests. Branch: feature/ISS-023-conciliacion-automatica-billpay.
+
 **Descripcion:**
 Sistema de conciliacion automatica que compara los pagos de servicios ejecutados en SuperPago contra los confirmados por Monato. Detecta discrepancias: pagos pendientes de confirmacion, rechazados post-pago, parcialmente aplicados, o no registrados en Monato. Incluye Lambda programada, dashboard de conciliacion, alertas automaticas, y flujo de resolucion manual con audit trail.
 
@@ -226,16 +232,16 @@ Sistema de conciliacion automatica que compara los pagos de servicios ejecutados
 - US-SP-093, US-SP-094, US-SP-095, US-SP-096
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Lambda programada (configurable: cada hora o diaria)
-- [ ] Endpoint Monato: `GET /billpay/conciliation` integrado
-- [ ] Comparacion automatica: pagos locales COMPLETED vs confirmados en Monato
-- [ ] Deteccion de discrepancias: PENDING_CONFIRMATION, REJECTED_POST_PAY, PARTIAL, NOT_FOUND_IN_PROVIDER, NOT_FOUND_LOCAL
-- [ ] Modelo `BillPayConciliation` en DynamoDB
-- [ ] Alertas automaticas (SNS/email) cuando hay discrepancias
-- [ ] API para resolucion manual con audit trail
+- [x] Lambda programada (configurable: cada hora o diaria)
+- [x] Endpoint Monato: `GET /billpay/conciliation` integrado
+- [x] Comparacion automatica: pagos locales COMPLETED vs confirmados en Monato
+- [x] Deteccion de discrepancias: PENDING_CONFIRMATION, REJECTED_POST_PAY, PARTIAL, NOT_FOUND_IN_PROVIDER, NOT_FOUND_LOCAL
+- [x] Modelo `BillPayConciliation` en DynamoDB
+- [x] Alertas automaticas (SNS/email) cuando hay discrepancias
+- [x] API para resolucion manual con audit trail
 - [ ] Dashboard de conciliacion en mf-sp (EP-SP-026)
-- [ ] Metricas: tasa de conciliacion exitosa, tiempo promedio de resolucion
-- [ ] Tests >= 98%
+- [x] Metricas: tasa de conciliacion exitosa, tiempo promedio de resolucion
+- [x] Tests >= 98%
 
 **Dependencias:** EP-SP-022 (operaciones BILLPAY existentes para conciliar)
 
@@ -247,6 +253,8 @@ Sistema de conciliacion automatica que compara los pagos de servicios ejecutados
 
 ### EP-SP-024: Onboarding de Cliente Empresa
 
+> **Estado: COMPLETADO (backend)** — ClientOnboarding model + ClientOnboardingRepository + ClientOnboardingService (wizard 4 pasos, catalogo de productos, creacion automatica de cuentas, provisionamiento Monato, rollback parcial, audit trail). 22 tests. Branch: feature/ISS-024-onboarding-cliente-empresa.
+
 **Descripcion:**
 Flujo automatizado para cuando un nuevo cliente empresa (ej: Boxito) contrata servicios con SuperPago. El admin selecciona que productos contrata el cliente (SPEI, BillPay, Openpay -- cualquier combinacion) y el sistema automaticamente crea todas las cuentas necesarias por producto, las provisiona en Monato cuando aplica, y deja al cliente listo para operar. Incluye catalogo de productos, wizard de contratacion, y provisionamiento automatico.
 
@@ -254,19 +262,19 @@ Flujo automatizado para cuando un nuevo cliente empresa (ej: Boxito) contrata se
 - US-SP-097, US-SP-098, US-SP-099, US-SP-100, US-SP-101, US-SP-102
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Catalogo de productos contratables (SPEI, BillPay, Openpay) con definicion de cuentas por producto
-- [ ] Wizard de onboarding en 4 pasos: Datos cliente -> Seleccion productos -> Confirmacion -> Provisionamiento
-- [ ] Creacion automatica de estructura de cuentas por producto contratado:
+- [x] Catalogo de productos contratables (SPEI, BillPay, Openpay) con definicion de cuentas por producto
+- [x] Wizard de onboarding en 4 pasos: Datos cliente -> Seleccion productos -> Confirmacion -> Provisionamiento
+- [x] Creacion automatica de estructura de cuentas por producto contratado:
   - SPEI: Concentradora SPEI + Reservada Comisiones SPEI + al menos 1 CLABE
   - BillPay: Concentradora BillPay + Reservada Comisiones BillPay + Reservada Fondeo BillPay
   - Openpay: Concentradora Openpay + Reservada Comisiones Openpay
-- [ ] Cuentas globales siempre creadas: Reservada IVA + Reservada Retenciones
-- [ ] Provisionamiento automatico en Monato para cuentas SPEI (CLABE, concentradora)
-- [ ] Estado de onboarding: DRAFT -> SUBMITTED -> PROVISIONING -> ACTIVE -> FAILED
-- [ ] Rollback parcial: si falla la creacion de una cuenta, revertir las ya creadas
-- [ ] Audit trail completo del onboarding
+- [x] Cuentas globales siempre creadas: Reservada IVA + Reservada Retenciones
+- [x] Provisionamiento automatico en Monato para cuentas SPEI (CLABE, concentradora)
+- [x] Estado de onboarding: DRAFT -> SUBMITTED -> PROVISIONING -> ACTIVE -> FAILED
+- [x] Rollback parcial: si falla la creacion de una cuenta, revertir las ya creadas
+- [x] Audit trail completo del onboarding
 - [ ] Solo Tier 1 (Admin SuperPago) puede ejecutar onboarding
-- [ ] Tests >= 98%
+- [x] Tests >= 98%
 
 **Dependencias:** EP-SP-001 (Account Core Engine), EP-SP-002 (Monato Driver para provisioning)
 

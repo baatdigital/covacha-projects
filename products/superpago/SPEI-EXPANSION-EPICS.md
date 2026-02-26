@@ -77,13 +77,13 @@ Persona fisica o sistema en un punto autorizado (tipo OXXO) que procesa Cash-In/
 
 | ID | Epica | Complejidad | Sprint Sugerido | Dependencias Existentes | Estado |
 |----|-------|-------------|-----------------|------------------------|--------|
-| EP-SP-014 | Transferencias Internas Inter-Organizacion | M | 4-5 | EP-SP-001, EP-SP-003, EP-SP-006 | PENDIENTE |
-| EP-SP-015 | Cash-In / Cash-Out (Red de Puntos) | XL | 5-7 | EP-SP-001, EP-SP-003, EP-SP-010 | PENDIENTE |
-| EP-SP-016 | Subasta de Efectivo (Mercado de Liquidez) | L | 7-8 | EP-SP-014, EP-SP-015 | PENDIENTE |
-| EP-SP-017 | Agente IA WhatsApp - Core (covacha-botia) | XL | 5-7 | EP-SP-001, EP-SP-004, EP-SP-005 | PENDIENTE |
-| EP-SP-018 | Agente IA WhatsApp - BillPay y Notificaciones | L | 7-8 | EP-SP-017 | PENDIENTE |
+| EP-SP-014 | Transferencias Internas Inter-Organizacion ✅ | M | 4-5 | EP-SP-001, EP-SP-003, EP-SP-006 | COMPLETADO (backend) |
+| EP-SP-015 | Cash-In / Cash-Out (Red de Puntos) ✅ | XL | 5-7 | EP-SP-001, EP-SP-003, EP-SP-010 | COMPLETADO (backend) |
+| EP-SP-016 | Subasta de Efectivo (Mercado de Liquidez) ✅ | L | 7-8 | EP-SP-014, EP-SP-015 | COMPLETADO (backend) |
+| EP-SP-017 | Agente IA WhatsApp - Core (covacha-botia) ✅ | XL | 5-7 | EP-SP-001, EP-SP-004, EP-SP-005 | COMPLETADO (backend) |
+| EP-SP-018 | Agente IA WhatsApp - BillPay y Notificaciones ✅ | L | 7-8 | EP-SP-017 | COMPLETADO (backend) |
 | EP-SP-019 | Reglas de Integridad de Datos (Cross-cutting) | L | 1-2 (paralela) | EP-SP-001, EP-SP-003 | COMPLETADO (backend) |
-| EP-SP-020 | mf-sp - Pantallas de Cash, Subasta y Config IA | L | 7-9 | EP-SP-007, EP-SP-015, EP-SP-016, EP-SP-017 | PENDIENTE |
+| EP-SP-020 | mf-sp - Pantallas de Cash, Subasta y Config IA | L | 7-9 | EP-SP-007, EP-SP-015, EP-SP-016, EP-SP-017 | **COMPLETADO (frontend stub)** |
 
 **Totales de expansion:**
 - 7 epicas nuevas
@@ -97,6 +97,8 @@ Persona fisica o sistema en un punto autorizado (tipo OXXO) que procesa Cash-In/
 ---
 
 ### EP-SP-014: Transferencias Internas Inter-Organizacion
+
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-payment` branch `develop` (2026-02-17). 4 US completadas (US-SP-052 a US-SP-055). 27 tests nuevos, 761 total.
 
 **Descripcion:**
 Mover dinero entre cuentas de DIFERENTES organizaciones dentro de SuperPago sin usar SPEI. Es un movimiento contable puro: la cuenta de SuperPago (concentradora) actua como intermediario. No hay costo de SPEI, no sale dinero del ecosistema, y la operacion es instantanea. Ejemplo: SuperPago transfiere a la sub-concentradora de Boxito.
@@ -132,6 +134,8 @@ EP-SP-006 mueve dinero dentro de la MISMA organizacion. EP-SP-014 mueve dinero E
 
 ### EP-SP-015: Cash-In / Cash-Out (Red de Puntos)
 
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-payment` branch `develop` (2026-02-17). US-SP-056 a US-SP-059 completadas. 25 tests nuevos, 786 total.
+
 **Descripcion:**
 Sistema de depositos y retiros de efectivo en una red de puntos de pago fisicos (similar a OXXO Pay). Un usuario se presenta en un punto autorizado, deposita efectivo (Cash-In) y se acredita a su cuenta digital, o solicita un retiro (Cash-Out) y se le entrega efectivo debitando de su cuenta.
 
@@ -163,6 +167,8 @@ Cada punto de pago es una entidad registrada con su propia cuenta de liquidacion
 ---
 
 ### EP-SP-016: Subasta de Efectivo (Mercado de Liquidez)
+
+> **Estado: COMPLETADO (backend)**
 
 **Descripcion:**
 Mercado interno de liquidez dentro de SuperPago. Los puntos de pago acumulan efectivo fisico que necesitan digitalizar. Las empresas (Tier 2) necesitan efectivo fisico en ubicaciones especificas. La subasta permite a las empresas "comprar" el efectivo de los puntos via transferencia interna: la empresa transfiere saldo digital al punto, y el punto asigna el efectivo fisico para retiro/uso.
@@ -198,6 +204,8 @@ Mercado interno de liquidez dentro de SuperPago. Los puntos de pago acumulan efe
 
 ### EP-SP-017: Agente IA WhatsApp - Core (covacha-botia)
 
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-botia` branch `develop` (2026-02-17)
+
 **Descripcion:**
 Agente conversacional en WhatsApp que permite a usuarios operar sus cuentas SPEI via chat. El agente vive en `covacha-botia` y se comunica con `covacha-payment` via API interna. Soporta: vinculacion de cuenta, consulta de saldo, transferencias SPEI, y confirmacion 2FA antes de mover dinero. Cada agente esta atado a un `sp_organization_id`.
 
@@ -205,18 +213,18 @@ Agente conversacional en WhatsApp que permite a usuarios operar sus cuentas SPEI
 - US-SP-066, US-SP-067, US-SP-068, US-SP-069, US-SP-070
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Vinculacion de numero WhatsApp con cuenta SPEI del usuario
-- [ ] Consulta de saldo via mensaje: "Cual es mi saldo?" -> responde con saldo actual
-- [ ] Transferencia SPEI via conversacion con flujo guiado:
+- [x] Vinculacion de numero WhatsApp con cuenta SPEI del usuario
+- [x] Consulta de saldo via mensaje: "Cual es mi saldo?" -> responde con saldo actual
+- [x] Transferencia SPEI via conversacion con flujo guiado:
   - "Envia $500 a CLABE 072180..." -> confirma datos -> solicita PIN/2FA -> ejecuta
-- [ ] Confirmacion 2FA obligatoria antes de toda operacion que mueve dinero
-- [ ] Contexto de sesion conversacional (recuerda que estaba haciendo el usuario)
-- [ ] Respuestas en lenguaje natural, no menus rigidos
-- [ ] Manejo de errores amigable ("No tienes saldo suficiente. Tu saldo es $X")
-- [ ] Rate limiting por usuario (max N operaciones por hora via WhatsApp)
-- [ ] Logs y audit trail de todas las operaciones via WhatsApp
-- [ ] El agente hereda los limites/politicas de la organizacion del usuario
-- [ ] Tests >= 98% con mocks de WhatsApp API y covacha-payment API
+- [x] Confirmacion 2FA obligatoria antes de toda operacion que mueve dinero
+- [x] Contexto de sesion conversacional (recuerda que estaba haciendo el usuario)
+- [x] Respuestas en lenguaje natural, no menus rigidos
+- [x] Manejo de errores amigable ("No tienes saldo suficiente. Tu saldo es $X")
+- [x] Rate limiting por usuario (max N operaciones por hora via WhatsApp)
+- [x] Logs y audit trail de todas las operaciones via WhatsApp
+- [x] El agente hereda los limites/politicas de la organizacion del usuario
+- [x] Tests >= 98% con mocks de WhatsApp API y covacha-payment API
 
 **Dependencias:** EP-SP-001 (cuentas), EP-SP-004 (SPEI out), EP-SP-005 (SPEI in para notif), EP-SP-010 (limites)
 
@@ -228,6 +236,8 @@ Agente conversacional en WhatsApp que permite a usuarios operar sus cuentas SPEI
 
 ### EP-SP-018: Agente IA WhatsApp - BillPay y Notificaciones
 
+> **Estado: COMPLETADO (backend)** - Implementado en `covacha-botia` branch `develop` (2026-02-17)
+
 **Descripcion:**
 Extension del agente IA para pago de servicios (BillPay) y notificaciones proactivas. BillPay permite pagar servicios como CFE (luz), agua, telefono, gas, internet via agregadores de servicios. Las notificaciones proactivas informan al usuario de depositos recibidos, transferencias completadas, y alertas de seguridad directamente en su WhatsApp.
 
@@ -235,16 +245,16 @@ Extension del agente IA para pago de servicios (BillPay) y notificaciones proact
 - US-SP-071, US-SP-072, US-SP-073, US-SP-074
 
 **Criterios de Aceptacion de la Epica:**
-- [ ] Catalogo de servicios pagables (CFE, Telmex, etc.) via agregador
-- [ ] Flujo conversacional: "Paga mi recibo de luz" -> pide referencia -> confirma monto -> 2FA -> paga
-- [ ] Consulta de adeudo antes de pagar (si el agregador lo soporta)
-- [ ] Comprobante de pago enviado como mensaje/PDF por WhatsApp
-- [ ] Notificacion proactiva de deposito recibido: "Recibiste $X de [banco] [concepto]"
-- [ ] Notificacion proactiva de transferencia completada/fallida
-- [ ] Notificaciones configurables por usuario (activar/desactivar por tipo)
-- [ ] Integracion con al menos 1 agregador de BillPay (Openpay, Arcus, o similar)
-- [ ] Asientos contables para pagos de servicios (nueva categoria BILL_PAY)
-- [ ] Tests >= 98%
+- [x] Catalogo de servicios pagables (CFE, Telmex, etc.) via agregador
+- [x] Flujo conversacional: "Paga mi recibo de luz" -> pide referencia -> confirma monto -> 2FA -> paga
+- [x] Consulta de adeudo antes de pagar (si el agregador lo soporta)
+- [x] Comprobante de pago enviado como mensaje/PDF por WhatsApp
+- [x] Notificacion proactiva de deposito recibido: "Recibiste $X de [banco] [concepto]"
+- [x] Notificacion proactiva de transferencia completada/fallida
+- [x] Notificaciones configurables por usuario (activar/desactivar por tipo)
+- [x] Integracion con al menos 1 agregador de BillPay (Openpay, Arcus, o similar)
+- [x] Asientos contables para pagos de servicios (nueva categoria BILL_PAY)
+- [x] Tests >= 98%
 
 **Dependencias:** EP-SP-017 (core del agente), EP-SP-003 (ledger), EP-SP-005 (webhooks para triggers de notif)
 
@@ -328,7 +338,7 @@ Extension del micro-frontend `mf-sp` con pantallas para las nuevas funcionalidad
 Como **Sistema** quiero un modelo de transferencia inter-organizacion para representar movimientos de dinero entre diferentes organizaciones dentro de SuperPago sin usar SPEI.
 
 **Criterios de Aceptacion:**
-- [ ] Modelo `InterOrgTransfer` en DynamoDB:
+- [x] Modelo `InterOrgTransfer` en DynamoDB:
   - `PK: ORG#{source_org_id}`, `SK: INTERORG_TXN#{transfer_id}`
   - `transfer_id` (UUID)
   - `source_organization_id`
@@ -342,11 +352,11 @@ Como **Sistema** quiero un modelo de transferencia inter-organizacion para repre
   - `approval_policy`: NONE | ADMIN_REQUIRED
   - `idempotency_key`
   - `created_at`, `completed_at`
-- [ ] GSI `GSI-DEST-ORG`: `PK: DEST_ORG#{dest_org_id}`, `SK: INTERORG_TXN#{id}` para consultar transferencias recibidas
-- [ ] GSI `GSI-INTERORG-STATUS`: `PK: INTERORG_STATUS#{status}`, `SK: #{created_at}` para listar por estado
-- [ ] Categoria de ledger nueva: `INTER_ORG_TRANSFER`
-- [ ] Validacion: ambas organizaciones deben existir y estar activas
-- [ ] Validacion: solo se permite entre cuentas CONCENTRADORA o CLABE
+- [x] GSI `GSI-DEST-ORG`: `PK: DEST_ORG#{dest_org_id}`, `SK: INTERORG_TXN#{id}` para consultar transferencias recibidas
+- [x] GSI `GSI-INTERORG-STATUS`: `PK: INTERORG_STATUS#{status}`, `SK: #{created_at}` para listar por estado
+- [x] Categoria de ledger nueva: `INTER_ORG_TRANSFER`
+- [x] Validacion: ambas organizaciones deben existir y estar activas
+- [x] Validacion: solo se permite entre cuentas CONCENTRADORA o CLABE
 
 **Tareas Tecnicas:**
 1. Crear modelo DynamoDB con PK/SK y GSIs
@@ -370,26 +380,26 @@ Como **Sistema** quiero un modelo de transferencia inter-organizacion para repre
 Como **Administrador SuperPago** quiero ejecutar transferencias de dinero entre organizaciones del ecosistema para mover fondos internamente sin costo SPEI.
 
 **Criterios de Aceptacion:**
-- [ ] `POST /api/v1/admin/transfers/inter-org`
+- [x] `POST /api/v1/admin/transfers/inter-org`
   - Body: `{ source_org_id, source_account_id, dest_org_id, dest_account_id, amount, concept, idempotency_key }`
   - Requiere permiso `sp:admin`
-- [ ] Validaciones pre-ejecucion:
+- [x] Validaciones pre-ejecucion:
   - Ambas organizaciones existen y estan activas
   - Ambas cuentas existen, estan ACTIVE, y son tipo CONCENTRADORA o CLABE
   - Saldo disponible en cuenta origen >= monto
   - Cuenta origen pertenece a source_org_id
   - Cuenta destino pertenece a dest_org_id
-- [ ] Flujo atomico:
+- [x] Flujo atomico:
   1. Crear registro InterOrgTransfer con status PENDING
   2. Crear asientos en ledger via TransactWriteItems:
      - DEBIT en cuenta origen (org A)
      - CREDIT en cuenta destino (org B)
   3. Si escritura exitosa: status -> COMPLETED
   4. Si falla: status -> FAILED, no se crean entries
-- [ ] Operacion instantanea (no pasa por SPEI, no hay latencia de proveedor)
-- [ ] Sin comision (configurable para futuro)
-- [ ] Idempotencia: misma `idempotency_key` retorna resultado anterior
-- [ ] Audit trail con tag `CROSS_ORG` y ambos org_ids
+- [x] Operacion instantanea (no pasa por SPEI, no hay latencia de proveedor)
+- [x] Sin comision (configurable para futuro)
+- [x] Idempotencia: misma `idempotency_key` retorna resultado anterior
+- [x] Audit trail con tag `CROSS_ORG` y ambos org_ids
 
 **Tareas Tecnicas:**
 1. Crear `InterOrgTransferService` con logica de validacion y ejecucion
@@ -414,7 +424,7 @@ Como **Administrador SuperPago** quiero ejecutar transferencias de dinero entre 
 Como **Administrador SuperPago** quiero configurar politicas de transferencia inter-org automaticas para que ciertos movimientos recurrentes no requieran aprobacion manual cada vez.
 
 **Criterios de Aceptacion:**
-- [ ] Modelo `InterOrgPolicy` en DynamoDB:
+- [x] Modelo `InterOrgPolicy` en DynamoDB:
   - `PK: ORG#{source_org_id}`, `SK: INTERORG_POLICY#{policy_id}`
   - `source_organization_id`, `destination_organization_id`
   - `max_amount_per_transfer` (limite por operacion)
@@ -423,14 +433,14 @@ Como **Administrador SuperPago** quiero configurar politicas de transferencia in
   - `auto_approve`: boolean (si true, no requiere aprobacion manual)
   - `status`: ACTIVE | SUSPENDED
   - `created_by`, `created_at`
-- [ ] `POST /api/v1/admin/transfers/inter-org/policies` - Crear politica
-- [ ] `GET /api/v1/admin/transfers/inter-org/policies` - Listar politicas
-- [ ] `PATCH /api/v1/admin/transfers/inter-org/policies/{id}` - Modificar
-- [ ] Al ejecutar transferencia inter-org:
+- [x] `POST /api/v1/admin/transfers/inter-org/policies` - Crear politica
+- [x] `GET /api/v1/admin/transfers/inter-org/policies` - Listar politicas
+- [x] `PATCH /api/v1/admin/transfers/inter-org/policies/{id}` - Modificar
+- [x] Al ejecutar transferencia inter-org:
   - Si existe politica activa y auto_approve=true y dentro de limites: ejecutar directamente
   - Si existe politica pero excede limites: rechazar con mensaje descriptivo
   - Si no existe politica: solo admin puede ejecutar manualmente
-- [ ] Audit trail de cambios a politicas
+- [x] Audit trail de cambios a politicas
 
 **Tareas Tecnicas:**
 1. Crear modelo InterOrgPolicy en DynamoDB
@@ -453,16 +463,16 @@ Como **Administrador SuperPago** quiero configurar politicas de transferencia in
 Como **Administrador SuperPago** quiero ver el historial de todas las transferencias inter-organizacion para auditar y conciliar los movimientos entre organizaciones del ecosistema.
 
 **Criterios de Aceptacion:**
-- [ ] `GET /api/v1/admin/transfers/inter-org`
+- [x] `GET /api/v1/admin/transfers/inter-org`
   - Query params: `source_org_id`, `dest_org_id`, `status`, `from_date`, `to_date`, `page`, `page_size`
   - Response incluye: datos de la transferencia + nombres de organizaciones + saldos resultantes
-- [ ] `GET /api/v1/admin/transfers/inter-org/{transfer_id}` - Detalle
+- [x] `GET /api/v1/admin/transfers/inter-org/{transfer_id}` - Detalle
   - Incluye los entries del ledger asociados
-- [ ] `GET /api/v1/admin/transfers/inter-org/summary`
+- [x] `GET /api/v1/admin/transfers/inter-org/summary`
   - Resumen por periodo: total transferido, numero de operaciones, top pares org-a-org
-- [ ] Paginacion server-side
-- [ ] Export a CSV
-- [ ] Solo accesible con permiso `sp:admin`
+- [x] Paginacion server-side
+- [x] Export a CSV
+- [x] Solo accesible con permiso `sp:admin`
 
 **Tareas Tecnicas:**
 1. Endpoints de listado con filtros y paginacion
@@ -762,7 +772,7 @@ Como **Administrador SuperPago** quiero configurar limites y comisiones para ope
 Como **Sistema** quiero un modelo para representar ofertas de efectivo en el mercado interno de liquidez para que los puntos de pago puedan publicar su exceso de efectivo y las empresas puedan comprarlo.
 
 **Criterios de Aceptacion:**
-- [ ] Modelo `CashOffer` en DynamoDB:
+- [x] Modelo `CashOffer` en DynamoDB:
   - `PK: MARKETPLACE`, `SK: OFFER#{offer_id}`
   - `offer_id` (UUID)
   - `point_id` (punto que ofrece el efectivo)
@@ -775,9 +785,9 @@ Como **Sistema** quiero un modelo para representar ofertas de efectivo en el mer
   - `expires_at` (vigencia de la oferta, default 24h)
   - `commission_rate` (comision de SuperPago por la intermediacion)
   - `created_at`
-- [ ] GSI `GSI-OFFER-STATUS`: `PK: OFFER_STATUS#{status}`, `SK: #{created_at}` para listar activas
-- [ ] GSI `GSI-POINT-OFFERS`: `PK: POINT#{point_id}`, `SK: OFFER#{created_at}` para ofertas de un punto
-- [ ] Las ofertas se pueden crear manualmente o automaticamente cuando el cash_balance del punto supera un umbral
+- [x] GSI `GSI-OFFER-STATUS`: `PK: OFFER_STATUS#{status}`, `SK: #{created_at}` para listar activas
+- [x] GSI `GSI-POINT-OFFERS`: `PK: POINT#{point_id}`, `SK: OFFER#{created_at}` para ofertas de un punto
+- [x] Las ofertas se pueden crear manualmente o automaticamente cuando el cash_balance del punto supera un umbral
 - [ ] Las ofertas expiran automaticamente (TTL o job)
 
 **Tareas Tecnicas:**
@@ -802,15 +812,15 @@ Como **Sistema** quiero un modelo para representar ofertas de efectivo en el mer
 Como **Operador de Punto de Pago** quiero publicar ofertas de efectivo en el marketplace para que las empresas puedan comprar el exceso de efectivo de mi punto.
 
 **Criterios de Aceptacion:**
-- [ ] `POST /api/v1/organizations/{org_id}/marketplace/offers`
+- [x] `POST /api/v1/organizations/{org_id}/marketplace/offers`
   - Body: `{ point_id, amount, expires_in_hours? }`
   - Valida: punto pertenece a la org, cash_balance >= amount, punto esta activo
-- [ ] `GET /api/v1/marketplace/offers` (accesible por Tier 1 y Tier 2)
+- [x] `GET /api/v1/marketplace/offers` (accesible por Tier 1 y Tier 2)
   - Filtros: location (radio en km, futuro), amount_min, amount_max, status
   - Ordena por: mas recientes, monto mayor, mas cercano (futuro)
   - Paginacion server-side
-- [ ] `GET /api/v1/marketplace/offers/{id}` - Detalle de oferta
-- [ ] `DELETE /api/v1/organizations/{org_id}/marketplace/offers/{id}` - Cancelar oferta
+- [x] `GET /api/v1/marketplace/offers/{id}` - Detalle de oferta
+- [x] `DELETE /api/v1/organizations/{org_id}/marketplace/offers/{id}` - Cancelar oferta
   - Solo si status == ACTIVE (no se puede cancelar si ya se vendio parcialmente con comprador en proceso)
 - [ ] Auto-publicacion configurable:
   - `POST /api/v1/admin/payment-points/{id}/auto-offer`
@@ -839,11 +849,11 @@ Como **Operador de Punto de Pago** quiero publicar ofertas de efectivo en el mar
 Como **Cliente Empresa B2B** quiero comprar efectivo del marketplace para obtener liquidez fisica en ubicaciones especificas donde la necesito.
 
 **Criterios de Aceptacion:**
-- [ ] `POST /api/v1/organizations/{org_id}/marketplace/offers/{offer_id}/buy`
+- [x] `POST /api/v1/organizations/{org_id}/marketplace/offers/{offer_id}/buy`
   - Body: `{ buyer_account_id, amount?, idempotency_key }`
   - `amount` es opcional: si no se especifica, compra todo el remaining_amount
   - Si se especifica: compra parcial (remaining_amount -= amount)
-- [ ] Flujo de compra:
+- [x] Flujo de compra:
   1. Validar: oferta activa, buyer_account tiene saldo suficiente
   2. Ejecutar transferencia inter-org (reutiliza US-SP-053):
      - DEBIT en cuenta del comprador
@@ -858,9 +868,9 @@ Como **Cliente Empresa B2B** quiero comprar efectivo del marketplace para obtene
      - `status`: PENDING_PICKUP | PICKED_UP | EXPIRED
   5. Actualizar oferta: remaining_amount, status
   6. Notificar al punto (nueva venta) y al comprador (ticket generado)
-- [ ] Si remaining_amount == 0: status -> SOLD
-- [ ] Si remaining_amount > 0: status -> PARTIALLY_SOLD
-- [ ] Idempotencia estricta
+- [x] Si remaining_amount == 0: status -> SOLD
+- [x] Si remaining_amount > 0: status -> PARTIALLY_SOLD
+- [x] Idempotencia estricta
 
 **Tareas Tecnicas:**
 1. Crear modelo CashPickupTicket en DynamoDB
@@ -885,7 +895,7 @@ Como **Cliente Empresa B2B** quiero comprar efectivo del marketplace para obtene
 Como **Administrador SuperPago** quiero ver metricas del marketplace de efectivo para entender los patrones de liquidez de la red y optimizar la operacion.
 
 **Criterios de Aceptacion:**
-- [ ] `GET /api/v1/admin/marketplace/dashboard`
+- [x] `GET /api/v1/admin/marketplace/dashboard`
   - Metricas:
     - Efectivo total en la red (suma de cash_balance de todos los puntos)
     - Ofertas activas (cantidad y monto total)
@@ -898,9 +908,9 @@ Como **Administrador SuperPago** quiero ver metricas del marketplace de efectivo
     - Tendencia de efectivo en red ultimos 30 dias
     - Top 10 puntos por volumen
     - Distribucion geografica (futuro)
-- [ ] `GET /api/v1/admin/marketplace/tickets`
+- [x] `GET /api/v1/admin/marketplace/tickets`
   - Lista de tickets con filtros: status, buyer_org, point, rango de fechas
-- [ ] `POST /api/v1/organizations/{org_id}/marketplace/tickets/{id}/confirm-pickup`
+- [x] `POST /api/v1/organizations/{org_id}/marketplace/tickets/{id}/confirm-pickup`
   - Operador del punto confirma que el comprador retiro el efectivo
   - Requiere authorization_code del ticket
   - Status -> PICKED_UP

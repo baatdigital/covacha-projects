@@ -34,19 +34,14 @@ def select_model(labels: list[str]) -> tuple[str, str]:
         return MODEL_DEFAULT, MODEL_JUSTIFICATION[MODEL_DEFAULT]
 
     labels_lower = [label.lower().strip() for label in labels]
-    selected_model = MODEL_DEFAULT
 
-    # Iterar en orden de prioridad descendente (opus primero)
+    # Retornar en el primer nivel de prioridad que tenga un match (opus > sonnet > haiku)
     for model in PRIORITY_ORDER:
         for label in labels_lower:
             if MODEL_MAP.get(label) == model:
-                selected_model = model
-                break
-        if selected_model == model and model != MODEL_DEFAULT:
-            break
+                return model, MODEL_JUSTIFICATION.get(model, "")
 
-    justification = MODEL_JUSTIFICATION.get(selected_model, "")
-    return selected_model, justification
+    return MODEL_DEFAULT, MODEL_JUSTIFICATION[MODEL_DEFAULT]
 
 
 def get_model_for_operation(operation: str) -> str:
