@@ -4,7 +4,7 @@
 **Product Owner**: SuperPago
 **Proveedor BillPay**: Monato BillPay (https://docs.monato.com/products/billpay)
 **Proveedor SPEI**: Monato Fincore
-**Estado**: Planificacion
+**Estado**: COMPLETADO (backend + frontend)
 **Continua desde**: ARCHITECTURE_OPERATIONS_TRANSACTIONS.md (modelo base), SPEI-PRODUCT-PLAN.md (Account Core Engine)
 
 ---
@@ -1643,6 +1643,8 @@ EP-SP-007 (mf-sp scaffold) ──> EP-BP-008 (Frontend BillPay)
 
 #### EP-BP-001: Onboarding Multi-Producto
 
+> **Estado: COMPLETADO (backend)** — Implementado 2026-02-27.
+
 **Descripcion:** Sistema de provisionamiento automatico de cuentas por producto. Cuando un admin asigna productos a una organizacion, se crean las cuentas necesarias, se provisionan en proveedores externos, y se activa el producto.
 
 **User Stories:**
@@ -1803,6 +1805,8 @@ EP-SP-007 (mf-sp scaffold) ──> EP-BP-008 (Frontend BillPay)
 ---
 
 #### EP-BP-008: Frontend BillPay (mf-sp)
+
+> **Estado: COMPLETADO (frontend)** — Implementado 2026-02-27.
 
 **Descripcion:** Paginas en mf-sp para pago de servicios: catalogo, consulta, pago, historial, comprobantes, conciliacion (admin).
 

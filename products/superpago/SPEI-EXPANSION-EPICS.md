@@ -83,7 +83,7 @@ Persona fisica o sistema en un punto autorizado (tipo OXXO) que procesa Cash-In/
 | EP-SP-017 | Agente IA WhatsApp - Core (covacha-botia) ✅ | XL | 5-7 | EP-SP-001, EP-SP-004, EP-SP-005 | COMPLETADO (backend) |
 | EP-SP-018 | Agente IA WhatsApp - BillPay y Notificaciones ✅ | L | 7-8 | EP-SP-017 | COMPLETADO (backend) |
 | EP-SP-019 | Reglas de Integridad de Datos (Cross-cutting) | L | 1-2 (paralela) | EP-SP-001, EP-SP-003 | COMPLETADO (backend) |
-| EP-SP-020 | mf-sp - Pantallas de Cash, Subasta y Config IA | L | 7-9 | EP-SP-007, EP-SP-015, EP-SP-016, EP-SP-017 | **COMPLETADO (frontend stub)** |
+| EP-SP-020 | mf-sp - Pantallas de Cash, Subasta y Config IA | L | 7-9 | EP-SP-007, EP-SP-015, EP-SP-016, EP-SP-017 | **COMPLETADO (frontend)** |
 
 **Totales de expansion:**
 - 7 epicas nuevas
@@ -295,6 +295,8 @@ Capa transversal de proteccion de integridad financiera. Se implementa en PARALE
 ---
 
 ### EP-SP-020: mf-sp - Pantallas de Cash, Subasta y Config IA
+
+> **Estado: COMPLETADO (frontend)** — CashConfigPageComponent implementado 2026-02-27 con 3 tabs (Cash In/Out, Subasta, Config IA). Ruta: `/sp/admin/cash-config`.
 
 **Descripcion:**
 Extension del micro-frontend `mf-sp` con pantallas para las nuevas funcionalidades: gestion de puntos de pago y operaciones Cash-In/Cash-Out (Tier 1 y Tier 2), marketplace de subasta de efectivo (Tier 1 y Tier 2), y configuracion del agente IA WhatsApp (Tier 1 y Tier 2). Se integra con la arquitectura multi-tier existente de EP-SP-007.

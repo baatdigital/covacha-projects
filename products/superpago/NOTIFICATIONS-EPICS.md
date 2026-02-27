@@ -2,7 +2,7 @@
 
 **Fecha**: 2026-02-14
 **Product Owner**: SuperPago
-**Estado**: EP-SP-029 COMPLETADO (backend) | EP-SP-030 Planificacion
+**Estado**: EP-SP-029 COMPLETADO (backend) | EP-SP-030 COMPLETADO (frontend)
 **Continua desde**: BILLPAY-ONBOARDING-EPICS.md (EP-SP-021 a EP-SP-028, US-SP-085 a US-SP-116)
 **User Stories**: US-SP-117 en adelante (continua desde US-SP-116)
 
@@ -209,7 +209,7 @@ GSI: PK=NOTIF_DLQ#ORG#{org_id}, SK={timestamp}
 | ID | Epica | Complejidad | Sprint Sugerido | Dependencias | Estado |
 |----|-------|-------------|-----------------|--------------|--------|
 | EP-SP-029 | Notificaciones Financieras Backend | XL | 12-14 | EP-SP-010, EP-SP-004, EP-SP-005, EP-SP-017 | **COMPLETADO (backend)** |
-| EP-SP-030 | Frontend de Configuracion y Tiempo Real | L | 14-16 | EP-SP-029, EP-SP-007, EP-SP-008, EP-SP-011, EP-SP-012 | **COMPLETADO (frontend stub)** |
+| EP-SP-030 | Frontend de Configuracion y Tiempo Real | L | 14-16 | EP-SP-029, EP-SP-007, EP-SP-008, EP-SP-011, EP-SP-012 | **COMPLETADO (frontend)** |
 
 ---
 
@@ -260,6 +260,8 @@ Sistema completo de notificaciones financieras en covacha-notification. Incluye 
 ---
 
 ### EP-SP-030: Frontend de Configuracion y Tiempo Real
+
+> **Estado: COMPLETADO (frontend)** — NotificationsDashboardComponent implementado 2026-02-27 con SSE simulado, filtros tipo/severidad, contador no leídas. Ruta: `/sp/admin/notifications`.
 
 **Descripcion:**
 Pantallas frontend en `mf-sp` para los 3 tiers del sistema de notificaciones. Tier 1 (Admin): dashboard en tiempo real via SSE con alertas CRITICAL destacadas y email digest configurable. Tier 2 (B2B): configurador de webhook URL con test de conectividad, selector de canales por evento, y visor de historial de entregas. Tier 3 (B2C): preferencias simples (WhatsApp si/no, email si/no, SMS si/no) con preview de ejemplo. Todos los tiers: historial de notificaciones enviadas con filtros y detalle.
