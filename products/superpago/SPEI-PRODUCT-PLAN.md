@@ -3,7 +3,7 @@
 **Fecha**: 2026-02-14
 **Product Owner**: SuperPago
 **Proveedor SPEI**: Monato Fincore
-**Estado**: En Desarrollo (Backend EP-SP-001 a EP-SP-010 completados)
+**Estado**: COMPLETADO (Backend EP-SP-001 a EP-SP-010, Frontend EP-SP-007 a EP-SP-013)
 
 ---
 
@@ -128,8 +128,8 @@ CONCENTRADORA (Organization-level)
 | EP-SP-004 | SPEI Out (Transferencias Salientes) | L | 3 | EP-SP-001, EP-SP-002, EP-SP-003 | COMPLETADO (backend) |
 | EP-SP-005 | Webhook Handler SPEI In | L | 3 | EP-SP-001, EP-SP-002, EP-SP-003 | COMPLETADO (backend) |
 | EP-SP-006 | Movimientos Internos (Grafo) | M | 3-4 | EP-SP-001, EP-SP-003 | COMPLETADO (backend) |
-| EP-SP-007 | mf-sp - Scaffold y Dashboard | L | 2-3 | EP-SP-001 (API lista) | PENDIENTE (frontend) |
-| EP-SP-008 | mf-sp - Transferencias y Movimientos | L | 4 | EP-SP-004, EP-SP-007 | PENDIENTE (frontend) |
+| EP-SP-007 | mf-sp - Scaffold y Dashboard | L | 2-3 | EP-SP-001 (API lista) | COMPLETADO (frontend) |
+| EP-SP-008 | mf-sp - Transferencias y Movimientos | L | 4 | EP-SP-004, EP-SP-007 | COMPLETADO (frontend) |
 | EP-SP-009 | Reconciliacion y Auditoria | M | 4-5 | EP-SP-003, EP-SP-004, EP-SP-005 | COMPLETADO (backend) |
 | EP-SP-010 | Limites, Politicas y Notificaciones | M | 5-6 | EP-SP-004, EP-SP-005 | COMPLETADO (backend) |
 
@@ -325,7 +325,7 @@ Transferencias entre cuentas de la misma organizacion. Son instantaneas, sin cos
 
 ### EP-SP-007: mf-sp - Scaffold y Dashboard
 
-> **Estado: PENDIENTE** - Frontend no iniciado. Backend APIs disponibles en `covacha-payment`.
+> **Estado: COMPLETADO (frontend)** - mf-sp scaffold y dashboard implementados.
 
 **Descripcion:**
 Creacion del nuevo micro-frontend `mf-sp` (SuperPago SPEI) con Angular 21 y Native Federation. Incluye scaffold del proyecto, registro en el Shell (mf-core), y las paginas fundamentales: dashboard de cuentas, detalle de cuenta, y creacion de cuenta.
@@ -357,7 +357,7 @@ Creacion del nuevo micro-frontend `mf-sp` (SuperPago SPEI) con Angular 21 y Nati
 
 ### EP-SP-008: mf-sp - Transferencias y Movimientos
 
-> **Estado: PENDIENTE** - Frontend no iniciado. Depende de EP-SP-007 (scaffold mf-sp).
+> **Estado: COMPLETADO (frontend)** - Transferencias y movimientos UI implementados.
 
 **Descripcion:**
 UI para ejecutar transferencias SPEI out, movimientos internos, y ver historial de movimientos. Incluye formularios de transferencia con validaciones, confirmacion, tracking de estado, y tabla de movimientos con filtros y paginacion.
