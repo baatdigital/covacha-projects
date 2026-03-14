@@ -2,8 +2,9 @@
 
 **Fecha**: 2026-03-10
 **Estratega**: Business Innovation Agent
-**Version**: 1.0
+**Version**: 1.1
 **Ecosistema**: SuperPago / BaatDigital / AlertaTribunal
+**Ultima actualizacion**: 2026-03-14 - Vincular productos propuestos con GitHub Issues (#127-132)
 
 ---
 
@@ -67,9 +68,20 @@
 
 ## Productos Propuestos
 
+> **Tracking en GitHub**: Los 6 productos principales estan registrados como issues en baatdigital/covacha-projects:
+> - **#127** - [PRODUCTO] CRM Nativo con WhatsApp para PyMEs Mexicanas (CobrarIA)
+> - **#128** - [PRODUCTO] POS Virtual - Cobro con QR + SPEI Instantaneo (PagaQR)
+> - **#129** - [PRODUCTO] Programa de Lealtad/Puntos via WhatsApp (LealtadPay)
+> - **#130** - [PRODUCTO] Bot de Cobranza Inteligente via WhatsApp con IA (CobraBot)
+> - **#131** - [PRODUCTO] E-commerce Builder - Tienda Online con SPEI + WhatsApp (TiendaClick)
+> - **#132** - [PRODUCTO] Nomina Digital - Dispersiones SPEI para PyMEs (NominaExpress)
+>
+> Adicionalmente: **#133** - [ESTRATEGIA] Roadmap 2026 - Priorizacion de Nuevos Productos por ROI
+
 ---
 
 ### PRODUCTO 1: CobrarIA - CRM Conversacional para PyMEs
+> **GitHub Issue**: baatdigital/covacha-projects#127
 
 **Tagline**: "Tu equipo de ventas en WhatsApp, potenciado por IA"
 

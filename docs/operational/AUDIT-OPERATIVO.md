@@ -1,6 +1,7 @@
 # Auditoria Operativa - Ecosistema SuperPago
 **Fecha**: 2026-03-10
 **Auditor**: Operations Auditor Agent
+**Ultima actualizacion**: 2026-03-14 - Incorporar hallazgos de seguridad (#135) y estado actualizado
 
 ---
 
@@ -8,7 +9,9 @@
 
 El ecosistema tiene **21 repositorios** activos. El frontend principal (mf-marketing) compila exitosamente pero tiene **tests rotos en CI local** (crash por full page reload en spec 520 de 8744). El backend (covacha-core) tiene 597 archivos Python, 1588 archivos de test, y su ultimo deploy a main fue el 2026-03-11. Hay **15 de 21 repos con cambios sin commitear**, y practicamente **todos los commits usan ISS-000** (sin tracking real de issues).
 
-**Calificacion general: 5/10 - Funcional pero fragil.**
+**Calificacion general: 5.5/10 - Funcional pero fragil.**
+
+> **Actualizacion 2026-03-14**: Se incorporan hallazgos del issue #135 (credencial hardcodeada) y auditorias de multi-tenancy y MFs abandonados. El inventario paso de estado critico (0 tests ejecutables) a completado (12 epicas, >= 98% coverage).
 
 ---
 
@@ -253,3 +256,28 @@ El ecosistema esta **funcionalmente operativo** - el build de produccion pasa, l
 - Mucho trabajo no commiteado en working trees
 
 El riesgo principal es que **cualquier regression en mf-marketing pasara desapercibida** porque 94% de los tests nunca se ejecutan. Esto deberia ser la prioridad absoluta.
+
+---
+
+## Hallazgos Adicionales (2026-03-14)
+
+### 11. CRITICO: Credencial hardcodeada confirmada (#135)
+- `MASTER-SuperSecretKey123456789` en `covacha-core/scripts/create_organization_setup_table.py`
+- Issue abierto: baatdigital/covacha-projects#135
+- **Accion requerida**: Mover a variable de entorno, rotar la key si es real
+
+### 12. MEDIO: Inventario paso de estado critico a completado
+- Las 12 epicas de inventario (EP-INV-001 a EP-INV-012) estan completadas
+- Tests ejecutables con cobertura >= 98%
+- Solo falta US-INV-019 (export/import catalogo)
+- **Estado anterior**: conftest.py vacio, 0 tests ejecutables, API key hardcoded
+- **Estado actual**: Tests funcionales, endpoints activos, modelos alineados con covacha-libs
+
+### 13. INFO: Auditorias adicionales documentadas
+- `docs/operational/MULTI-TENANT-AUDIT.md`: Auditoria de aislamiento multi-tenant
+- `docs/operational/MF-ABANDONADOS-AUDIT.md`: Analisis de micro-frontends abandonados (mf-template, mf-payment, mf-payment-card)
+
+### 14. MEDIO: 5 repos backend siguen sin deploy >30 dias
+- covacha-botia, covacha-notification, covacha-payment, covacha-transaction, covacha-webhook
+- La divergencia develop→main sigue creciendo
+- **Impacto**: Codigo desarrollado no llega a produccion

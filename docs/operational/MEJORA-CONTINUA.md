@@ -2,6 +2,7 @@
 **Fecha**: 2026-03-10
 **Autor**: Analisis automatizado via Claude Code
 **Alcance**: mf-marketing (primario) + ecosistema MFs (cross-repo)
+**Ultima actualizacion**: 2026-03-14 - Actualizar plan con estado de productos y prioridades ajustadas
 
 ---
 
@@ -307,3 +308,59 @@ spec_coverage:            100% para componentes, servicios, adapters
 4. Pinear `@angular/core` en mf-template a `21.0.8` (15 min)
 
 **Inversion total estimada Q2**: ~4 semanas-persona para resolver toda la deuda critica y alta.
+
+---
+
+## 8. Actualizacion de Estado del Ecosistema (2026-03-14)
+
+### Logros desde la ultima revision
+
+| Producto | Estado Anterior | Estado Actual | Cambio |
+|----------|----------------|---------------|--------|
+| SuperPago SPEI (20 epicas) | 19/20 completadas | 20/20 completadas | EP-SP-020 completado |
+| SuperPago BillPay (8 epicas) | En progreso | 8/8 completadas | Todas las epicas completadas |
+| SuperPago Notificaciones (2 epicas) | En progreso | 2/2 completadas | Completado |
+| Inventario (12 epicas) | 0/12 (critico, 0 tests) | 12/12 completadas (>= 98% cov) | Transformacion completa |
+| Marketing (30 epicas) | 18/30 completadas | 19/30 completadas | EP-MK-026 completado |
+
+### Prioridades ajustadas Q2 2026
+
+**P0 - Seguridad (inmediato)**
+- [ ] Resolver credencial hardcodeada (#135) - mover a env var, rotar key
+- [ ] Auditar otros repos por credenciales similares
+
+**P1 - Completar frontend de epicas con backend listo**
+- [ ] EP-MK-025: Componentes frontend Meta AI (8 dev-days)
+- [ ] EP-MK-028: Builder visual de funnels (10 dev-days)
+- [ ] EP-MK-029: Widget chatbot en landing pages (5 dev-days)
+- [ ] EP-MK-030: Tests y cobertura completa de promociones
+
+**P1 - Completar user stories pendientes**
+- [ ] US-INV-019: Export/import de catalogo de productos (2 dev-days)
+
+**P2 - Calidad de codigo (mf-marketing)**
+- [ ] Resolver 377 subscribes sin cleanup (takeUntilDestroyed)
+- [ ] Dividir ai-orchestrator-dashboard.component.ts (993 lineas)
+- [ ] Reducir 880 usos de `any` en TypeScript
+- [ ] Eliminar 207 console.log en produccion
+
+**P2 - Deploy de repos backend estancados**
+- [ ] Merge develop→main en covacha-botia, covacha-notification, covacha-payment, covacha-transaction, covacha-webhook
+- [ ] Identificar y resolver blockers de deploy
+
+**P3 - Nuevos productos (ver NUEVOS-PRODUCTOS.md)**
+- [ ] Evaluar inicio de AgenciaHub (85% reutilizado, 4 semanas MVP)
+- [ ] Evaluar inicio de PagaQR (75% reutilizado, 4 semanas MVP)
+- [ ] Planificar roadmap de CobrarIA (CRM WhatsApp)
+
+### Metricas de seguimiento actualizadas
+
+| Metrica | Valor Anterior (03-10) | Valor Actual (03-14) | Tendencia |
+|---------|----------------------|---------------------|-----------|
+| Epicas completadas | 37/62 (60%) | 61/134 (46%)* | Incremento absoluto |
+| Productos con epicas 100% | 0 | 3 (SPEI, BillPay, Inventario) | Mejora significativa |
+| Tests ejecutables inventario | 0 | 99+ (>= 98% cov) | Resuelto |
+| Repos sin deploy >27d | 5 | 5 (>30d ahora) | Sin mejora |
+| Issues de seguridad abiertos | 0 | 1 (#135) | Detectado |
+
+*\*El denominador aumento de 62 a 134 al incluir todos los productos del ecosistema.*

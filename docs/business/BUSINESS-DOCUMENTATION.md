@@ -1,22 +1,40 @@
 # Documentacion de Negocio - Ecosistema SuperPago/BaatDigital
 
 **Fecha de generacion**: 2026-03-10
-**Version**: 1.0
+**Version**: 1.1
 **Generado por**: Product Owner Validator
-**Ultima actualizacion**: Automatica desde archivos de epicas en `covacha-projects/products/`
+**Ultima actualizacion**: 2026-03-14 - Actualizacion de metricas de progreso y estado de productos
 
 ---
 
 ## Resumen Ejecutivo
 
-El ecosistema SuperPago/BaatDigital es una plataforma multi-tenant que integra tres productos principales:
+El ecosistema SuperPago/BaatDigital es una plataforma multi-tenant que integra multiples productos. A continuacion el estado actualizado al 2026-03-14:
 
-| Producto | Epicas | Completadas | En Progreso | Pendientes | User Stories |
-|----------|--------|-------------|-------------|------------|--------------|
-| **Marketing Digital** (mf-marketing) | 30 | 18 | 5 | 7 | ~140 |
-| **SuperPago SPEI** (mf-sp) | 20 | 19 | 0 | 1 | ~84 |
-| **Inventario** (mf-inventory) | 12 | 0 | 0 | 12 | 65 |
-| **Total** | **62** | **37** | **5** | **20** | **~289** |
+| Producto | Epicas | Completadas | En Progreso | Pendientes | User Stories | % Avance |
+|----------|--------|-------------|-------------|------------|--------------|----------|
+| **Marketing Digital** (mf-marketing) | 30 | 19 | 4 | 7 | ~140 | 63% |
+| **SuperPago SPEI** (mf-sp + covacha-payment) | 20 | 20 | 0 | 0 | ~84 | 100% |
+| **SuperPago BillPay** (covacha-payment) | 8 | 8 | 0 | 0 | ~32 | 100% |
+| **SuperPago Notificaciones** | 2 | 2 | 0 | 0 | ~14 | 100% |
+| **Inventario** (mf-inventory) | 12 | 12 | 0 | 0 | 65 | 100%* |
+| **Authentication** | 8 | 0 | 0 | 8 | 45 | 0% |
+| **Dashboard** | 8 | 0 | 0 | 8 | 45 | 0% |
+| **IA/Bots** | 16 | 0 | 0 | 16 | 98 | 0% |
+| **AlertaTribunal** | 8 | 0 | 0 | 8 | 46 | 0% |
+| **CRM** | 8 | 0 | 0 | 8 | 48 | 0% |
+| **Website** | 6 | 0 | 0 | 6 | 36 | 0% |
+| **Legacy MiPay** | 8 | 0 | 0 | 8 | 42 | 0% |
+| **Total** | **134** | **61** | **4** | **69** | **~695** | **46%** |
+
+*\*Inventario: 12 epicas completadas, pendiente solo US-INV-019 (export/import catalogo).*
+
+**Hitos clave alcanzados:**
+- SuperPago SPEI: **backend 100% completado** (EP-SP-001 a EP-SP-020), incluyendo Cash-In/Cash-Out, Subasta de Efectivo, y Agente IA WhatsApp
+- SuperPago BillPay: **8 epicas completadas** (EP-SP-021 a EP-SP-028)
+- SuperPago Notificaciones: **2 epicas completadas** (EP-SP-029, EP-SP-030)
+- Inventario: **12 epicas completadas** con cobertura >= 98%
+- Marketing: 19 de 30 epicas completadas, incluyendo EP-MK-026 (Promociones Dinamicas) y EP-MK-027 (Landing de Ventas)
 
 **Stack tecnologico compartido:**
 - **Frontend**: Angular 21, Native Federation (micro-frontends), TypeScript strict, Signals + RxJS
@@ -1414,10 +1432,21 @@ El modulo de Inventario es un sistema multi-cliente de gestion de productos, sto
 
 | Producto | Epicas Totales | Completadas | En Progreso | Pendientes | Coverage E2E | Score |
 |----------|---------------|-------------|-------------|------------|--------------|-------|
-| Marketing Digital | 30 | 18 (60%) | 5 (17%) | 7 (23%) | 30 spec files | 77% |
-| SuperPago SPEI | 20 | 19 (95%) | 0 (0%) | 1 (5%) | Indirecto (backend + scaffold) | 95% |
-| Inventario | 12 | 0 (0%) | 0 (0%) | 12 (100%) | 3 smoke tests | 0% |
-| **Total** | **62** | **37 (60%)** | **5 (8%)** | **20 (32%)** | | **57%** |
+| Marketing Digital | 30 | 19 (63%) | 4 (13%) | 7 (23%) | 30 spec files | 80% |
+| SuperPago SPEI | 20 | 20 (100%) | 0 (0%) | 0 (0%) | Backend + scaffold | 100% |
+| SuperPago BillPay | 8 | 8 (100%) | 0 (0%) | 0 (0%) | Backend tests | 100% |
+| SuperPago Notificaciones | 2 | 2 (100%) | 0 (0%) | 0 (0%) | Backend tests | 100% |
+| Inventario | 12 | 12 (100%) | 0 (0%) | 0 (0%)* | Tests >= 98% | 99% |
+| Authentication | 8 | 0 (0%) | 0 (0%) | 8 (100%) | N/A | 0% |
+| Dashboard | 8 | 0 (0%) | 0 (0%) | 8 (100%) | N/A | 0% |
+| IA/Bots | 16 | 0 (0%) | 0 (0%) | 16 (100%) | N/A | 0% |
+| AlertaTribunal | 8 | 0 (0%) | 0 (0%) | 8 (100%) | N/A | 0% |
+| CRM | 8 | 0 (0%) | 0 (0%) | 8 (100%) | N/A | 0% |
+| Website | 6 | 0 (0%) | 0 (0%) | 6 (100%) | N/A | 0% |
+| Legacy MiPay | 8 | 0 (0%) | 0 (0%) | 8 (100%) | N/A | 0% |
+| **Total** | **134** | **61 (46%)** | **4 (3%)** | **69 (51%)** | | **46%** |
+
+*\*Inventario: pendiente solo US-INV-019 (export/import catalogo).*
 
 ### Cobertura de Testing por Producto
 
@@ -1426,8 +1455,8 @@ El modulo de Inventario es un sistema multi-cliente de gestion de productos, sto
 | Marketing (mf-marketing) | 459+ passing | 30 spec files | Karma+Jasmine, Jest, Playwright | Activo |
 | SuperPago (covacha-payment) | 786+ passing | Via frontend scaffold | pytest | Activo |
 | SuperPago (mf-sp) | Scaffold tests | Via estructura multi-tier | Karma+Jasmine | Activo |
-| Inventario (covacha-inventory) | 99 escritos, 0 ejecutables | 3 smoke tests | pytest (broken) | Critico |
-| Inventario (mf-inventory) | 0 | 3 basics | N/A | Critico |
+| Inventario (covacha-inventory) | 99+ passing (>= 98% coverage) | Tests backend completos | pytest | Activo |
+| Inventario (mf-inventory) | Tests frontend completos | E2E pendientes | Karma+Jasmine | Activo |
 
 ---
 
@@ -1520,26 +1549,30 @@ Dependencias Cross-Producto:
 
 | # | Deuda | Producto | Prioridad | Estimacion |
 |---|-------|----------|-----------|------------|
-| 1 | conftest.py vacio en covacha-inventory | Inventario | P0 | 2 dev-days |
-| 2 | 2 de 7 blueprints registrados en covacha-inventory | Inventario | P0 | 1 dev-day |
-| 3 | Modelos desalineados (locales vs covacha-libs) | Inventario | P0 | 2 dev-days |
-| 4 | 0 unit tests en mf-inventory frontend | Inventario | P1 | 5 dev-days |
-| 5 | Frontend stubs pendientes para EP-SP-020 (Cash/Subasta/IA) | SPEI | P2 | 10 dev-days |
-| 6 | Frontend pendiente para EP-MK-025 (Meta AI components) | Marketing | P1 | 8 dev-days |
-| 7 | Frontend pendiente para EP-MK-028 (Funnels builder UI) | Marketing | P1 | 10 dev-days |
-| 8 | Documentacion OpenAPI no generada para varios endpoints | Cross | P2 | Continuo |
+| 1 | Frontend stubs pendientes para EP-SP-020 (Cash/Subasta/IA) | SPEI | P2 | 10 dev-days |
+| 2 | Frontend pendiente para EP-MK-025 (Meta AI components) | Marketing | P1 | 8 dev-days |
+| 3 | Frontend pendiente para EP-MK-028 (Funnels builder UI) | Marketing | P1 | 10 dev-days |
+| 4 | Frontend pendiente para EP-MK-029 (Chatbot en landing) | Marketing | P1 | 5 dev-days |
+| 5 | Credencial hardcodeada en covacha-core scripts (#135) | Cross | P0 | 1 dev-day |
+| 6 | US-INV-019 pendiente (export/import catalogo) | Inventario | P1 | 2 dev-days |
+| 7 | Documentacion OpenAPI no generada para varios endpoints | Cross | P2 | Continuo |
+| 8 | 880 usos de `any` en mf-marketing TypeScript | Marketing | P2 | 3 dev-days |
 
 ### Recomendaciones Estrategicas
 
-1. **Priorizar Inventario EP-INV-001**: El producto de inventario esta en estado critico. Los 99 tests escritos no ejecutan, hay API keys hardcoded, y la mayoria de endpoints no responde. EP-INV-001 debe ser la primera prioridad para estabilizar el producto.
+1. **Completar frontends pendientes de Marketing**: EP-MK-025 (Meta AI), EP-MK-028 (Funnels), y EP-MK-029 (Chatbot en landing) tienen backend completado pero componentes frontend pendientes. Completar estos cierra funcionalidad ya desarrollada.
 
-2. **Completar frontends pendientes de Marketing**: EP-MK-025 (Meta AI), EP-MK-028 (Funnels), y EP-MK-029 (Chatbot en landing) tienen backend completado pero componentes frontend pendientes. Completar estos cierra funcionalidad ya desarrollada.
+2. **Iniciar EP-MK-024 (Reportes Sociales)**: Es una funcionalidad de alto valor con modelos de dominio ya definidos y 7 user stories detalladas. Diferencia competitiva significativa al eliminar la creacion manual de reportes.
 
-3. **Iniciar EP-MK-024 (Reportes Sociales)**: Es una funcionalidad de alto valor con modelos de dominio ya definidos y 7 user stories detalladas. Diferencia competitiva significativa al eliminar la creacion manual de reportes.
+3. **Completar US-INV-019 (export/import catalogo)**: Unica user story pendiente de inventario. Al completarla, el producto queda al 100%.
 
-4. **Mantener cobertura de testing >= 98%**: El pipeline de CI ya valida coverage. No relajar este umbral. Para inventario, establecer el mismo estandar desde EP-INV-001.
+4. **Mantener cobertura de testing >= 98%**: El pipeline de CI ya valida coverage. No relajar este umbral. Inventario ya cumple este estandar.
 
-5. **Considerar Agent Teams para trabajo paralelo**: Con 3 productos independientes, usar Agent Teams de Claude Code para avanzar en paralelo: un teammate en inventario (EP-INV-001), otro en frontend marketing (EP-MK-025 components), otro en reportes sociales (EP-MK-024).
+5. **Iniciar productos de mayor ROI**: Segun evaluacion de nuevos productos (ver NUEVOS-PRODUCTOS.md), priorizar AgenciaHub (85% reutilizado), CobrarIA (CRM WhatsApp), y PagaQR (POS Virtual SPEI).
+
+6. **Resolver hallazgos de seguridad**: Issue #135 - credencial hardcodeada en covacha-core/scripts. Mover a variable de entorno.
+
+7. **Avanzar productos en planificacion**: Authentication (P1), Dashboard (P2), e IA/Bots (P2) tienen 8-16 epicas cada uno en estado de planificacion. Priorizar Authentication por ser P1.
 
 ---
 
