@@ -1,0 +1,51 @@
+name: Nomina Digital
+status: planned
+priority: 5
+description: Sistema de nomina simplificado con dispersiones SPEI para PyMEs de 5-50 empleados
+score: 7/10
+time_to_market: 12 semanas
+reuso_ecosistema: 70%
+revenue_potencial: $7.2M MXN/año
+github_issue: baatdigital/covacha-projects#132
+
+repos:
+  backends:
+    - covacha-payment     # SPEI dispersiones batch
+    - covacha-core        # Multi-tenant, auth, organizaciones
+    - covacha-notification  # Recibos por WhatsApp
+  frontends:
+    - mf-nomina           # Nuevo micro-frontend nomina
+    - mf-core             # Shell principal
+  shared:
+    - covacha-libs
+
+domains:
+  - nomina.superpago.com.mx
+
+infrastructure:
+  cloud: AWS
+  compute: EC2 (private subnet)
+  cdn: S3 + CloudFront
+  auth: Cognito
+  database: DynamoDB
+  queue: SQS
+  deploy: GitHub Actions + CodeDeploy
+
+pricing:
+  starter:
+    precio: $199 MXN/mes
+    empleados: 10
+    dispersiones: 2/mes
+  pro:
+    precio: $499 MXN/mes
+    empleados: 50
+    dispersiones: 4/mes
+  business:
+    precio: $999 MXN/mes
+    empleados: Ilimitados
+    dispersiones: Ilimitadas
+
+mercado:
+  tam: $16.2B MXN/año (4.5M PyMEs)
+  sam: $3.6B MXN/año (1M con nomina digital)
+  som_year1: $7.2M MXN/año (2,000 empresas)

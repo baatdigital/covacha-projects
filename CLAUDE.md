@@ -76,6 +76,32 @@ covacha-projects/
 │   │   ├── inventory.yml              # Metadata del producto
 │   │   └── INVENTORY-EPICS.md         # EP-INV-001 a EP-INV-012 (65 US)
 │   │
+│   ├── pos-virtual/                   # POS Virtual QR + SPEI
+│   │   ├── pos-virtual.yml            # Metadata del producto
+│   │   └── POS-VIRTUAL-EPICS.md       # EP-POS-001 a EP-POS-008 (40 US)
+│   │
+│   ├── bot-cobranza/                  # Bot de Cobranza WhatsApp
+│   │   ├── bot-cobranza.yml           # Metadata del producto
+│   │   └── BOT-COBRANZA-EPICS.md      # EP-BC-001 a EP-BC-008 (38 US)
+│   │
+│   ├── crm-whatsapp/                  # CRM WhatsApp-First
+│   │   ├── crm-whatsapp.yml           # Metadata del producto
+│   │   └── CRM-WHATSAPP-EPICS.md      # EP-CW-001 a EP-CW-008 (42 US)
+│   │
+│   ├── lealtad/                       # Programa de Lealtad via WhatsApp
+│   │   ├── lealtad.yml                # Metadata del producto
+│   │   └── LEALTAD-EPICS.md           # EP-LY-001 a EP-LY-007 (35 US)
+│   │
+│   ├── nomina-digital/                # Nomina Digital SPEI
+│   │   ├── nomina-digital.yml         # Metadata del producto
+│   │   └── NOMINA-DIGITAL-EPICS.md    # EP-NM-001 a EP-NM-008 (38 US)
+│   │
+│   ├── ecommerce-builder/             # E-commerce Builder
+│   │   ├── ecommerce-builder.yml      # Metadata del producto
+│   │   └── ECOMMERCE-BUILDER-EPICS.md # EP-EC-001 a EP-EC-008 (40 US)
+│   │
+│   ├── ROADMAP-2026.md                # Roadmap consolidado 2026
+│   │
 │   └── legacy-mipay/                  # Legacy en migracion
 │       ├── legacy-mipay.yml           # Metadata del producto
 │       └── LEGACY-MIPAY-MIGRATION-PLAN.md # EP-LM-001 a EP-LM-008 (42 US)
@@ -131,10 +157,10 @@ covacha-projects/
 
 ### Numeros Clave
 
-- **31 repos** en la organizacion baatdigital
-- **9 productos** activos
+- **31 repos** en la organizacion baatdigital (+ 4 nuevos MFs planeados)
+- **15 productos** (9 activos + 6 planeados)
 - **10 backends** (Python 3.9+, Flask, DynamoDB)
-- **11 micro-frontends** (Angular 21, Native Federation)
+- **11 micro-frontends** (Angular 21, Native Federation) + 4 planeados
 - **1 Shell** (mf-core) que orquesta todos los MFs
 
 ### Productos y sus Repos
@@ -149,6 +175,12 @@ covacha-projects/
 | **Auth** | covacha-core (Cognito) | mf-auth | Activo |
 | **CRM** | covacha-crm | - | Activo |
 | **AlertaTribunal** | covacha-judicial | - | Activo |
+| **POS Virtual** | covacha-payment, covacha-core | mf-pos (nuevo) | Planeado Q2 2026 |
+| **Bot Cobranza** | covacha-botia, covacha-payment | mf-ia (extiende) | Planeado Q2 2026 |
+| **CRM WhatsApp** | covacha-crm, covacha-botia, covacha-core | mf-crm (nuevo) | Planeado Q3 2026 |
+| **Lealtad** | covacha-core, covacha-botia, covacha-payment | mf-marketing (extiende) | Planeado Q3 2026 |
+| **Nomina Digital** | covacha-payment, covacha-core | mf-nomina (nuevo) | Planeado Q4 2026 |
+| **E-commerce** | covacha-payment, covacha-inventory, covacha-botia | mf-ecommerce (nuevo) | Planeado Q1 2027 |
 | **Legacy MiPay** | mipay_service, mipay_payment | mipay_web | Migracion |
 
 ### Infraestructura
@@ -309,21 +341,81 @@ covacha-projects/
 
 **Total Inventario**: 12 epicas, 65 user stories
 
+### POS Virtual (EP-POS-001 a EP-POS-008)
+
+| Archivo | Epicas | User Stories | Estado |
+|---------|--------|-------------|--------|
+| pos-virtual/POS-VIRTUAL-EPICS.md | EP-POS-001 a EP-POS-008 | US-POS-001 a US-POS-040 | Planificacion |
+
+**Total POS Virtual**: 8 epicas, 40 user stories
+
+### Bot Cobranza (EP-BC-001 a EP-BC-008)
+
+| Archivo | Epicas | User Stories | Estado |
+|---------|--------|-------------|--------|
+| bot-cobranza/BOT-COBRANZA-EPICS.md | EP-BC-001 a EP-BC-008 | US-BC-001 a US-BC-038 | Planificacion |
+
+**Total Bot Cobranza**: 8 epicas, 38 user stories
+
+### CRM WhatsApp (EP-CW-001 a EP-CW-008)
+
+| Archivo | Epicas | User Stories | Estado |
+|---------|--------|-------------|--------|
+| crm-whatsapp/CRM-WHATSAPP-EPICS.md | EP-CW-001 a EP-CW-008 | US-CW-001 a US-CW-042 | Planificacion |
+
+**Total CRM WhatsApp**: 8 epicas, 42 user stories
+
+### Programa de Lealtad (EP-LY-001 a EP-LY-007)
+
+| Archivo | Epicas | User Stories | Estado |
+|---------|--------|-------------|--------|
+| lealtad/LEALTAD-EPICS.md | EP-LY-001 a EP-LY-007 | US-LY-001 a US-LY-035 | Planificacion |
+
+**Total Lealtad**: 7 epicas, 35 user stories
+
+### Nomina Digital (EP-NM-001 a EP-NM-008)
+
+| Archivo | Epicas | User Stories | Estado |
+|---------|--------|-------------|--------|
+| nomina-digital/NOMINA-DIGITAL-EPICS.md | EP-NM-001 a EP-NM-008 | US-NM-001 a US-NM-038 | Planificacion |
+
+**Total Nomina Digital**: 8 epicas, 38 user stories
+
+### E-commerce Builder (EP-EC-001 a EP-EC-008)
+
+| Archivo | Epicas | User Stories | Estado |
+|---------|--------|-------------|--------|
+| ecommerce-builder/ECOMMERCE-BUILDER-EPICS.md | EP-EC-001 a EP-EC-008 | US-EC-001 a US-EC-040 | Planificacion |
+
+**Total E-commerce Builder**: 8 epicas, 40 user stories
+
+### Roadmap 2026
+
+| Archivo | Descripcion |
+|---------|-------------|
+| ROADMAP-2026.md | Priorizacion y timeline de nuevos productos Q2-Q4 2026 |
+
 ### Totales del Ecosistema
 
 | Producto | Epicas | User Stories | Prioridad |
 |----------|--------|-------------|-----------|
 | SuperPago | 40 | ~185 | P1 |
 | Authentication | 8 | 45 | P1 |
+| POS Virtual | 8 | 40 | P1 |
+| Bot Cobranza | 8 | 38 | P1 |
+| CRM WhatsApp | 8 | 42 | P2 |
+| Lealtad | 7 | 35 | P2 |
+| Nomina Digital | 8 | 38 | P2 |
 | Inventario | 12 | 65 | P2 |
 | Marketing | 30 | 140 | P2 |
 | Dashboard | 8 | 45 | P2 |
 | IA/Bots | 16 | 98 | P2 |
 | AlertaTribunal | 8 | 46 | P2 |
+| E-commerce Builder | 8 | 40 | P3 |
 | CRM | 8 | 48 | P3 |
 | Website | 6 | 36 | P3 |
 | Legacy MiPay | 8 | 42 | P5 |
-| **TOTAL** | **144** | **~750** | - |
+| **TOTAL** | **191** | **~983** | - |
 
 ---
 
@@ -343,6 +435,12 @@ covacha-projects/
 | Epica Website | EP-WB-XXX | EP-WB-001 |
 | Epica Inventario | EP-INV-XXX | EP-INV-001 |
 | Epica Legacy MiPay | EP-LM-XXX | EP-LM-001 |
+| Epica POS Virtual | EP-POS-XXX | EP-POS-001 |
+| Epica Bot Cobranza | EP-BC-XXX | EP-BC-001 |
+| Epica CRM WhatsApp | EP-CW-XXX | EP-CW-001 |
+| Epica Lealtad | EP-LY-XXX | EP-LY-001 |
+| Epica Nomina Digital | EP-NM-XXX | EP-NM-001 |
+| Epica E-commerce | EP-EC-XXX | EP-EC-001 |
 | User Story SuperPago | US-SP-XXX | US-SP-131 |
 | User Story Marketing | US-MK-XXX | US-MK-039 |
 | User Story Authentication | US-AU-XXX | US-AU-001 |
@@ -353,6 +451,12 @@ covacha-projects/
 | User Story Website | US-WB-XXX | US-WB-001 |
 | User Story Inventario | US-INV-XXX | US-INV-001 |
 | User Story Legacy MiPay | US-LM-XXX | US-LM-001 |
+| User Story POS Virtual | US-POS-XXX | US-POS-001 |
+| User Story Bot Cobranza | US-BC-XXX | US-BC-001 |
+| User Story CRM WhatsApp | US-CW-XXX | US-CW-001 |
+| User Story Lealtad | US-LY-XXX | US-LY-001 |
+| User Story Nomina Digital | US-NM-XXX | US-NM-001 |
+| User Story E-commerce | US-EC-XXX | US-EC-001 |
 | Feature cross-repo | CROSS-XXX | CROSS-001 |
 | Issue individual | ISS-XXX | ISS-042 |
 

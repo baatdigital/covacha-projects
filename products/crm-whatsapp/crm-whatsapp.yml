@@ -1,0 +1,54 @@
+name: CRM WhatsApp-First
+status: planned
+priority: 3
+description: CRM nativo para PyMEs mexicanas donde WhatsApp es el canal principal de comunicacion
+score: 8/10
+time_to_market: 14 semanas
+reuso_ecosistema: 65%
+revenue_potencial: $6M MXN/año
+github_issue: baatdigital/covacha-projects#127
+
+repos:
+  backends:
+    - covacha-core       # Multi-tenant, auth, organizaciones
+    - covacha-botia      # WhatsApp AI, mensajeria
+    - covacha-crm        # CRM engine (extiende)
+    - covacha-payment    # Pagos SPEI para cierre de venta
+    - covacha-notification  # Notificaciones
+  frontends:
+    - mf-crm             # Nuevo micro-frontend CRM
+    - mf-marketing       # Reutiliza pipelines, client management
+    - mf-core            # Shell principal
+  shared:
+    - covacha-libs
+
+domains:
+  - crm.superpago.com.mx
+
+infrastructure:
+  cloud: AWS
+  compute: EC2 (private subnet)
+  cdn: S3 + CloudFront
+  auth: Cognito
+  database: DynamoDB
+  queue: SQS
+  deploy: GitHub Actions + CodeDeploy
+
+pricing:
+  starter:
+    precio: $299 MXN/mes
+    contactos: 500
+    conversaciones: 1,000/mes
+  pro:
+    precio: $699 MXN/mes
+    contactos: 5,000
+    conversaciones: 10,000/mes
+  business:
+    precio: $1,499 MXN/mes
+    contactos: Ilimitados
+    conversaciones: 50,000/mes
+
+mercado:
+  tam: $27B MXN/año (4.5M PyMEs)
+  sam: $3B MXN/año (500K PyMEs digitalizadas)
+  som_year1: $6M MXN/año (1,000 clientes)

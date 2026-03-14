@@ -1,0 +1,52 @@
+name: Bot de Cobranza
+status: planned
+priority: 2
+description: Bot de cobranza inteligente via WhatsApp con IA para negociacion y planes de pago
+score: 8.5/10
+time_to_market: 8 semanas
+reuso_ecosistema: 75%
+revenue_potencial: $6M MXN/año
+github_issue: baatdigital/covacha-projects#130
+
+repos:
+  backends:
+    - covacha-botia       # IA + WhatsApp (reutiliza 75%)
+    - covacha-payment     # Pagos SPEI, links de pago
+    - covacha-core        # Multi-tenant, auth
+    - covacha-notification  # Recordatorios programados
+  frontends:
+    - mf-ia              # Dashboard de cobranza (extiende)
+    - mf-core            # Shell principal
+  shared:
+    - covacha-libs
+
+domains:
+  - cobranza.superpago.com.mx
+
+infrastructure:
+  cloud: AWS
+  compute: EC2 (private subnet)
+  cdn: S3 + CloudFront
+  auth: Cognito
+  database: DynamoDB
+  queue: SQS
+  deploy: GitHub Actions + CodeDeploy
+
+pricing:
+  starter:
+    precio: $499 MXN/mes
+    deudores: 200
+    mensajes: 2,000/mes
+  pro:
+    precio: $999 MXN/mes
+    deudores: 2,000
+    mensajes: 20,000/mes
+  enterprise:
+    precio: $2,499 MXN/mes
+    deudores: Ilimitados
+    mensajes: Ilimitados
+
+mercado:
+  tam: $50B MXN/año (mercado cobranza Mexico)
+  sam: $8B MXN/año (cobranza digital)
+  som_year1: $6M MXN/año (500 empresas)

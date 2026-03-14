@@ -1,0 +1,56 @@
+name: E-commerce Builder
+status: planned
+priority: 6
+description: Constructor de tiendas online para PyMEs con pago SPEI integrado y atencion WhatsApp
+score: 6.5/10
+time_to_market: 16 semanas
+reuso_ecosistema: 60%
+revenue_potencial: $14.4M MXN/año
+github_issue: baatdigital/covacha-projects#131
+
+repos:
+  backends:
+    - covacha-payment     # SPEI, checkout
+    - covacha-core        # Multi-tenant, auth
+    - covacha-botia       # WhatsApp atencion al cliente
+    - covacha-inventory   # Productos, stock
+    - covacha-notification  # Pedidos, tracking
+  frontends:
+    - mf-ecommerce        # Nuevo micro-frontend admin tienda
+    - mf-marketing        # Landing editor, templates (reutiliza)
+    - mf-inventory        # Gestion productos (reutiliza)
+    - mf-core             # Shell principal
+  shared:
+    - covacha-libs
+
+domains:
+  - tienda.superpago.com.mx
+  - "*.mitienda.mx"       # Dominios personalizados de clientes
+
+infrastructure:
+  cloud: AWS
+  compute: EC2 (private subnet)
+  cdn: S3 + CloudFront
+  auth: Cognito
+  database: DynamoDB
+  queue: SQS
+  deploy: GitHub Actions + CodeDeploy
+
+pricing:
+  starter:
+    precio: $199 MXN/mes
+    productos: 50
+    comision: 2%
+  pro:
+    precio: $599 MXN/mes
+    productos: 500
+    comision: 0.5%
+  business:
+    precio: $999 MXN/mes
+    productos: Ilimitados
+    comision: 0%
+
+mercado:
+  tam: $4.8B MXN/año (1M PyMEs online)
+  sam: $960M MXN/año (200K con capacidad digital)
+  som_year1: $14.4M MXN/año (3,000 tiendas)

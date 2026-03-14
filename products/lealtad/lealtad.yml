@@ -1,0 +1,52 @@
+name: Programa de Lealtad
+status: planned
+priority: 4
+description: Sistema de puntos y recompensas gestionado via WhatsApp, sin app adicional
+score: 7.5/10
+time_to_market: 10 semanas
+reuso_ecosistema: 65%
+revenue_potencial: $7.2M MXN/año
+github_issue: baatdigital/covacha-projects#129
+
+repos:
+  backends:
+    - covacha-botia       # WhatsApp, IA conversacional
+    - covacha-payment     # Pagos SPEI, vinculacion con POS
+    - covacha-core        # Multi-tenant, auth
+    - covacha-notification  # Notificaciones proactivas
+  frontends:
+    - mf-marketing       # Dashboard de lealtad (extiende analytics)
+    - mf-core            # Shell principal
+  shared:
+    - covacha-libs
+
+domains:
+  - lealtad.superpago.com.mx
+
+infrastructure:
+  cloud: AWS
+  compute: EC2 (private subnet)
+  cdn: S3 + CloudFront
+  auth: Cognito
+  database: DynamoDB
+  queue: SQS
+  deploy: GitHub Actions + CodeDeploy
+
+pricing:
+  starter:
+    precio: $199 MXN/mes
+    clientes_activos: 500
+    puntos_emitidos: 50,000/mes
+  pro:
+    precio: $499 MXN/mes
+    clientes_activos: 5,000
+    puntos_emitidos: 500,000/mes
+  business:
+    precio: $999 MXN/mes
+    clientes_activos: Ilimitados
+    puntos_emitidos: Ilimitados
+
+mercado:
+  tam: $7.2B MXN/año (2M comercios)
+  sam: $1B MXN/año (300K con WhatsApp Business)
+  som_year1: $7.2M MXN/año (2,000 comercios)

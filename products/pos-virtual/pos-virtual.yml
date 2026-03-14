@@ -1,0 +1,51 @@
+name: POS Virtual
+status: planned
+priority: 1
+description: Terminal punto de venta virtual con cobro QR + SPEI instantaneo para comercios
+score: 9/10
+time_to_market: 8 semanas
+reuso_ecosistema: 80%
+revenue_potencial: $12M MXN/año
+github_issue: baatdigital/covacha-projects#128
+
+repos:
+  backends:
+    - covacha-payment    # SPEI completo, QR generation
+    - covacha-core       # Multi-tenant, auth
+    - covacha-notification  # Notificaciones de pago
+  frontends:
+    - mf-pos             # Nuevo micro-frontend POS
+    - mf-core            # Shell principal
+  shared:
+    - covacha-libs
+
+domains:
+  - pos.superpago.com.mx
+
+infrastructure:
+  cloud: AWS
+  compute: EC2 (private subnet)
+  cdn: S3 + CloudFront
+  auth: Cognito
+  database: DynamoDB
+  queue: SQS
+  deploy: GitHub Actions + CodeDeploy
+
+pricing:
+  free:
+    precio: $0 MXN/mes
+    transacciones: 50/mes
+    comision: 1.5%
+  pro:
+    precio: $199 MXN/mes
+    transacciones: Ilimitadas
+    comision: 0.5%
+  business:
+    precio: $499 MXN/mes
+    transacciones: Ilimitadas
+    comision: 0%
+
+mercado:
+  tam: $14.4B MXN/año (6M comercios)
+  sam: $2.4B MXN/año (1M comercios con smartphone)
+  som_year1: $12M MXN/año (5,000 comercios)
