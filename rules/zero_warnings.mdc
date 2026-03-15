@@ -1,0 +1,134 @@
+---
+description: Politica zero-warnings para builds de produccion en micro-frontends Angular. Todo warning debe eliminarse antes de merge.
+globs: **/*.{ts,html,scss}
+---
+
+# Zero Warnings Policy
+
+## Regla
+
+**Todo micro-frontend (mf-*) debe compilar con CERO warnings en build de produccion.**
+
+```bash
+ng build --configuration production 2>&1 | grep -i "warning"
+# Debe retornar VACIO
+```
+
+Si un build genera warnings, NO se considera listo para merge.
+
+---
+
+## Warnings Comunes y Como Resolverlos
+
+### NG8107 - Optional chain innecesario
+
+**Causa**: Usar `?.` cuando el tipo ya garantiza que no es null/undefined.
+
+```typescript
+// MAL - si `config` nunca es null segun el tipo
+@if (config?.enabled) {
+
+// BIEN
+@if (config.enabled) {
+```
+
+**Regla**: Solo usar `?.` cuando el tipo incluye `null | undefined`. Si TypeScript no marca error sin `?.`, entonces `?.` sobra.
+
+### NG8102 - Nullish coalescing innecesario
+
+**Causa**: Usar `??` cuando el tipo ya garantiza que no es null/undefined.
+
+```typescript
+// MAL - si `count` es number (no number | null)
+{{ count ?? 0 }}
+
+// BIEN
+{{ count }}
+```
+
+### NG8113 - Import no usado en template
+
+**Causa**: Pipe o componente importado en `imports: [...]` pero no referenciado en el template.
+
+```typescript
+// MAL
+imports: [CommonModule, DatePipe, DecimalPipe, PercentPipe]
+// Si DecimalPipe no se usa en el template
+
+// BIEN
+imports: [CommonModule, DatePipe, PercentPipe]
+```
+
+**Regla**: Solo importar pipes/componentes que se usen en el template.
+
+### CommonJS dependency warning
+
+**Causa**: Dependencia que no tiene version ESM (ej: google-libphonenumber, qrcode, jsbarcode).
+
+**Solucion**: Agregar a `angular.json` en `architect > build > options`:
+
+```json
+"allowedCommonJsDependencies": [
+  "google-libphonenumber",
+  "qrcode",
+  "jsbarcode"
+]
+```
+
+Solo agregar dependencias que realmente no tienen alternativa ESM.
+
+### CSS budget exceeded
+
+**Causa**: Estilos de componente superan el limite configurado.
+
+**Solucion (preferida)**: Refactorizar el CSS del componente:
+- Extraer estilos compartidos a archivos SCSS globales
+- Eliminar CSS no usado
+- Usar variables CSS en vez de duplicar valores
+
+**Solucion (temporal)**: Ajustar budget en `angular.json`:
+
+```json
+{ "type": "anyComponentStyle", "maximumWarning": "32kB" }
+```
+
+---
+
+## Checklist Pre-Merge
+
+Antes de pushear a develop, verificar:
+
+- [ ] `ng build --configuration production` sin warnings
+- [ ] No hay `?.` innecesarios (NG8107)
+- [ ] No hay `??` innecesarios (NG8102)
+- [ ] No hay imports sin usar (NG8113)
+- [ ] CommonJS dependencies declaradas en angular.json
+- [ ] CSS de componentes dentro del budget
+
+---
+
+## Configuracion Recomendada (tsconfig.json)
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "angularCompilerOptions": {
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
+}
+```
+
+---
+
+## Aplicacion
+
+Esta regla aplica a TODOS los micro-frontends:
+mf-core, mf-ia, mf-marketing, mf-dashboard, mf-auth, mf-settings, mf-inventory, mf-whatsapp, mf-payment, mf-payment-card, mf-docs
