@@ -2,7 +2,7 @@
 
 **Fecha**: 2026-02-19
 **Product Owner**: BaatDigital / Marketing
-**Estado**: EN PROGRESO (EP-MK-026 a 029 completados, EP-MK-030 pendiente)
+**Estado**: COMPLETADO (EP-MK-026 a EP-MK-030 todos completados)
 **Continua desde**: MARKETING-META-AI-EPICS.md (EP-MK-025, US-MK-101 a US-MK-107)
 **User Stories**: US-MK-108 a US-MK-140
 **Referencia**: baatdigital.com.mx como cliente ejemplo ya sincronizado
@@ -187,7 +187,7 @@ El sistema de promociones de mf-marketing/covacha-core ya tiene funcionalidad ba
 | EP-MK-027 | Landing de Promociones Orientada a Ventas | US-MK-115 a US-MK-122 | L | P1 Alta | COMPLETADO |
 | EP-MK-028 | Motor de Funnels de Venta Multi-Canal | US-MK-123 a US-MK-132 | XL | P1 Alta | COMPLETADO (backend) |
 | EP-MK-029 | Integracion Chatbot + Promociones | US-MK-133 a US-MK-137 | M | P2 Media | COMPLETADO (backend) |
-| EP-MK-030 | Tests y Cobertura Completa Promociones | US-MK-138 a US-MK-140 | L | P1 Alta | EP-MK-026 a EP-MK-029 |
+| EP-MK-030 | Tests y Cobertura Completa Promociones | US-MK-138 a US-MK-140 | L | P1 Alta | COMPLETADO |
 
 **Totales**:
 - 5 epicas

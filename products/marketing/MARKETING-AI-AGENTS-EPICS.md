@@ -2,7 +2,7 @@
 
 **Fecha**: 2026-02-16
 **Product Owner**: BaatDigital / Marketing
-**Estado**: Planificacion
+**Estado**: EN PROGRESO (EP-MK-014, EP-MK-015, EP-MK-020 completados backend+frontend; orquestador multi-agente implementado)
 **Continua desde**: MARKETING-EPICS.md (EP-MK-006 a EP-MK-013, US-MK-001 a US-MK-038)
 **User Stories**: US-MK-039 en adelante
 
@@ -176,16 +176,16 @@ El siguiente paso es **automatizar las operaciones de la agencia** con 10 agente
 
 | ID | Epica | Complejidad | Sprint | Dependencias |
 |---|---|---|---|---|
-| EP-MK-014 | Agente de Content Planning y Generacion | XL | 11-13 | EP-MK-013 (AI Config) |
-| EP-MK-015 | Agente de Social Media Management | XL | 12-14 | EP-MK-014, Social adapters existentes |
-| EP-MK-016 | Agente de Campanas Publicitarias (FB/Google Ads) | XL | 14-16 | EP-MK-007 (Campaign Builder), EP-MK-015 |
-| EP-MK-017 | Agente de Landing Page Generator | L | 13-15 | EP-MK-006 (Landing Editor), EP-MK-014 |
-| EP-MK-018 | Agente de Email Marketing | L | 14-16 | EP-MK-014 |
-| EP-MK-019 | Agente de WhatsApp Marketing (Secuencias) | L | 12-14 | Templates WhatsApp existentes, EP-MK-014 |
-| EP-MK-020 | Agente de Analytics y Reportes de Marketing | L | 15-17 | EP-MK-015, EP-MK-016, EP-MK-018 |
-| EP-MK-021 | Agente de Lead Generation y Nurturing | XL | 14-16 | EP-MK-019, EP-MK-018, covacha-crm |
-| EP-MK-022 | Agente de Brand Kit y Assets | M | 13-14 | EP-MK-008 (Brand Kit Completo) |
-| EP-MK-023 | Agente de SEO/SEM | L | 15-17 | EP-MK-017, EP-MK-014 |
+| EP-MK-014 | Agente de Content Planning y Generacion | XL | 11-13 | EP-MK-013 (AI Config) | COMPLETADO (backend+frontend) |
+| EP-MK-015 | Agente de Social Media Management | XL | 12-14 | EP-MK-014, Social adapters existentes | COMPLETADO (backend+frontend) |
+| EP-MK-016 | Agente de Campanas Publicitarias (FB/Google Ads) | XL | 14-16 | EP-MK-007 (Campaign Builder), EP-MK-015 | EN PROGRESO |
+| EP-MK-017 | Agente de Landing Page Generator | L | 13-15 | EP-MK-006 (Landing Editor), EP-MK-014 | Planificacion |
+| EP-MK-018 | Agente de Email Marketing | L | 14-16 | EP-MK-014 | Planificacion |
+| EP-MK-019 | Agente de WhatsApp Marketing (Secuencias) | L | 12-14 | Templates WhatsApp existentes, EP-MK-014 | Planificacion |
+| EP-MK-020 | Agente de Analytics y Reportes de Marketing | L | 15-17 | EP-MK-015, EP-MK-016, EP-MK-018 | COMPLETADO (backend+frontend) |
+| EP-MK-021 | Agente de Lead Generation y Nurturing | XL | 14-16 | EP-MK-019, EP-MK-018, covacha-crm | Planificacion |
+| EP-MK-022 | Agente de Brand Kit y Assets | M | 13-14 | EP-MK-008 (Brand Kit Completo) | Planificacion |
+| EP-MK-023 | Agente de SEO/SEM | L | 15-17 | EP-MK-017, EP-MK-014 | Planificacion |
 
 **Totales:**
 - 10 epicas nuevas (EP-MK-014 a EP-MK-023)
