@@ -417,6 +417,20 @@ GitHub push (develop) -> GitHub Actions -> build Angular -> S3 -> CloudFront
 - Cache: assets hasheados 1 ano immutable, remoteEntry.json 5 min, index.html no-cache
 - Cada MF tiene su distribution de CloudFront
 
+### Module Federation — skip list (CRITICO)
+
+Dependencias que NO son Angular core deben ir en `skip` de `federation.config.js` para que se bundleen en el MF en vez de resolverse como shared en runtime.
+
+**Siempre incluir en skip:**
+```
+@angular/cdk, @angular/cdk/drag-drop, @angular/material,
+echarts, ngx-echarts, chart.js, jspdf, jspdf-autotable, xlsx, file-saver
+```
+
+Si se usa un import de subpath (ej: `@angular/cdk/drag-drop`), agregar TANTO el paquete base como el subpath.
+
+**Error comun**: `Unable to resolve specifier '@angular/cdk/...'` en produccion = falta en skip list.
+
 ### Backend
 
 ```
