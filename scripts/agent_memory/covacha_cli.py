@@ -43,6 +43,36 @@ except ImportError:
     publish_contract = None  # type: ignore[assignment]
     search_contracts = None  # type: ignore[assignment]
 
+try:
+    from tenant_manager import (
+        create_tenant as tm_create_tenant,
+        get_tenant as tm_get_tenant,
+        list_tenants as tm_list_tenants,
+        delete_tenant as tm_delete_tenant,
+        create_workspace as tm_create_workspace,
+        list_workspaces as tm_list_workspaces,
+        delete_workspace as tm_delete_workspace,
+    )
+except ImportError:
+    tm_create_tenant = None  # type: ignore[assignment]
+    tm_get_tenant = None  # type: ignore[assignment]
+    tm_list_tenants = None  # type: ignore[assignment]
+    tm_delete_tenant = None  # type: ignore[assignment]
+    tm_create_workspace = None  # type: ignore[assignment]
+    tm_list_workspaces = None  # type: ignore[assignment]
+    tm_delete_workspace = None  # type: ignore[assignment]
+
+try:
+    from workspace_discovery import auto_setup_workspaces
+except ImportError:
+    auto_setup_workspaces = None  # type: ignore[assignment]
+
+try:
+    from migration import migrate_to_multi_tenant, verify_migration
+except ImportError:
+    migrate_to_multi_tenant = None  # type: ignore[assignment]
+    verify_migration = None  # type: ignore[assignment]
+
 
 def _get_config() -> dict:
     """Carga la config del nodo o retorna dict vacio."""
@@ -287,6 +317,174 @@ def cmd_eval(args: argparse.Namespace) -> None:
     print(f"Eval not implemented yet (task={args.task}, type={args.type})")
 
 
+# --- Tenant subcommands ---
+
+
+def cmd_tenant_create(args: argparse.Namespace) -> None:
+    """Crea un tenant nuevo."""
+    if tm_create_tenant is None:
+        print("Error: modulo tenant_manager no disponible.")
+        sys.exit(1)
+    try:
+        result = tm_create_tenant(
+            args.name, args.github_org, args.admin_email,
+            plan=args.plan,
+        )
+        print(f"Tenant '{args.name}' creado (plan: {args.plan})")
+        print(f"  Max nodos: {result['max_nodes']}")
+        print(f"  Max workspaces: {result['max_workspaces']}")
+    except (RuntimeError, ValueError) as exc:
+        print(f"Error: {exc}")
+        sys.exit(1)
+
+
+def cmd_tenant_list(args: argparse.Namespace) -> None:
+    """Lista todos los tenants."""
+    if tm_list_tenants is None:
+        print("Error: modulo tenant_manager no disponible.")
+        sys.exit(1)
+    tenants = tm_list_tenants()
+    if not tenants:
+        print("Sin tenants registrados.")
+        return
+    for t in tenants:
+        name = t.get("org_name", "?")
+        plan = t.get("plan", "?")
+        print(f"  {name} (plan: {plan}, org: {t.get('github_org', '?')})")
+
+
+def cmd_tenant_info(args: argparse.Namespace) -> None:
+    """Muestra informacion de un tenant."""
+    if tm_get_tenant is None:
+        print("Error: modulo tenant_manager no disponible.")
+        sys.exit(1)
+    tenant = tm_get_tenant(args.tenant)
+    if not tenant:
+        print(f"Tenant '{args.tenant}' no encontrado.")
+        sys.exit(1)
+    print(json.dumps(tenant, indent=2, default=str))
+
+
+def cmd_tenant_delete(args: argparse.Namespace) -> None:
+    """Elimina un tenant."""
+    if tm_delete_tenant is None:
+        print("Error: modulo tenant_manager no disponible.")
+        sys.exit(1)
+    try:
+        tm_delete_tenant(args.tenant)
+        print(f"Tenant '{args.tenant}' eliminado.")
+    except RuntimeError as exc:
+        print(f"Error: {exc}")
+        sys.exit(1)
+
+
+# --- Workspace subcommands ---
+
+
+def cmd_workspace_create(args: argparse.Namespace) -> None:
+    """Crea un workspace dentro de un tenant."""
+    if tm_create_workspace is None:
+        print("Error: modulo tenant_manager no disponible.")
+        sys.exit(1)
+    repos = args.repos.split(",") if args.repos else []
+    try:
+        result = tm_create_workspace(
+            tenant_id=args.tenant,
+            workspace_id=args.name.lower().replace(" ", "-"),
+            workspace_name=args.name,
+            github_project_id=f"project-{args.github_project}",
+            github_project_number=int(args.github_project),
+            status_field_id="",
+            status_options={},
+            repos=repos,
+        )
+        print(f"Workspace '{args.name}' creado en tenant '{args.tenant}'")
+        print(f"  Repos: {', '.join(repos) if repos else '(ninguno)'}")
+    except RuntimeError as exc:
+        print(f"Error: {exc}")
+        sys.exit(1)
+
+
+def cmd_workspace_list(args: argparse.Namespace) -> None:
+    """Lista workspaces de un tenant."""
+    if tm_list_workspaces is None:
+        print("Error: modulo tenant_manager no disponible.")
+        sys.exit(1)
+    tenant_id = _get_tenant(args)
+    if not tenant_id:
+        print("Error: se requiere --tenant.")
+        sys.exit(1)
+    workspaces = tm_list_workspaces(tenant_id)
+    if not workspaces:
+        print(f"Sin workspaces en tenant '{tenant_id}'.")
+        return
+    for ws in workspaces:
+        name = ws.get("workspace_name", ws.get("workspace_id", "?"))
+        active = "activo" if ws.get("active") else "inactivo"
+        print(f"  {name} ({active}, repos: {len(ws.get('repos', []))})")
+
+
+def cmd_workspace_discover(args: argparse.Namespace) -> None:
+    """Auto-descubre workspaces desde GitHub Projects."""
+    if auto_setup_workspaces is None:
+        print("Error: modulo workspace_discovery no disponible.")
+        sys.exit(1)
+    tenant_id = _get_tenant(args)
+    if not tenant_id:
+        print("Error: se requiere --tenant.")
+        sys.exit(1)
+    cfg = _get_config()
+    github_org = cfg.get("tenant", {}).get("github_org", tenant_id)
+    try:
+        created = auto_setup_workspaces(tenant_id, github_org)
+        print(f"{len(created)} workspace(s) creados desde GitHub.")
+        for ws in created:
+            print(f"  {ws.get('workspace_id', '?')}")
+    except RuntimeError as exc:
+        print(f"Error: {exc}")
+        sys.exit(1)
+
+
+def cmd_workspace_delete(args: argparse.Namespace) -> None:
+    """Elimina un workspace."""
+    if tm_delete_workspace is None:
+        print("Error: modulo tenant_manager no disponible.")
+        sys.exit(1)
+    try:
+        tm_delete_workspace(args.tenant, args.workspace)
+        print(f"Workspace '{args.workspace}' eliminado de '{args.tenant}'.")
+    except RuntimeError as exc:
+        print(f"Error: {exc}")
+        sys.exit(1)
+
+
+def cmd_workspace_sync(args: argparse.Namespace) -> None:
+    """Placeholder para sync de workspace con GitHub."""
+    tenant_id = _get_tenant(args)
+    ws = _get_workspace(args)
+    print(f"Sync not implemented yet (tenant={tenant_id}, workspace={ws})")
+
+
+# --- Migrate subcommand ---
+
+
+def cmd_migrate(args: argparse.Namespace) -> None:
+    """Ejecuta o verifica la migracion a multi-tenant."""
+    if args.verify:
+        if verify_migration is None:
+            print("Error: modulo migration no disponible.")
+            sys.exit(1)
+        result = verify_migration(args.tenant, args.workspace)
+    else:
+        if migrate_to_multi_tenant is None:
+            print("Error: modulo migration no disponible.")
+            sys.exit(1)
+        result = migrate_to_multi_tenant(
+            args.tenant, args.workspace, args.dry_run,
+        )
+    print(json.dumps(result, indent=2, default=str))
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Construye el parser principal con todos los subcommands."""
     parser = argparse.ArgumentParser(
@@ -365,6 +563,51 @@ def build_parser() -> argparse.ArgumentParser:
     p_eval.add_argument("--task", required=True, help="Task ID")
     p_eval.add_argument("--type", default="pre_release", help="Tipo de evaluacion")
 
+    # tenant
+    p_tenant = sub.add_parser("tenant", help="Gestion de tenants")
+    tenant_sub = p_tenant.add_subparsers(dest="tenant_command")
+
+    p_tc = tenant_sub.add_parser("create", help="Crear tenant")
+    p_tc.add_argument("--name", required=True, help="Tenant ID/nombre")
+    p_tc.add_argument("--github-org", required=True, help="GitHub org")
+    p_tc.add_argument("--admin-email", required=True, help="Email admin")
+    p_tc.add_argument("--plan", default="team", help="Plan (free/team/business/enterprise)")
+
+    tenant_sub.add_parser("list", help="Listar tenants")
+
+    p_ti = tenant_sub.add_parser("info", help="Info de un tenant")
+    p_ti.add_argument("--tenant", required=True, help="Tenant ID")
+
+    p_td = tenant_sub.add_parser("delete", help="Eliminar tenant")
+    p_td.add_argument("--tenant", required=True, help="Tenant ID")
+
+    # workspace
+    p_ws = sub.add_parser("workspace", help="Gestion de workspaces")
+    ws_sub = p_ws.add_subparsers(dest="workspace_command")
+
+    p_wc = ws_sub.add_parser("create", help="Crear workspace")
+    p_wc.add_argument("--tenant", required=True, help="Tenant ID")
+    p_wc.add_argument("--name", required=True, help="Nombre del workspace")
+    p_wc.add_argument("--github-project", required=True, help="GitHub Project number")
+    p_wc.add_argument("--repos", default=None, help="Repos (comma-separated)")
+
+    p_wl = ws_sub.add_parser("list", help="Listar workspaces")
+
+    p_wd = ws_sub.add_parser("discover", help="Auto-descubrir desde GitHub")
+
+    p_wdel = ws_sub.add_parser("delete", help="Eliminar workspace")
+    p_wdel.add_argument("--tenant", required=True, help="Tenant ID")
+    p_wdel.add_argument("--workspace", required=True, help="Workspace ID")
+
+    p_wsync = ws_sub.add_parser("sync", help="Sync con GitHub")
+
+    # migrate
+    p_mig = sub.add_parser("migrate", help="Migracion a multi-tenant")
+    p_mig.add_argument("--tenant", default="baatdigital", help="Tenant ID destino")
+    p_mig.add_argument("--workspace", default="superpago", help="Workspace ID destino")
+    p_mig.add_argument("--dry-run", action="store_true", help="Solo contar, no migrar")
+    p_mig.add_argument("--verify", action="store_true", help="Verificar estado de migracion")
+
     return parser
 
 
@@ -395,6 +638,12 @@ def run_cli(argv: list[str] | None = None) -> None:
         _dispatch_deps(args)
     elif args.command == "contract":
         _dispatch_contract(args)
+    elif args.command == "tenant":
+        _dispatch_tenant(args)
+    elif args.command == "workspace":
+        _dispatch_workspace(args)
+    elif args.command == "migrate":
+        cmd_migrate(args)
     else:
         parser.print_help()
 
@@ -427,6 +676,38 @@ def _dispatch_contract(args: argparse.Namespace) -> None:
         cmd_contract_search(args)
     else:
         print("Usa: covacha contract {publish|search}")
+
+
+def _dispatch_tenant(args: argparse.Namespace) -> None:
+    """Dispatch para subcomandos de tenant."""
+    cmd = getattr(args, "tenant_command", None)
+    if cmd == "create":
+        cmd_tenant_create(args)
+    elif cmd == "list":
+        cmd_tenant_list(args)
+    elif cmd == "info":
+        cmd_tenant_info(args)
+    elif cmd == "delete":
+        cmd_tenant_delete(args)
+    else:
+        print("Usa: covacha tenant {create|list|info|delete}")
+
+
+def _dispatch_workspace(args: argparse.Namespace) -> None:
+    """Dispatch para subcomandos de workspace."""
+    cmd = getattr(args, "workspace_command", None)
+    if cmd == "create":
+        cmd_workspace_create(args)
+    elif cmd == "list":
+        cmd_workspace_list(args)
+    elif cmd == "discover":
+        cmd_workspace_discover(args)
+    elif cmd == "delete":
+        cmd_workspace_delete(args)
+    elif cmd == "sync":
+        cmd_workspace_sync(args)
+    else:
+        print("Usa: covacha workspace {create|list|discover|delete|sync}")
 
 
 if __name__ == "__main__":
