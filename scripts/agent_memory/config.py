@@ -74,6 +74,9 @@ STALE_THRESHOLD: int = 300         # 5 min sin heartbeat = stale
 NODE_TTL_SECONDS: int = 86400      # 24h TTL para nodos
 DEFAULT_BASE_PATH: str = os.path.expanduser("~/sandboxes/superpago")
 
+# Agent Loop
+AGENT_LOOP_POLL_INTERVAL: int = 300  # 5 min entre polls sin tareas
+
 # Roles dinamicos
 ROLE_REQUIREMENTS: dict = {
     "tech_lead": {
