@@ -67,3 +67,38 @@ MODEL_MAP: dict[str, str] = {
 
 # Modelo default cuando no hay label reconocida
 MODEL_DEFAULT: str = MODEL_SONNET
+
+# Nodos dinamicos
+HEARTBEAT_INTERVAL: int = 120      # 2 min entre heartbeats
+STALE_THRESHOLD: int = 300         # 5 min sin heartbeat = stale
+NODE_TTL_SECONDS: int = 86400      # 24h TTL para nodos
+DEFAULT_BASE_PATH: str = os.path.expanduser("~/sandboxes/superpago")
+
+# Roles dinamicos
+ROLE_REQUIREMENTS: dict = {
+    "tech_lead": {
+        "required_caps": ["backend"],
+        "preferred_caps": ["architecture"],
+        "max_per_swarm": 1,
+    },
+    "developer": {
+        "required_caps": [],
+        "preferred_caps": ["backend", "frontend"],
+        "max_per_swarm": None,
+    },
+    "tester": {
+        "required_caps": ["testing"],
+        "preferred_caps": ["e2e"],
+        "max_per_swarm": None,
+    },
+    "project_owner": {
+        "required_caps": ["ops"],
+        "preferred_caps": ["project_owner"],
+        "max_per_swarm": 1,
+    },
+    "reviewer": {
+        "required_caps": ["backend"],
+        "preferred_caps": [],
+        "max_per_swarm": None,
+    },
+}
