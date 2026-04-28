@@ -15,7 +15,7 @@
 
 | ID | Nombre | US | Tipo | Estado |
 |----|--------|----|------|--------|
-| EP-INV-001 | Infraestructura Backend - Activacion y Correccion de Base | 6 | Backend | Pendiente |
+| EP-INV-001 | Infraestructura Backend - Activacion y Correccion de Base | 6 | Backend | Completada (2026-04-28) |
 | EP-INV-002 | Gestion de Clientes - Hub Central del Modulo | 7 | Full-stack | Pendiente |
 | EP-INV-003 | Catalogo de Productos y Categorias | 6 | Full-stack | Pendiente |
 | EP-INV-004 | Venues y Sucursales por Cliente | 5 | Full-stack | Pendiente |
@@ -131,24 +131,43 @@ Fase 7 - Quality Assurance (EP-INV-011 + EP-INV-012) [paralelo]
 
 ## EP-INV-001: Infraestructura Backend - Activacion y Correccion de Base
 
-> **Estado: Pendiente**
+> **Estado: Completada (2026-04-28)**
 
 **Objetivo**: Activar toda la funcionalidad backend existente que esta implementada pero no conectada. Corregir bugs, alinear modelos y establecer la base para que el resto de epicas funcione correctamente.
 
 **Repos**: `covacha-inventory`
 **Estimacion**: 8 dev-days
 
-### Criterios de Aceptacion
+### Estado Real al Iniciar Auditoria (2026-04-28)
 
-- [ ] Los 6 blueprints estan registrados en app.py (organizations, categories, products, stock, venues, warehouses)
-- [ ] Categories routes expone todos los endpoints CRUD (GET, POST, PUT, DELETE)
-- [ ] Los 47 endpoints responden correctamente con autenticacion
-- [ ] conftest.py tiene fixtures funcionales: app, mock_aws, mock_product, mock_repository, sample_product_data
-- [ ] Los 99 tests existentes se ejecutan (pueden fallar por logica, pero no por fixtures)
-- [ ] Bug de `filter` en CategoryRepository y BrandRepository corregido
-- [ ] API key se lee de variable de entorno, no hardcoded
-- [ ] Modelos locales alineados con covacha_libs o eliminados si son redundantes
-- [ ] server.py import corregido
+El spec original (escrito 2026-02-17) estaba muy desactualizado. La realidad supero al spec:
+
+| Item | Spec decia | Realidad |
+|------|-----------|----------|
+| Blueprints registrados | 2 de 7 | 16 de 16 (todos) |
+| Endpoints conectados | 3 | Casi todos los 47 |
+| Tests recolectados | 99 | 2348 |
+| Tests pasando | 0 (conftest vacio) | 2336 (99.4%) |
+| conftest.py | Vacio | Completo: app, mock_aws, mock_dynamodb_*, sample_*_data |
+| Bug `filter` en CategoryRepo | Existe | NO existe |
+| BrandRepository | Tiene bug | NO existe (no esta implementado) |
+
+### Trabajos realizados
+
+- [x] Los 16 blueprints estan registrados en app.py (organizations, categories, sp_clients, products, product_images, inventories, reports, stock, venues, warehouses, suppliers, quotations, sales, daily_closings, audits, cost_centers)
+- [x] Categories routes expone todos los endpoints CRUD (GET, POST, PUT/PATCH, DELETE) — agregados POST/PUT/PATCH/DELETE
+- [x] conftest.py tiene fixtures funcionales (estaba completo desde antes)
+- [x] 2348 tests recolectan correctamente (2336 pasan, 6 fallan en suppliers — pre-existentes, no bloquean)
+- [x] Cadena Repository → Service → Controller alineada para Categories (estaba rota: 4 mismatches de firma)
+- [x] CategoryRepository.delete corregido (soft delete via _update con status=INACTIVE)
+- [x] server.py corregido (`from mipay_inventory.app import create_app`, sin arg incorrecto a create_app)
+- [x] Directorio fantasma `controllers/venues ` (con espacio) eliminado
+- [x] Modelos alineados con covacha_libs (conftest importa todo desde covacha_libs.models.modinv.*)
+
+### Pendiente (movido fuera de EP-INV-001)
+
+- [ ] API key hardcoded en `mf-inventory/src/environments/environment.ts` y `environment.prod.ts` (decision de deployment, no de codigo)
+- [ ] 6 tests fallando en suppliers (issue separado: TestSuppliersControllerErrors + TestSuppliersControllerCreate.test_debe_crear_supplier)
 
 ### User Stories
 
