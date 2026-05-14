@@ -76,6 +76,10 @@ covacha-projects/
 │   │   ├── inventory.yml              # Metadata del producto
 │   │   └── INVENTORY-EPICS.md         # EP-INV-001 a EP-INV-012 (65 US)
 │   │
+│   ├── bids/                          # Prospeccion multi-portal + bid-assistant
+│   │   ├── bids.yml                   # Metadata del producto
+│   │   └── BIDS-PRODUCT-PLAN.md       # EP-BD-001 a EP-BD-007 (covacha-bids)
+│   │
 │   └── legacy-mipay/                  # Legacy en migracion
 │       ├── legacy-mipay.yml           # Metadata del producto
 │       └── LEGACY-MIPAY-MIGRATION-PLAN.md # EP-LM-001 a EP-LM-008 (42 US)
@@ -90,8 +94,10 @@ covacha-projects/
 │   ├── covacha-inventory.yml
 │   ├── covacha-judicial.yml
 │   ├── covacha-crm.yml
+│   ├── covacha-bids.yml   # Prospeccion multi-portal (planning)
 │   ├── covacha-libs.yml
 │   ├── mf-core.yml        # Shell principal (Angular 21)
+│   ├── mf-bids.yml        # Frontend bids (planning)
 │   ├── mf-auth.yml
 │   ├── mf-dashboard.yml
 │   ├── mf-ia.yml
@@ -149,6 +155,7 @@ covacha-projects/
 | **Auth** | covacha-core (Cognito) | mf-auth | Activo |
 | **CRM** | covacha-crm | - | Activo |
 | **AlertaTribunal** | covacha-judicial | - | Activo |
+| **Bids** | covacha-bids (puerto 5008) + reuso covacha-notification + covacha-botia | mf-bids (puerto 4212) | Planning |
 | **Legacy MiPay** | mipay_service, mipay_payment | mipay_web | Migracion |
 
 ### Infraestructura
@@ -309,6 +316,25 @@ covacha-projects/
 
 **Total Inventario**: 12 epicas, 65 user stories
 
+### Bids (EP-BD-001 a EP-BD-007)
+
+| Archivo | Epicas | User Stories | Estado |
+|---------|--------|-------------|--------|
+| bids/BIDS-PRODUCT-PLAN.md | EP-BD-001 a EP-BD-007 | Por definir | Planning |
+
+**Total Bids**: 7 epicas (planning)
+
+Issues GitHub (baatdigital/covacha-projects):
+| Epic | Issue | Fase |
+|---|---|---|
+| EP-BD-001 | #150 | 0 — Foundation |
+| EP-BD-002 | #151 | 1 — Scrape + Evaluador |
+| EP-BD-003 | #152 | 2 — Submit hibrido + Notify |
+| EP-BD-004 | #153 | 3 — Implementacion + Botia |
+| EP-BD-005 | #154 | 4 — Analytics + Skill-Gap |
+| EP-BD-006 | #155 | 5 — mf-bids UI |
+| EP-BD-007 | #156 | 6 — Auto-pilot |
+
 ### Totales del Ecosistema
 
 | Producto | Epicas | User Stories | Prioridad |
@@ -322,8 +348,9 @@ covacha-projects/
 | AlertaTribunal | 8 | 46 | P2 |
 | CRM | 8 | 48 | P3 |
 | Website | 6 | 36 | P3 |
+| Bids | 7 | TBD | P2 |
 | Legacy MiPay | 8 | 42 | P5 |
-| **TOTAL** | **144** | **~750** | - |
+| **TOTAL** | **151** | **~750** | - |
 
 ---
 
@@ -342,6 +369,7 @@ covacha-projects/
 | Epica CRM | EP-CR-XXX | EP-CR-001 |
 | Epica Website | EP-WB-XXX | EP-WB-001 |
 | Epica Inventario | EP-INV-XXX | EP-INV-001 |
+| Epica Bids | EP-BD-XXX | EP-BD-001 |
 | Epica Legacy MiPay | EP-LM-XXX | EP-LM-001 |
 | User Story SuperPago | US-SP-XXX | US-SP-131 |
 | User Story Marketing | US-MK-XXX | US-MK-039 |
@@ -352,6 +380,7 @@ covacha-projects/
 | User Story CRM | US-CR-XXX | US-CR-001 |
 | User Story Website | US-WB-XXX | US-WB-001 |
 | User Story Inventario | US-INV-XXX | US-INV-001 |
+| User Story Bids | US-BD-XXX | US-BD-001 |
 | User Story Legacy MiPay | US-LM-XXX | US-LM-001 |
 | Feature cross-repo | CROSS-XXX | CROSS-001 |
 | Issue individual | ISS-XXX | ISS-042 |

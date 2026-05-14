@@ -1,0 +1,40 @@
+name: mf-bids
+product: bids
+type: micro-frontend
+language: typescript
+framework: angular
+status: planning
+port: 4212
+arch: hexagonal-frontend (domain/ports/adapters/use-cases/presentation)
+
+depends_on:
+  code: []
+  services: []
+  apis: [covacha-bids]
+  ui:
+    - "@angular/cdk (drag-drop kanban)"
+    - "ngx-echarts (charts dashboard)"
+    - "metabase (embed iframe SSO via JWT)"
+
+consumed_by:
+  shell: [mf-core]
+  federation: [mf-dashboard]
+
+federation:
+  skip_list:
+    - "@angular/cdk"
+    - "@angular/cdk/drag-drop"
+    - "@angular/material"
+    - "echarts"
+    - "ngx-echarts"
+    - "jspdf"
+    - "xlsx"
+    - "file-saver"
+
+rules:
+  testing: "Karma + Jasmine 80% coverage + Playwright E2E"
+  branch: "develop → main (auto-merge)"
+  visual_verify: "ng serve localhost:4212 obligatorio antes push"
+
+cloudfront:
+  invalidation_path: "/mf/bids/*"

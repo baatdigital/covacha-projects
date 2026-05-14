@@ -1,0 +1,44 @@
+name: covacha-bids
+product: bids
+type: backend-service
+language: python
+framework: flask
+status: planning
+port: 5008
+
+depends_on:
+  code: [covacha-libs]
+  services: [dynamodb, sqs, lambda, fargate, s3, athena, bedrock]
+  apis_externas:
+    - upwork (GraphQL OAuth)
+    - freelancer.com (REST)
+    - guru.com (scrape)
+    - workana.com (scrape)
+  integraciones_internas:
+    - covacha-notification (eventos SQS modnot-events)
+    - covacha-botia (agent sales/bid-conversation)
+
+consumed_by:
+  http: [mf-bids]
+  internal: [covacha-botia (HTTP via VPC)]
+
+tablas_dynamodb:
+  - bids_portals
+  - bids_projects
+  - bids_companies
+  - bids_proposals
+  - bids_profiles
+  - bids_metrics
+  - bids_implementation
+
+ai_models:
+  scoring: claude-haiku-4-5-20251001
+  drafts_coach: claude-sonnet-4-6
+  intel_topcuentas: claude-opus-4-7
+  embeddings: bedrock-titan-v2
+
+rules:
+  testing: "pytest, 98% coverage"
+  branch: "develop → main (auto-merge)"
+  tos_safe: "bloqueo en codigo si portal.tos_auto_submit=false"
+  circuit_breaker: "max_per_day + min_win_rate_7d obligatorio"

@@ -1,0 +1,134 @@
+name: Bids
+status: planning
+priority: 2
+description: Agente de prospeccion multi-portal + bid-assistant (Guru, Upwork, Workana, Freelancer.com, etc.). Evalua oportunidades de desarrollo y redacta propuestas en ingles nativo. Sirve a baatdigital, SuperPago e individuales.
+
+repos:
+  backends:
+    - covacha-bids
+  frontends:
+    - mf-bids
+  shared:
+    - covacha-libs
+  reused:
+    - covacha-notification  # WhatsApp/email events
+    - covacha-botia         # Conversational sales agent post-win
+
+domains:
+  - api.superpago.com.mx/bids
+  - mf.superpago.com.mx/bids
+  - metabase.baatdigital.com.mx  # Analytics dashboards
+
+infrastructure:
+  cloud: AWS
+  compute:
+    - EC2 (co-tenant ASG existente backend)
+    - Fargate Spot (scrape Playwright)
+    - Lambda (crawler API + exporter S3)
+  cdn: S3 + CloudFront
+  database: DynamoDB (7 tablas)
+  analytics:
+    streams: DynamoDB Streams
+    storage: S3 (parquet)
+    catalog: AWS Glue
+    query: Athena
+    dashboards: Metabase self-host EC2 t3.small
+  queue: SQS (modnot-events, modnot-whatsapp-outgoing)
+  auth: Cognito (jwt + api-key)
+  deploy: GitHub Actions + CodeDeploy
+  ai:
+    embeddings: Bedrock Titan v2
+    scoring: Claude Haiku 4.5
+    drafts_coach: Claude Sonnet 4.6
+    intel_topcuentas: Claude Opus 4.7
+
+epics:
+  - id: EP-BD-001
+    fase: 0
+    titulo: Foundation
+    esfuerzo: 5-7d
+    issue: 150
+  - id: EP-BD-002
+    fase: 1
+    titulo: Scrape + Evaluador
+    esfuerzo: 7-10d
+    issue: 151
+  - id: EP-BD-003
+    fase: 2
+    titulo: Submit hibrido + Notify
+    esfuerzo: 5-7d
+    issue: 152
+  - id: EP-BD-004
+    fase: 3
+    titulo: Implementacion + Botia handoff
+    esfuerzo: 7-10d
+    issue: 153
+  - id: EP-BD-005
+    fase: 4
+    titulo: Analytics + Skill-Gap + Dashboard
+    esfuerzo: 5d
+    issue: 154
+  - id: EP-BD-006
+    fase: 5
+    titulo: Frontend mf-bids Angular MF
+    esfuerzo: 10-15d
+    issue: 155
+  - id: EP-BD-007
+    fase: 6
+    titulo: Auto-pilot avanzado
+    esfuerzo: 5-7d
+    issue: 156
+
+profiles:
+  baatdigital:
+    mode: company
+    rate_hour_usd: 45
+    budget_min_usd: 2000
+    preferred: [paginas-web, desarrollo-simple, bots-ia, integraciones, marketing-digital, diseño-branding, mantenimiento-wp-shopify]
+  superpago:
+    mode: company
+    rate_hour_usd: 75
+    budget_min_usd: 8000
+    preferred: [sistemas-custom, desarrollos-pesados, integraciones-ia-avanzadas, fintech, whatsapp-business-escala, multi-tenant-saas, arquitectura-cloud]
+  individuales:
+    mode: individual
+    notes: Templates por dev/perfil
+
+portals_objetivo:
+  fase_0:
+    - upwork (API GraphQL OAuth)
+    - freelancer.com (API REST)
+  fase_1:
+    - guru.com (scrape Playwright + RSS)
+    - workana.com (scrape + RSS)
+  fase_2:
+    - fiverr (scrape)
+    - peopleperhour (scrape)
+  fase_3:
+    - remoteok (RSS)
+    - weworkremotely (RSS)
+    - hubstaff-talent (scrape)
+
+board:
+  project: 2  # Master Board
+  url: https://github.com/orgs/baatdigital/projects/2
+
+team:
+  mac-1: frontend-heavy (mf-bids)
+  mac-2: backend-heavy (covacha-bids)
+  orchestrator: claude-code
+  editor: cursor-agent
+  reviewer: copilot
+
+costo_estable_usd_mes:
+  mvp: 30-40
+  pro_con_proxy: 80-120
+
+reglas_operativas:
+  - tos_safe: bloqueo en codigo si portal.tos_auto_submit=false
+  - circuit_breaker: max_per_day + min_win_rate_7d + paused_until obligatorio
+  - llm_router: Haiku scoring, Sonnet drafts, Opus solo intel top-tier
+  - modelos_en_libs: covacha-libs vendor pattern, prefijos PORTAL#/PROJECT#/COMPANY#/PROPOSAL#/PROFILE#/METRIC#/IMPL#
+  - integracion_via_sqs: nunca HTTP directo a Meta o duplicar agent infra
+  - anti_detection_scrape: Playwright stealth + delays + cookies en DDB
+  - analytics_metabase: NO Kibana/OpenSearch managed (caro)

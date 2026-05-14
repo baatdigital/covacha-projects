@@ -292,15 +292,15 @@ Expuesto via Native Federation a mf-dashboard.
 
 ## 16. Roadmap (7 fases, 10-12 semanas)
 
-| Fase | Alcance | Esfuerzo | Status |
-|---|---|---|---|
-| **0 — Foundation** | Scaffold covacha-bids + 7 tablas DDB + adapters API (Upwork/Freelancer) + crawler basico + evaluator stub | 5-7d | TODO |
-| **1 — Scrape + Eval** | Adapters Guru/Workana Playwright + scoring 4-dim completo + bid_assistant auto_draft | 7-10d | TODO |
-| **2 — Submit hibrido + Notify** | Submit con TOS gate + circuit breaker + integracion covacha-notification (eventos+templates HSM) | 5-7d | TODO |
-| **3 — Implementation + Botia** | Tabla bids_implementation + agent sales/bid-conversation en covacha-botia + kanban API | 7-10d | TODO |
-| **4 — Analytics + Skill-Gap** | DDB Streams→S3→Athena pipeline + Metabase deploy + skill_gap_service + weekly report | 5d | TODO |
-| **5 — mf-bids UI** | Angular MF completo: lista + detalle + editor coach + kanban impl + dashboard embed | 10-15d | TODO |
-| **6 — Auto-pilot avanzado** | Feedback loop adaptativo pesos evaluador + multi-perfil avanzado + A/B prompts | 5-7d | TODO |
+| Epic ID | Fase | Alcance | Esfuerzo | Status | Issue |
+|---|---|---|---|---|---|
+| **EP-BD-001** | **0 — Foundation** | Scaffold covacha-bids + 7 tablas DDB + adapters API (Upwork/Freelancer) + crawler basico + evaluator stub | 5-7d | TODO | [#150](https://github.com/baatdigital/covacha-projects/issues/150) |
+| **EP-BD-002** | **1 — Scrape + Eval** | Adapters Guru/Workana Playwright + scoring 4-dim completo + bid_assistant auto_draft | 7-10d | TODO | [#151](https://github.com/baatdigital/covacha-projects/issues/151) |
+| **EP-BD-003** | **2 — Submit hibrido + Notify** | Submit con TOS gate + circuit breaker + integracion covacha-notification (eventos+templates HSM) | 5-7d | TODO | [#152](https://github.com/baatdigital/covacha-projects/issues/152) |
+| **EP-BD-004** | **3 — Implementation + Botia** | Tabla bids_implementation + agent sales/bid-conversation en covacha-botia + kanban API | 7-10d | TODO | [#153](https://github.com/baatdigital/covacha-projects/issues/153) |
+| **EP-BD-005** | **4 — Analytics + Skill-Gap** | DDB Streams→S3→Athena pipeline + Metabase deploy + skill_gap_service + weekly report | 5d | TODO | [#154](https://github.com/baatdigital/covacha-projects/issues/154) |
+| **EP-BD-006** | **5 — mf-bids UI** | Angular MF completo: lista + detalle + editor coach + kanban impl + dashboard embed | 10-15d | TODO | [#155](https://github.com/baatdigital/covacha-projects/issues/155) |
+| **EP-BD-007** | **6 — Auto-pilot avanzado** | Feedback loop adaptativo pesos evaluador + multi-perfil avanzado + A/B prompts | 5-7d | TODO | [#156](https://github.com/baatdigital/covacha-projects/issues/156) |
 
 ## 17. Criterios de Aceptacion (alto nivel)
 
