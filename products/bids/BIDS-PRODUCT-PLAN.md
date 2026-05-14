@@ -259,7 +259,7 @@ Output: `top_gaps[:10] + weekly_agenda + estimated_uplift_pct`. Notifica via Wha
 
 ## 14. Frontend mf-bids (Fase 5)
 
-Angular MF puerto 4212. Hexagonal frontend. Federation skip list completa.
+Angular MF puerto 4213 (4212 lo usa mf-ia). Hexagonal frontend. Federation skip list completa.
 
 Paginas:
 - Lista proyectos con filtros multi-perfil + score sort + status kanban
@@ -317,6 +317,83 @@ Expuesto via Native Federation a mf-dashboard.
 - [ ] SkillGapService cron weekly enviando agenda via WhatsApp
 - [ ] mf-bids deployado en CloudFront con kanban funcional
 - [ ] Coverage backend >=98% en todos los modulos
+
+## 17.b Estrategia de Testing (Unit + Integration + E2E)
+
+Testing exhaustivo obligatorio en TODAS las fases. Tres niveles:
+
+### Unit tests
+**Backend (covacha-bids)** — pytest, coverage >=98%
+- Cada service: happy path + error paths + edge cases
+- Cada repositorio: mock boto3 DynamoDB stubber
+- Cada adapter portal: fixtures con responses raw (JSON/HTML capturado)
+- Evaluator: cada dimension aislada + integracion de las 4
+- BidAssistant: mock Claude API + verificar prompt rendering + retry logic
+- Circuit breaker: simular win_rate < threshold + paused_until + max_per_day
+- Naming: `test_debe_<accion>_cuando_<condicion>` (ES)
+- Ubicacion: `covacha-bids/tests/unit/` + `covacha-libs/tests/unit/bids/`
+
+**Frontend (mf-bids)** — Karma + Jasmine, coverage >=80%
+- Componentes con TestBed (standalone components)
+- Use-cases con Signals: snapshot del state + transiciones
+- Adapters HTTP: HttpTestingController
+- Forms reactivos: validators + submit + error states
+- Naming: `should <action> when <condition>` (EN)
+
+### Integration tests
+**Backend** — DDB local (Docker) + LocalStack para SQS/S3
+- Crawler → DDB: fetch + persist + dedupe
+- Evaluator → DDB Stream → re-scoring trigger
+- EventPublisher → SQS local → consumir mensaje
+- SubmitService → portal adapter mock → DDB metrics update
+- LLM mock con responses canned (Claude API VCR-style cassettes)
+- Ubicacion: `covacha-bids/tests/integration/`
+- Setup: `docker-compose.test.yml` con dynamodb-local + localstack
+
+**Frontend** — HttpService + mock backend (MSW)
+- Use-cases completos con HTTP mocked
+- Federation: verificar `remoteEntry.json` se carga desde host
+
+### E2E tests
+**Backend** — pytest + container con servicio real corriendo
+- Endpoints publicos: /api/v1/bids/projects, /proposals, /portals
+- Auth flow: api-key + jwt + organization headers
+- Webhook simulator: portal posts callback → procesa
+
+**Frontend** — Playwright, tag `@smoke` post-deploy
+- Login + cargar shell + abrir mf-bids
+- Lista proyectos: filtros multi-perfil + score sort
+- Editor propuesta: coach inline EN/ES + submit
+- Kanban implementacion: drag-and-drop card entre columnas
+- Dashboard Metabase embed cargando
+- Selectors: `data-cy="bids-..."` convention
+- Ubicacion: `mf-bids/tests/e2e/specs/`
+- Helpers: `loginAsTestUser()` + `seedTestProjects()`
+
+### Coverage gates en CI
+| Repo | Tool | Mininmo | Bloquea PR |
+|---|---|---|---|
+| covacha-bids | pytest-cov | 98% | si |
+| covacha-libs (modulo bids/) | pytest-cov | 98% | si |
+| mf-bids | Karma | 80% | si |
+| E2E smoke | Playwright | 100% pasan | si post-deploy |
+
+### Test fixtures + datos
+- `covacha-bids/tests/fixtures/portals/` — JSON/HTML raw de cada portal
+- `covacha-bids/tests/fixtures/projects/` — proyectos normalizados ejemplo
+- `covacha-bids/tests/fixtures/llm_cassettes/` — Claude API VCR responses
+- Reusar fixtures entre unit + integration
+
+### CI/CD gates (GitHub Actions)
+```yaml
+- pytest -v --cov=src --cov-fail-under=98 --cov-report=xml
+- pytest tests/integration/ -v  (con docker-compose up dynamodb-local localstack)
+- ng test --watch=false --browsers=ChromeHeadless --code-coverage
+- ng build --configuration production
+- npx playwright test --grep @smoke (post-deploy)
+```
+
+Auto-PR a develop solo si todos los gates pasan. Auto-merge develop→main solo si E2E smoke pasa contra preview env.
 
 ## 18. Riesgos + Mitigaciones
 

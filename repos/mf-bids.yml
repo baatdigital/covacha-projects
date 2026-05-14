@@ -4,7 +4,7 @@ type: micro-frontend
 language: typescript
 framework: angular
 status: planning
-port: 4212
+port: 4213
 arch: hexagonal-frontend (domain/ports/adapters/use-cases/presentation)
 
 depends_on:
@@ -34,7 +34,7 @@ federation:
 rules:
   testing: "Karma + Jasmine 80% coverage + Playwright E2E"
   branch: "develop → main (auto-merge)"
-  visual_verify: "ng serve localhost:4212 obligatorio antes push"
+  visual_verify: "ng serve localhost:4213 obligatorio antes push (4212 lo usa mf-ia)"
 
 cloudfront:
   invalidation_path: "/mf/bids/*"
